@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>La Ruée vers l'Or</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rye&family=Alegreya+Sans:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: a mine-shaft night scene; the question card is a plank-framed board, teams' sacks of nuggets line the top. Single dark look by choice. */
+:root {
+  --earth: #1d1611;
+  --rock: #2b211a;
+  --plank: #4a3524;
+  --plank-hi: #6b4b31;
+  --gold: #f1b52e;
+  --gold-deep: #b97a12;
+  --ore: #f7e3b0;
+  --ink: #f4ead8;
+  --muted: #b9a68c;
+  --ok: #5fbf6e;
+  --bad: #e2604a;
+  --challenge: #ff8a3d;
+  --f-display: "Rye", "Rockwell", Georgia, serif;
+  --f-body: "Alegreya Sans", "Trebuchet MS", system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: radial-gradient(ellipse at 50% -10%, #3a2a1c 0%, var(--earth) 60%) fixed, var(--earth);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 12px 24px;
+}
+* { box-sizing: border-box; }
+button { font-family: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.wrap { max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h1 { font-family: var(--f-display); font-weight: 400; color: var(--gold); margin: 0; font-size: clamp(26px, 4vw, 40px); letter-spacing: .5px; text-shadow: 0 2px 0 #6b420a; text-wrap: balance; }
+.top .sub { color: var(--muted); font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; }
+.iconbtn { background: var(--rock); color: var(--ink); border: 1px solid var(--plank-hi); border-radius: 8px; padding: 8px 12px; font-size: 15px; }
+
+/* Nugget */
+.nug { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; }
+
+/* Teams strip */
+.teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.team { background: var(--rock); border: 2px solid var(--plank); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; transition: border-color .2s, transform .2s; }
+.team.active { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 18px #f1b52e22; }
+.team .name { font-weight: 800; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.team .score { font-family: var(--f-display); color: var(--gold); font-size: 30px; line-height: 1; display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.team .meta { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.team.bump .score { animation: bump .6s ease; }
+.team { position: relative; padding-left: 24px; }
+.team::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 12px; background: var(--pc, var(--plank)); border-radius: 10px 0 0 10px; }
+.team .name { color: var(--pc, var(--ink)); }
+.team.active { border-color: var(--pc, var(--gold)); box-shadow: 0 0 0 3px var(--pc, var(--gold)), 0 6px 18px #0006; }
+.board.player { box-shadow: 0 0 0 6px var(--pc), 0 10px 30px #0008; }
+.turn strong { color: var(--pc, var(--ink)); }
+.turn .dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--pc); margin-right: 8px; vertical-align: 1px; }
+.duelbox .who { border: 2px solid var(--pc); color: var(--pc); }
+.rank .nm { color: var(--pc, var(--ink)); }
+.names input[style] { border: 2px solid var(--pc); border-left-width: 12px; color: var(--pc); font-weight: 700; }
+.credit { text-align: right; color: var(--muted); font-size: 14px; padding-top: 4px; }
+.credit .cl { display: inline-block; transform: scaleX(-1); }
+.team.target { border-color: var(--bad); box-shadow: 0 0 0 3px #e2604a33; }
+.board .ribbon.raid { background: var(--bad); box-shadow: 0 3px 0 #7a2416; }
+.rule.raid .big { color: var(--bad); }
+.rule.duel .big { color: #ff8a3d; }
+.rule.rescue .big { color: var(--ok); }
+.board .ribbon.rescue { background: var(--ok); color: #0e2a12; box-shadow: 0 3px 0 #2c6a35; }
+.board .ribbon.duel { background: #ff8a3d; color: #2a1200; box-shadow: 0 3px 0 #7a3410; }
+.team.duelist { border-color: #ff8a3d; box-shadow: 0 0 0 3px #ff8a3d33; }
+.duelbox { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; text-align: center; font-weight: 800; }
+.draw { font-family: var(--f-display); text-align: center; font-size: 54px; line-height: 1.1; color: #ff8a3d; min-height: 64px; text-shadow: 0 3px 0 #7a3410; }
+.draw.go { color: var(--gold); text-shadow: 0 3px 0 #6b420a; animation: drop .35s cubic-bezier(.2,1.6,.4,1); }
+.duelbox .vs { font-family: var(--f-display); color: #ff8a3d; font-size: 22px; }
+.duelbox .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 6px; border-radius: 8px; background: #120d09; }
+.duelbox .who.now { outline: 2px solid var(--gold); }
+@keyframes bump { 30% { transform: scale(1.35); } }
+
+/* Play area */
+.play { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 820px) { .play { grid-template-columns: 1fr; } }
+.board { background: linear-gradient(var(--plank-hi), var(--plank)); padding: 10px; border-radius: 14px; box-shadow: 0 10px 30px #0008, inset 0 0 0 2px #00000030; position: relative; }
+.board img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; max-height: 72vh; object-fit: contain; }
+.board .ribbon { position: absolute; top: -12px; left: 18px; background: var(--challenge); color: #2a1200; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; padding: 5px 12px; border-radius: 6px; box-shadow: 0 3px 0 #8a3c0c; }
+
+.side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.panel { background: var(--rock); border: 1px solid var(--plank); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.turn { font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+.turn strong { display: block; color: var(--ink); font-size: 26px; letter-spacing: 0; text-transform: none; font-weight: 800; }
+.progress { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.stake { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.stake .nugs { color: var(--gold); font-size: 22px; display: inline-flex; gap: 2px; }
+
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ans { font-family: var(--f-display); font-size: 34px; padding: 14px 0; border-radius: 12px; border: 2px solid var(--gold-deep); background: linear-gradient(#3b2d20, #2a1f16); color: var(--gold); box-shadow: 0 4px 0 #120d09; transition: transform .08s, background .2s; }
+.ans:hover:not(:disabled) { background: linear-gradient(#4a3826, #33261b); }
+.ans:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #120d09; }
+.ans:disabled { cursor: default; opacity: .45; }
+.ans.right { background: var(--ok); color: #0e2a12; border-color: var(--ok); opacity: 1; }
+.ans.wrong { background: var(--bad); color: #2a0b05; border-color: var(--bad); opacity: 1; }
+
+.timer { display: flex; flex-direction: column; gap: 6px; }
+.timer .row { display: flex; justify-content: space-between; align-items: baseline; }
+.timer .secs { font-family: var(--f-display); font-size: 34px; color: var(--challenge); font-variant-numeric: tabular-nums; }
+.bar { height: 12px; background: #120d09; border-radius: 6px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--bad), var(--challenge), var(--gold)); width: 100%; transition: width .1s linear; }
+.timer.low .secs { animation: pulse .5s infinite alternate; }
+@keyframes pulse { to { color: var(--bad); } }
+
+.feedback { border-radius: 10px; padding: 12px 14px; font-weight: 700; font-size: 18px; }
+.feedback.ok { background: #5fbf6e22; color: #a7e8b0; border: 1px solid var(--ok); }
+.feedback.ko { background: #e2604a22; color: #f6b3a7; border: 1px solid var(--bad); }
+.primary { background: linear-gradient(var(--gold), var(--gold-deep)); color: #2a1a03; border: 0; border-radius: 12px; padding: 14px 18px; font-size: 19px; font-weight: 800; box-shadow: 0 4px 0 #6b420a; }
+.primary:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b420a; }
+.ghost { background: transparent; color: var(--muted); border: 1px solid var(--plank-hi); border-radius: 10px; padding: 9px 12px; font-size: 15px; }
+.keys { color: var(--muted); font-size: 13px; }
+
+/* Setup */
+.setup { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 820px) { .setup { grid-template-columns: 1fr; } }
+.setup h2 { font-family: var(--f-display); font-weight: 400; color: var(--gold); margin: 0; font-size: 24px; }
+.setup p { margin: 0; color: var(--muted); line-height: 1.5; max-width: 60ch; }
+.rules { display: grid; gap: 10px; }
+.rule { display: flex; gap: 12px; align-items: center; background: #120d0966; border-radius: 10px; padding: 10px 12px; }
+.rule .big { font-family: var(--f-display); color: var(--gold); font-size: 26px; min-width: 2.2em; display: flex; align-items: center; gap: 4px; }
+.rule.ch .big { color: var(--gold); text-shadow: 0 0 12px #f1b52e99; }
+@keyframes shine { to { background-position: -200% center; } }
+.board .ribbon.filon { background: linear-gradient(110deg, #b97a12 0%, #f1b52e 30%, #fff4c4 50%, #f1b52e 70%, #b97a12 100%); background-size: 200% auto; color: #2a1a03; box-shadow: 0 3px 0 #6b420a, 0 0 16px #f1b52e88; animation: shine 2.5s linear infinite; }
+.overlay .title.filon { background: linear-gradient(110deg, #b97a12 0%, #f1b52e 30%, #fff4c4 50%, #f1b52e 70%, #b97a12 100%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; filter: drop-shadow(0 3px 0 #6b420a); animation: drop .5s cubic-bezier(.2,1.6,.4,1), shine 2.5s linear infinite; }
+label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 15px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { background: #120d09; color: var(--ink); border: 1px solid var(--plank-hi); border-radius: 8px; padding: 8px 12px; font-size: 15px; font-weight: 700; }
+.seg button[aria-pressed="true"] { background: var(--gold); color: #2a1a03; border-color: var(--gold); }
+.names { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.names input { width: 100%; background: #120d09; color: var(--ink); border: 1px solid var(--plank-hi); border-radius: 8px; padding: 9px 10px; font-size: 16px; font-family: inherit; }
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-weight: 500; }
+.checks label { display: flex; gap: 8px; align-items: center; font-size: 15px; }
+.checks input { accent-color: var(--gold); width: 18px; height: 18px; }
+.err { color: #f6b3a7; font-size: 14px; }
+
+/* Overlay */
+.overlay { position: fixed; inset: 0; background: #0b0806e6; display: grid; place-items: center; z-index: 20; padding: 20px max(16px, env(safe-area-inset-right, 0px)) 20px max(16px, env(safe-area-inset-left, 0px)); }
+.overlay .box { text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; max-width: 520px; }
+.overlay .title { font-family: var(--f-display); color: var(--challenge); font-size: clamp(34px, 7vw, 60px); line-height: 1.1; text-wrap: balance; text-shadow: 0 4px 0 #6b2a05; animation: drop .5s cubic-bezier(.2,1.6,.4,1); }
+.overlay p { margin: 0; font-size: 20px; color: var(--ore); }
+@keyframes drop { from { transform: translateY(-40px) scale(.8); opacity: 0; } }
+
+/* End */
+.podium { display: flex; flex-direction: column; gap: 10px; }
+.rank { display: grid; grid-template-columns: 54px minmax(0, 1fr) auto; align-items: center; gap: 12px; background: var(--rock); border: 1px solid var(--plank); border-radius: 12px; padding: 12px 16px; }
+.rank.first { border: 2px solid var(--gold); box-shadow: 0 0 30px #f1b52e33; }
+.rank .pos { font-family: var(--f-display); font-size: 30px; color: var(--muted); text-align: center; }
+.rank.first .pos { color: var(--gold); }
+.rank .nm { font-weight: 800; font-size: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank .det { color: var(--muted); font-size: 14px; }
+.rank .pts { font-family: var(--f-display); color: var(--gold); font-size: 32px; display: flex; gap: 6px; align-items: center; font-variant-numeric: tabular-nums; }
+
+/* Flying nuggets */
+.fly { position: fixed; z-index: 30; width: 34px; height: 34px; pointer-events: none; transition: transform .9s cubic-bezier(.5,-0.3,.6,1), opacity .9s; }
+
+/* phone layout: everything for one question fits on one screen */
+@media (max-width: 600px) {
+  body { padding-block: 6px 12px; font-size: 15px; }
+  .wrap { gap: 8px; }
+  header.top { gap: 6px; }
+  h1 { font-size: 22px; }
+  .top .sub { font-size: 10px; letter-spacing: 1px; }
+  .iconbtn { padding: 5px 8px; font-size: 12px; }
+  .teams { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px; scrollbar-width: none; }
+  .team { flex: 0 0 auto; min-width: 92px; padding: 5px 8px 5px 18px; gap: 0; }
+  .team::before { width: 8px; }
+  .team .name { font-size: 13px; }
+  .team .score { font-size: 20px; }
+  .team .meta { display: none; }
+  .team.active { transform: none; }
+  .play { gap: 8px; }
+  .board { padding: 4px; border-radius: 10px; }
+  .board img { max-height: none; }
+  .board .ribbon { top: -9px; left: 10px; font-size: 10px; padding: 3px 8px; }
+  .panel { padding: 10px; gap: 8px; border-radius: 10px; }
+  .turn { font-size: 11px; }
+  .turn strong { font-size: 18px; }
+  .progress, .stake { font-size: 13px; }
+  .stake .nugs { font-size: 16px; }
+  .timer .secs { font-size: 22px; }
+  .bar { height: 8px; }
+  .answers { gap: 8px; }
+  .ans { font-size: 24px; padding: 8px 0; border-radius: 10px; }
+  .feedback { font-size: 15px; padding: 8px 10px; }
+  .primary { padding: 11px 14px; font-size: 16px; }
+  .draw { font-size: 34px; min-height: 40px; }
+  .duelbox .who { font-size: 13px; padding: 4px; }
+  .overlay .title { font-size: 32px; }
+  .overlay p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="g" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#fff4c4"/><stop offset=".35" stop-color="#f6c443"/><stop offset="1" stop-color="#9a5f0a"/>
+    </radialGradient>
+    <symbol id="nugget" viewBox="0 0 40 40">
+      <path d="M8 22c-2-6 3-12 9-13 4-4 11-2 13 2 6 1 8 8 5 13 1 6-5 10-11 9-4 3-11 2-13-2-4-1-5-6-3-9z" fill="url(#g)" stroke="#6b420a" stroke-width="1.5"/>
+      <path d="M15 14c2-1 4-1 5 0" stroke="#fffbe6" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap" id="app"></div>
+
+<script>
+(function () {
+  // two levels: 5ème (500 questions, series B = n + 250) and CAPES (200 questions, series B = n + 100)
+  const QS_5 = [[1,"geo","d"],[2,"geo","a"],[3,"geo","b"],[4,"geo","d"],[5,"geo","b"],[6,"geo","a"],[7,"geo","c"],[8,"geo","c"],[9,"geo","d"],[10,"geo","c"],[11,"rel","a"],[12,"rel","b"],[13,"rel","c"],[14,"rel","a"],[15,"rel","b"],[16,"rel","c"],[17,"rel","a"],[18,"rel","c"],[19,"rel","b"],[20,"rel","c"],[21,"fra","b"],[22,"fra","c"],[23,"fra","d"],[24,"fra","b"],[25,"fra","d"],[26,"fra","d"],[27,"fra","b"],[28,"fra","a"],[29,"fra","d"],[30,"fra","b"],[31,"pro","b"],[32,"pro","a"],[33,"pro","b"],[34,"pro","d"],[35,"pro","a"],[36,"pro","d"],[37,"pro","a"],[38,"pro","d"],[39,"pro","c"],[40,"pro","d"],[41,"pba","b"],[42,"pba","a"],[43,"pba","c"],[44,"pba","b"],[45,"pba","d"],[46,"pba","b"],[47,"pba","a"],[48,"pba","b"],[49,"pba","b"],[50,"pba","d"],[51,"geo","b"],[52,"geo","d"],[53,"geo","c"],[54,"geo","b"],[55,"geo","a"],[56,"geo","b"],[57,"geo","c"],[58,"geo","c"],[59,"geo","c"],[60,"geo","c"],[61,"geo","b"],[62,"geo","c"],[63,"geo","b"],[64,"geo","d"],[65,"geo","d"],[66,"geo","c"],[67,"geo","c"],[68,"geo","b"],[69,"geo","c"],[70,"geo","a"],[71,"geo","a"],[72,"geo","b"],[73,"geo","c"],[74,"geo","d"],[75,"geo","d"],[76,"geo","a"],[77,"geo","c"],[78,"geo","b"],[79,"geo","c"],[80,"geo","b"],[81,"geo","d"],[82,"geo","b"],[83,"geo","c"],[84,"geo","b"],[85,"geo","d"],[86,"geo","a"],[87,"geo","c"],[88,"geo","d"],[89,"geo","c"],[90,"geo","d"],[91,"rel","d"],[92,"rel","b"],[93,"rel","a"],[94,"rel","a"],[95,"rel","c"],[96,"rel","a"],[97,"rel","c"],[98,"rel","b"],[99,"rel","c"],[100,"rel","d"],[101,"rel","a"],[102,"rel","b"],[103,"rel","c"],[104,"rel","d"],[105,"rel","c"],[106,"rel","a"],[107,"rel","d"],[108,"rel","d"],[109,"rel","c"],[110,"rel","a"],[111,"rel","a"],[112,"rel","a"],[113,"rel","c"],[114,"rel","d"],[115,"rel","a"],[116,"rel","d"],[117,"rel","d"],[118,"rel","a"],[119,"rel","c"],[120,"rel","d"],[121,"rel","b"],[122,"rel","a"],[123,"rel","b"],[124,"rel","b"],[125,"rel","a"],[126,"rel","b"],[127,"rel","b"],[128,"rel","c"],[129,"rel","d"],[130,"rel","d"],[131,"fra","b"],[132,"fra","c"],[133,"fra","c"],[134,"fra","a"],[135,"fra","c"],[136,"fra","a"],[137,"fra","a"],[138,"fra","b"],[139,"fra","b"],[140,"fra","a"],[141,"fra","d"],[142,"fra","a"],[143,"fra","c"],[144,"fra","b"],[145,"fra","a"],[146,"fra","c"],[147,"fra","a"],[148,"fra","c"],[149,"fra","a"],[150,"fra","a"],[151,"fra","c"],[152,"fra","d"],[153,"fra","b"],[154,"fra","b"],[155,"fra","a"],[156,"fra","c"],[157,"fra","c"],[158,"fra","c"],[159,"fra","b"],[160,"fra","b"],[161,"fra","a"],[162,"fra","b"],[163,"fra","a"],[164,"fra","b"],[165,"fra","c"],[166,"fra","a"],[167,"fra","a"],[168,"fra","d"],[169,"fra","b"],[170,"fra","a"],[171,"pro","a"],[172,"pro","d"],[173,"pro","b"],[174,"pro","d"],[175,"pro","d"],[176,"pro","a"],[177,"pro","d"],[178,"pro","b"],[179,"pro","d"],[180,"pro","c"],[181,"pro","b"],[182,"pro","a"],[183,"pro","a"],[184,"pro","b"],[185,"pro","a"],[186,"pro","a"],[187,"pro","c"],[188,"pro","a"],[189,"pro","c"],[190,"pro","b"],[191,"pro","b"],[192,"pro","b"],[193,"pro","d"],[194,"pro","d"],[195,"pro","c"],[196,"pro","d"],[197,"pro","b"],[198,"pro","d"],[199,"pro","d"],[200,"pro","b"],[201,"pro","a"],[202,"pro","b"],[203,"pro","d"],[204,"pro","a"],[205,"pro","a"],[206,"pro","c"],[207,"pro","c"],[208,"pro","c"],[209,"pro","b"],[210,"pro","d"],[211,"pba","d"],[212,"pba","a"],[213,"pba","c"],[214,"pba","b"],[215,"pba","b"],[216,"pba","c"],[217,"pba","b"],[218,"pba","c"],[219,"pba","d"],[220,"pba","d"],[221,"pba","d"],[222,"pba","d"],[223,"pba","d"],[224,"pba","b"],[225,"pba","a"],[226,"pba","b"],[227,"pba","c"],[228,"pba","c"],[229,"pba","c"],[230,"pba","b"],[231,"pba","d"],[232,"pba","a"],[233,"pba","d"],[234,"pba","a"],[235,"pba","d"],[236,"pba","d"],[237,"pba","a"],[238,"pba","b"],[239,"pba","d"],[240,"pba","d"],[241,"pba","d"],[242,"pba","b"],[243,"pba","b"],[244,"pba","b"],[245,"pba","b"],[246,"pba","b"],[247,"pba","c"],[248,"pba","a"],[249,"pba","c"],[250,"pba","d"],[251,"geo","c"],[252,"geo","a"],[253,"geo","a"],[254,"geo","d"],[255,"geo","b"],[256,"geo","d"],[257,"geo","a"],[258,"geo","b"],[259,"geo","c"],[260,"geo","b"],[261,"rel","a"],[262,"rel","d"],[263,"rel","d"],[264,"rel","c"],[265,"rel","a"],[266,"rel","b"],[267,"rel","a"],[268,"rel","c"],[269,"rel","d"],[270,"rel","b"],[271,"fra","d"],[272,"fra","c"],[273,"fra","d"],[274,"fra","d"],[275,"fra","c"],[276,"fra","b"],[277,"fra","c"],[278,"fra","d"],[279,"fra","b"],[280,"fra","b"],[281,"pro","b"],[282,"pro","c"],[283,"pro","a"],[284,"pro","b"],[285,"pro","c"],[286,"pro","c"],[287,"pro","d"],[288,"pro","c"],[289,"pro","d"],[290,"pro","c"],[291,"pba","a"],[292,"pba","b"],[293,"pba","b"],[294,"pba","a"],[295,"pba","d"],[296,"pba","a"],[297,"pba","d"],[298,"pba","c"],[299,"pba","d"],[300,"pba","d"],[301,"geo","d"],[302,"geo","a"],[303,"geo","d"],[304,"geo","a"],[305,"geo","a"],[306,"geo","b"],[307,"geo","c"],[308,"geo","b"],[309,"geo","b"],[310,"geo","a"],[311,"geo","b"],[312,"geo","d"],[313,"geo","c"],[314,"geo","b"],[315,"geo","d"],[316,"geo","b"],[317,"geo","b"],[318,"geo","b"],[319,"geo","b"],[320,"geo","c"],[321,"geo","a"],[322,"geo","d"],[323,"geo","d"],[324,"geo","a"],[325,"geo","c"],[326,"geo","c"],[327,"geo","b"],[328,"geo","b"],[329,"geo","c"],[330,"geo","b"],[331,"geo","a"],[332,"geo","c"],[333,"geo","a"],[334,"geo","a"],[335,"geo","b"],[336,"geo","c"],[337,"geo","b"],[338,"geo","c"],[339,"geo","a"],[340,"geo","c"],[341,"rel","b"],[342,"rel","d"],[343,"rel","b"],[344,"rel","d"],[345,"rel","a"],[346,"rel","b"],[347,"rel","a"],[348,"rel","d"],[349,"rel","a"],[350,"rel","b"],[351,"rel","d"],[352,"rel","c"],[353,"rel","a"],[354,"rel","d"],[355,"rel","c"],[356,"rel","d"],[357,"rel","b"],[358,"rel","c"],[359,"rel","a"],[360,"rel","d"],[361,"rel","a"],[362,"rel","d"],[363,"rel","a"],[364,"rel","b"],[365,"rel","c"],[366,"rel","d"],[367,"rel","d"],[368,"rel","a"],[369,"rel","b"],[370,"rel","c"],[371,"rel","c"],[372,"rel","b"],[373,"rel","b"],[374,"rel","b"],[375,"rel","b"],[376,"rel","b"],[377,"rel","a"],[378,"rel","a"],[379,"rel","b"],[380,"rel","c"],[381,"fra","a"],[382,"fra","b"],[383,"fra","b"],[384,"fra","c"],[385,"fra","b"],[386,"fra","b"],[387,"fra","a"],[388,"fra","c"],[389,"fra","c"],[390,"fra","d"],[391,"fra","c"],[392,"fra","c"],[393,"fra","a"],[394,"fra","a"],[395,"fra","d"],[396,"fra","b"],[397,"fra","b"],[398,"fra","d"],[399,"fra","b"],[400,"fra","c"],[401,"fra","c"],[402,"fra","a"],[403,"fra","a"],[404,"fra","c"],[405,"fra","b"],[406,"fra","b"],[407,"fra","d"],[408,"fra","a"],[409,"fra","a"],[410,"fra","b"],[411,"fra","c"],[412,"fra","d"],[413,"fra","a"],[414,"fra","d"],[415,"fra","b"],[416,"fra","b"],[417,"fra","d"],[418,"fra","c"],[419,"fra","a"],[420,"fra","d"],[421,"pro","a"],[422,"pro","d"],[423,"pro","d"],[424,"pro","d"],[425,"pro","a"],[426,"pro","b"],[427,"pro","d"],[428,"pro","b"],[429,"pro","d"],[430,"pro","b"],[431,"pro","a"],[432,"pro","a"],[433,"pro","b"],[434,"pro","d"],[435,"pro","b"],[436,"pro","b"],[437,"pro","a"],[438,"pro","c"],[439,"pro","c"],[440,"pro","a"],[441,"pro","c"],[442,"pro","b"],[443,"pro","d"],[444,"pro","c"],[445,"pro","b"],[446,"pro","d"],[447,"pro","c"],[448,"pro","c"],[449,"pro","d"],[450,"pro","d"],[451,"pro","c"],[452,"pro","d"],[453,"pro","d"],[454,"pro","d"],[455,"pro","a"],[456,"pro","b"],[457,"pro","c"],[458,"pro","b"],[459,"pro","c"],[460,"pro","b"],[461,"pba","b"],[462,"pba","b"],[463,"pba","c"],[464,"pba","a"],[465,"pba","c"],[466,"pba","c"],[467,"pba","b"],[468,"pba","d"],[469,"pba","a"],[470,"pba","c"],[471,"pba","b"],[472,"pba","a"],[473,"pba","b"],[474,"pba","d"],[475,"pba","c"],[476,"pba","c"],[477,"pba","d"],[478,"pba","d"],[479,"pba","b"],[480,"pba","d"],[481,"pba","c"],[482,"pba","a"],[483,"pba","d"],[484,"pba","a"],[485,"pba","c"],[486,"pba","c"],[487,"pba","c"],[488,"pba","a"],[489,"pba","b"],[490,"pba","c"],[491,"pba","c"],[492,"pba","d"],[493,"pba","d"],[494,"pba","b"],[495,"pba","a"],[496,"pba","c"],[497,"pba","a"],[498,"pba","d"],[499,"pba","b"],[500,"pba","b"]];
+  const QS_C = [[1,"ana","d"],[2,"ana","a"],[3,"ana","b"],[4,"ana","d"],[5,"ana","b"],[6,"ana","a"],[7,"ana","c"],[8,"ana","c"],[9,"ana","d"],[10,"ana","c"],[11,"ana","a"],[12,"ana","b"],[13,"ana","c"],[14,"ana","a"],[15,"ana","b"],[16,"ana","c"],[17,"ana","a"],[18,"ana","c"],[19,"ana","b"],[20,"ana","c"],[21,"alg","b"],[22,"alg","c"],[23,"alg","d"],[24,"alg","b"],[25,"alg","d"],[26,"alg","d"],[27,"alg","b"],[28,"alg","a"],[29,"alg","d"],[30,"alg","b"],[31,"alg","b"],[32,"alg","a"],[33,"alg","b"],[34,"alg","d"],[35,"alg","a"],[36,"alg","d"],[37,"alg","a"],[38,"alg","d"],[39,"alg","c"],[40,"alg","d"],[41,"lin","b"],[42,"lin","a"],[43,"lin","c"],[44,"lin","b"],[45,"lin","d"],[46,"lin","b"],[47,"lin","a"],[48,"lin","b"],[49,"lin","b"],[50,"lin","d"],[51,"lin","b"],[52,"lin","d"],[53,"lin","c"],[54,"lin","b"],[55,"lin","a"],[56,"lin","b"],[57,"lin","c"],[58,"lin","c"],[59,"lin","c"],[60,"lin","c"],[61,"prb","b"],[62,"prb","c"],[63,"prb","b"],[64,"prb","d"],[65,"prb","d"],[66,"prb","c"],[67,"prb","c"],[68,"prb","b"],[69,"prb","c"],[70,"prb","a"],[71,"prb","a"],[72,"prb","b"],[73,"prb","c"],[74,"prb","d"],[75,"prb","d"],[76,"prb","a"],[77,"prb","c"],[78,"prb","b"],[79,"prb","c"],[80,"prb","b"],[81,"geo","d"],[82,"geo","b"],[83,"geo","c"],[84,"geo","b"],[85,"geo","d"],[86,"geo","a"],[87,"geo","c"],[88,"geo","d"],[89,"geo","c"],[90,"geo","d"],[91,"geo","d"],[92,"geo","b"],[93,"geo","a"],[94,"geo","a"],[95,"geo","c"],[96,"geo","a"],[97,"geo","c"],[98,"geo","b"],[99,"geo","c"],[100,"geo","d"],[101,"ana","a"],[102,"ana","b"],[103,"ana","c"],[104,"ana","d"],[105,"ana","c"],[106,"ana","a"],[107,"ana","d"],[108,"ana","d"],[109,"ana","c"],[110,"ana","a"],[111,"ana","a"],[112,"ana","a"],[113,"ana","c"],[114,"ana","d"],[115,"ana","a"],[116,"ana","d"],[117,"ana","d"],[118,"ana","a"],[119,"ana","c"],[120,"ana","d"],[121,"alg","b"],[122,"alg","a"],[123,"alg","b"],[124,"alg","b"],[125,"alg","a"],[126,"alg","b"],[127,"alg","b"],[128,"alg","c"],[129,"alg","d"],[130,"alg","d"],[131,"alg","b"],[132,"alg","c"],[133,"alg","c"],[134,"alg","a"],[135,"alg","c"],[136,"alg","a"],[137,"alg","a"],[138,"alg","b"],[139,"alg","b"],[140,"alg","a"],[141,"lin","d"],[142,"lin","a"],[143,"lin","c"],[144,"lin","b"],[145,"lin","a"],[146,"lin","c"],[147,"lin","a"],[148,"lin","c"],[149,"lin","a"],[150,"lin","a"],[151,"lin","c"],[152,"lin","d"],[153,"lin","b"],[154,"lin","b"],[155,"lin","a"],[156,"lin","c"],[157,"lin","c"],[158,"lin","c"],[159,"lin","b"],[160,"lin","b"],[161,"prb","a"],[162,"prb","b"],[163,"prb","a"],[164,"prb","b"],[165,"prb","c"],[166,"prb","a"],[167,"prb","a"],[168,"prb","d"],[169,"prb","b"],[170,"prb","a"],[171,"prb","a"],[172,"prb","d"],[173,"prb","b"],[174,"prb","d"],[175,"prb","d"],[176,"prb","a"],[177,"prb","d"],[178,"prb","b"],[179,"prb","d"],[180,"prb","c"],[181,"geo","b"],[182,"geo","a"],[183,"geo","a"],[184,"geo","b"],[185,"geo","a"],[186,"geo","a"],[187,"geo","c"],[188,"geo","a"],[189,"geo","c"],[190,"geo","b"],[191,"geo","b"],[192,"geo","b"],[193,"geo","d"],[194,"geo","d"],[195,"geo","c"],[196,"geo","d"],[197,"geo","b"],[198,"geo","d"],[199,"geo","d"],[200,"geo","b"]];
+  const LEVELS = {
+    "5e": { label: "5ème", sub: "Mathématiques 5ème", qs: QS_5, half: 250, img: "5e",
+      themes: [{ id: "geo", label: "Géométrie" }, { id: "rel", label: "Nombres relatifs" }, { id: "fra", label: "Fractions" },
+               { id: "pro", label: "Proportionnalité / stats" }, { id: "pba", label: "Probabilités" }] },
+    capes: { label: "CAPES", sub: "Préparation au CAPES de mathématiques", qs: QS_C, half: 100, img: "capes",
+      themes: [{ id: "ana", label: "Analyse" }, { id: "alg", label: "Algèbre et arithmétique" }, { id: "lin", label: "Algèbre linéaire" },
+               { id: "prb", label: "Probabilités et statistiques" }, { id: "geo", label: "Géométrie et complexes" }] },
+  };
+  let QS, THEMES, HALF, IMG, LEVEL_SUB;
+  const ANSWER = {}, THEME_OF = {};
+  function setLevel(key) {
+    const L = LEVELS[key] || LEVELS["5e"];
+    QS = L.qs; THEMES = L.themes; HALF = L.half; IMG = L.img; LEVEL_SUB = L.sub;
+    for (const k in ANSWER) delete ANSWER[k];
+    for (const k in THEME_OF) delete THEME_OF[k];
+    QS.forEach(([n, th, l]) => { ANSWER[n] = l; THEME_OF[n] = th; });
+  }
+  const NUG = '<svg class="nug" aria-hidden="true"><use href="#nugget"/></svg>';
+  const app = document.getElementById("app");
+
+  const defaults = {
+    phase: "setup",
+    nTeams: 2,
+    names: ["Buffalo Bill", "Calamity Jane", "Billy the Kid", "Lucky Luke", "Jesse James", "Poupoune Debien"],
+    nQ: 20, timeUp: false, series: "A", level: "5e",
+    secs: 300,
+    themes: {},
+    teams: [], deck: [], challenges: [], raids: [], victim: null, steal: true, duels: [], duel: null, fight: true, idx: 0, answered: null, sound: true,
+  };
+  let S = Object.assign({}, defaults, (window.claude && window.claude.hot && window.claude.hot.data && window.claude.hot.data.S) || {});
+  setLevel(S.level);
+  THEMES.forEach(t => { if (S.themes[t.id] === undefined) S.themes[t.id] = true; });
+  // difficulty per question (1 = facile, 2 = moyen, 3 = difficile), questions 1 to 40
+    const DUR = { 1: 20, 2: 20, 3: 20 };
+  const DLAB = { 1: "facile", 2: "moyenne", 3: "difficile" };
+  const chSecs = () => 20;
+  if (["Les Pépites", "Durin"].includes(S.names[0])) S.names = defaults.names.slice();
+  if (S.names[3] === "Annie Oakley") S.names = S.names.slice(0, 3).concat(defaults.names.slice(3));
+  let timer = null, deadline = 0, audio = null;
+
+  if (window.claude && window.claude.hot && window.claude.hot.snapshot) {
+    window.claude.hot.snapshot(() => ({ S: Object.assign({}, S, { answered: S.answered }) }));
+  }
+
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const nugs = n => Array.from({ length: n }, () => NUG).join("");
+  // one clearly different colour per player
+  const PCOL = ["#ff5a5a", "#4da3ff", "#4fd27b", "#c084ff", "#ff9f43", "#3fe0d6"];
+  const pc = i => PCOL[i % PCOL.length];
+  const curTeam = () => S.teams[S.idx % S.teams.length];
+  const isFilon = () => S.challenges.includes(S.idx) && S.filonOn !== false;
+  // chance of a filon on this player's turn: 1/4 for the last of the ranking, down to 0 for the first
+  function filonChance(i) {
+    const n = S.teams.length;
+    if (n === 1) return 1 / 8;
+    const above = S.teams.filter(t => t.score > S.teams[i].score).length;
+    return 0.25 * above / (n - 1);
+  }
+  // a theft can only target the single richest player, never the current player
+  function leaderIdx() {
+    const me = S.idx % S.teams.length;
+    // the richest player must lead the second one by at least 2 nuggets
+    const order = S.teams.map((t, i) => i).sort((a, b) => S.teams[b].score - S.teams[a].score);
+    const first = order[0], gap = S.teams[first].score - S.teams[order[1]].score;
+    if (gap < 2 || first === me) return null;
+    return first;
+  }
+  const isRaid = () => S.victim !== null && S.victim !== undefined;
+  const victim = () => S.teams[S.victim];
+  const isChallenge = () => isFilon() || isRaid();
+  const stakeOf = () => isRaid() ? Math.min(3, victim().score) : isFilon() ? (S.filonLot || 4) : 1;
+
+  /* ---------- Sound ---------- */
+  function beep(kind) {
+    if (!S.sound) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      const notes = kind === "ok" ? [660, 880, 1320] : kind === "ko" ? [220, 160] : kind === "ch" ? [440, 554, 659, 880] : [880];
+      notes.forEach((f, i) => {
+        const o = audio.createOscillator(), g = audio.createGain();
+        o.type = kind === "ko" ? "sawtooth" : "triangle"; o.frequency.value = f;
+        const t = audio.currentTime + i * 0.09;
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.18, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+        o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.25);
+      });
+    } catch (e) {}
+  }
+
+  /* ---------- Views ---------- */
+  function header(extra) {
+    return `<header class="top">
+      <div><h1>La Ruée vers l'Or</h1><div class="sub">Chercheurs d'or · ${LEVEL_SUB}</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${extra || ""}
+        <button class="iconbtn" id="snd" aria-pressed="${S.sound}">${S.sound ? "Son : activé" : "Son : coupé"}</button></div>
+    </header>`;
+  }
+
+  function renderSetup() {
+    const segs = (id, vals, cur, fmt) => `<div class="seg" id="${id}">${vals.map(v => `<button type="button" data-v="${v}" aria-pressed="${v === cur}">${fmt ? fmt(v) : v}</button>`).join("")}</div>`;
+    app.innerHTML = header() + `
+    <div class="setup">
+      <section class="panel">
+        <h2>Le principe</h2>
+        <p>Chaque cowboy chercheur d'or répond à son tour à une question. Une bonne réponse rapporte des pépites. De temps en temps, les joueurs peuvent tomber sur des événements spéciaux.</p>
+        <div class="rules">
+          <div class="rule"><span class="big">0</span><span>Mauvaise réponse ou temps écoulé : aucune pépite.</span></div>
+          <div class="rule"><span class="big">1 ${NUG}</span><span>Bonne réponse à une question normale.</span></div>
+          <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs s'entraident sur des questions ratées, jusqu'à 2 pépites chacun.</span></div>
+          <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites.</span></div>
+          <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche.</span></div>
+          <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : si la réponse est correcte, le joueur gagne 4 pépites et tous les autres 1 pépite : coopérez !</span></div>
+        </div>
+        <p class="keys">Au clavier : touches A, B, C, D pour répondre, Entrée pour passer à la suite.</p>
+      </section>
+      <section class="panel">
+        <h2>Préparer la partie</h2>
+        <label class="f">Niveau ${segs("lv", Object.keys(LEVELS), S.level, v => LEVELS[v].label)}</label>
+        <label class="f">Nombre de joueurs ${segs("nt", [1, 2, 3, 4, 5, 6], S.nTeams)}</label>
+        <div class="names">${Array.from({ length: S.nTeams }, (_, i) => `<input id="name${i}" aria-label="Nom du joueur ${i + 1}" value="${esc(S.names[i])}" maxlength="24" style="--pc:${pc(i)}">`).join("")}</div>
+        <label class="f">Nombre de questions ${segs("nq", [10, 20, 40, 60], S.nQ)}</label>
+        <label class="f">Série de questions ${segs("se", ["A", "B", "AB"], S.series, v => v === "AB" ? "A et B" : "Série " + v)}</label>
+        <div class="f" style="font-weight:700;font-size:15px;display:flex;flex-direction:column;gap:6px">Thèmes
+          <div class="checks">${THEMES.map(t => `<label><input type="checkbox" id="th-${t.id}" ${S.themes[t.id] ? "checked" : ""}> ${t.label}</label>`).join("")}</div>
+        </div>
+        <div class="err" id="err" hidden></div>
+        <button class="primary" id="go">Partir à la mine</button>
+      </section>
+    </div>
+    <footer class="credit"><a href="index.html" style="color:var(--muted);margin-right:14px">Partie en réseau (téléphones)</a><span class="cl" aria-hidden="true">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</footer>`;
+
+    const bindSeg = (id, key, rerender) => app.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { saveNames(); S[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; rerender ? renderSetup() : app.querySelectorAll(`#${id} button`).forEach(x => x.setAttribute("aria-pressed", x === b)); });
+    bindSeg("nt", "nTeams", true); bindSeg("nq", "nQ"); bindSeg("se", "series");
+    app.querySelectorAll("#lv button").forEach(b => b.onclick = () => {
+      saveNames();
+      if (b.dataset.v === S.level) return;
+      S.level = b.dataset.v; setLevel(S.level);
+      S.themes = {}; THEMES.forEach(t => { S.themes[t.id] = true; });
+      renderSetup();
+    });
+    THEMES.forEach(t => document.getElementById("th-" + t.id).onchange = e => { S.themes[t.id] = e.target.checked; });
+    document.getElementById("go").onclick = start;
+    bindSound();
+  }
+
+  function saveNames() {
+    for (let i = 0; i < S.nTeams; i++) { const el = document.getElementById("name" + i); if (el) S.names[i] = el.value.trim() || `Joueur ${i + 1}`; }
+  }
+
+  function start() {
+    saveNames();
+    let pool = [];
+    const inSeries = n => S.series === "AB" || (S.series === "B" ? n > HALF : n <= HALF);
+    QS.forEach(([n, th]) => { if (S.themes[th] && inSeries(n)) pool.push(n); });
+    const err = document.getElementById("err");
+    if (!pool.length) { err.textContent = "Coche au moins un thème pour lancer la partie."; err.hidden = false; return; }
+    if (![10, 20, 40, 60].includes(S.nQ)) S.nQ = 20;
+    S.deck = shuffle(pool).slice(0, Math.min(S.nQ, pool.length));
+    // filons are drawn turn by turn, see filonChance()
+    S.challenges = []; S.filonPicked = {}; S.filonRolled = {};
+    // one theft slot in each block of 6 questions, on a question that is not a filon
+    S.raids = [];
+    if (S.nTeams > 1) {
+      for (let b = 0; b < S.deck.length; b += 6) {
+        const cand = [];
+        for (let i = Math.max(b + 1, 2); i <= Math.min(b + 5, S.deck.length - 1); i++) if (!S.challenges.includes(i)) cand.push(i);
+        if (cand.length) S.raids.push(cand[Math.floor(Math.random() * cand.length)]);
+      }
+    }
+    // one castagne slot in each block of 4 questions (never in the first 3, players need solved questions)
+    S.duels = [];
+    if (S.nTeams > 1) {
+      for (let b = 0; b < S.deck.length; b += 4) {
+        const cand = [];
+        for (let i = Math.max(b + 1, 3); i <= Math.min(b + 3, S.deck.length - 1); i++)
+          if (!S.challenges.includes(i) && !S.raids.includes(i)) cand.push(i);
+        if (cand.length) S.duels.push(cand[Math.floor(Math.random() * cand.length)]);
+      }
+    }
+    // one sauvetage slot in each block of 6 questions, on a question with no other event
+    S.rescues = [];
+    if (S.nTeams > 1) {
+      for (let b = 0; b < S.deck.length; b += 6) {
+        const cand = [];
+        for (let i = Math.max(b + 1, 3); i <= Math.min(b + 5, S.deck.length - 1); i++)
+          if (!S.challenges.includes(i) && !S.raids.includes(i) && !S.duels.includes(i)) cand.push(i);
+        if (cand.length) S.rescues.push(cand[Math.floor(Math.random() * cand.length)]);
+      }
+    }
+    S.duel = null;
+    S.teams = Array.from({ length: S.nTeams }, (_, i) => ({ name: S.names[i], score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [] }));
+    S.idx = 0; S.answered = null; S.victim = null; S.phase = "play";
+    S.timeUp = false;
+    beep("tick");
+    renderPlay();
+  }
+
+  function teamsStrip() {
+    return `<div class="teams">${S.teams.map((t, i) => `<div class="team ${S.phase === "play" && i === S.idx % S.teams.length ? "active" : ""} ${S.phase === "play" && isRaid() && i === S.victim ? "target" : ""}" id="team${i}" style="--pc:${pc(i)}">
+      <span class="name">${esc(t.name)}</span>
+      <span class="score">${NUG}<span>${t.score}</span></span>
+      <span class="meta">${t.ok} / ${t.tot} bonnes réponses</span></div>`).join("")}</div>`;
+  }
+
+  function renderPlay(showIntro) {
+    stopTimer();
+    if (!S.answered) { S.victim = (S.raids || []).includes(S.idx) ? leaderIdx() : null; S.filonLot = 4; S.filonOn = true; }
+    if (!S.answered && !S.duel && (S.duels || []).includes(S.idx) && S.teams.length > 1) S.duel = makeDuel();
+    if (!S.answered && !S.duel && (S.rescues || []).includes(S.idx) && S.teams.length > 1) S.duel = makeRescue();
+    if (!S.answered && !S.duel && !isRaid() && S.idx >= 2 && !(S.filonRolled = S.filonRolled || {})[S.idx]) {
+      S.filonRolled[S.idx] = true;
+      if (Math.random() < filonChance(S.idx % S.teams.length)) S.challenges.push(S.idx);
+    }
+    if (S.duel) return renderDuel();
+    if (!S.answered && isFilon() && !(S.filonPicked || {})[S.idx]) pickFilonQuestion();
+    const q = S.deck[S.idx], ch = isChallenge(), t = curTeam(), done = S.answered;
+    const n = String(q).padStart(3, "0");
+    app.innerHTML = header(`<button class="iconbtn" id="quit">Terminer la partie</button>`) + teamsStrip() + `
+      <div class="play">
+        <div class="board player" style="--pc:${pc(S.idx % S.teams.length)}">${isRaid() ? '<span class="ribbon raid">Chapardage</span>' : ch ? '<span class="ribbon filon">Filon</span>' : ""}
+          <img data-q="${q}" alt="Question ${q} : énoncé, figure et réponses a, b, c, d" width="1200" height="1050">
+        </div>
+        <div class="side">
+          <div class="panel">
+            <div class="turn" style="--pc:${pc(S.idx % S.teams.length)}">À toi de creuser<strong><span class="dot"></span>${esc(t.name)}</strong></div>
+            <div class="progress">Question ${S.idx + 1} sur ${S.deck.length}</div>
+            <div class="stake">En jeu : <span class="nugs">${nugs(done && done.k != null ? done.k : stakeOf())}</span> ${done && done.k != null ? done.k : stakeOf()} pépite${(done && done.k != null ? done.k : stakeOf()) > 1 ? "s" : ""}${isRaid() ? ` à chaparder à ${esc(victim().name)}` : ""}</div>
+            ${isRaid() ? `<div class="feedback ko" style="font-size:16px">Le shérif veille ! Si tu te trompes, tu paies 1 pépite d'amende à ${esc(victim().name)}.</div><div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${ETIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>` : ch ? `<div class="timer" id="timer"><div class="row"><span>Temps restant · coopération !</span><span class="secs" id="secs">${S.filonLot || 4} pépite${(S.filonLot || 4) > 1 ? "s" : ""}</span></div><div class="bar"><i id="barfill"></i></div></div><div class="feedback ok" style="font-size:16px">Tu as le droit de demander de l'aide !</div>` : done ? "" : `<div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${QTIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>`}
+            <div class="answers">${["a", "b", "c", "d"].map(l => `<button class="ans" data-l="${l}" ${done ? "disabled" : ""}>${l.toUpperCase()}</button>`).join("")}</div>
+            <div id="fb"></div>
+          </div>
+        </div>
+      </div>`;
+    app.querySelectorAll(".ans").forEach(b => b.onclick = () => answer(b.dataset.l, b));
+    document.getElementById("quit").onclick = () => { stopTimer(); S.phase = "end"; renderEnd(); };
+    bindSound();
+    if (done) showFeedback(done.choice, false);
+    else if (ch) showChallengeIntro();
+    else startCountdown(QTIME);
+  }
+
+  function showChallengeIntro() {
+    beep("ch");
+    const ov = document.createElement("div");
+    ov.className = "overlay";
+    const k = stakeOf();
+    const body = isRaid()
+      ? `<div class="title" style="color:var(--bad)">Chapardage !</div>
+      <p>${esc(curTeam().name)}, réponds juste en <strong>${ETIME} secondes</strong> pour chaparder ${k} pépite${k > 1 ? "s" : ""} à <strong>${esc(victim().name)}</strong>, le plus riche de la mine.</p>
+      <p>Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu paies 1 pépite d'amende à ${esc(victim().name)} !</p>
+      <p style="color:var(--gold);font-size:28px;display:flex;gap:4px;align-items:center">${nugs(k)} <span style="margin-left:8px">${k} pépite${k > 1 ? "s" : ""} à chaparder</span></p>`
+      : `<div class="title filon">Vous êtes tombés sur un filon !</div>
+      <p>${esc(curTeam().name)}, tu as <strong>40 secondes</strong> pour trouver la bonne réponse. Si tu réussis, tu gagnes <strong>4 pépites</strong> et <strong>tous les autres chercheurs gagnent 1 pépite</strong>. Toute la classe a intérêt à t'aider !</p>
+      <p>${S.filonFromMissed ? "C'est une question que tu n'as pas réussie, avec d'autres valeurs : retente ta chance ! " : ""}<strong>Tu as le droit de demander de l'aide !</strong></p>
+      <p style="color:var(--gold);font-size:28px;display:flex;gap:4px;align-items:center">${nugs(4)} <span style="margin-left:8px">4 pépites, +1 pour chacun des autres</span></p>`;
+    ov.innerHTML = `<div class="box">${body}
+      <button class="primary" id="ready">C'est parti !</button></div>`;
+    document.body.appendChild(ov);
+    const go = () => { ov.remove(); startTimer(); };
+    document.getElementById("ready").onclick = go;
+    document.getElementById("ready").focus();
+  }
+
+  // filon: no time limit, the jackpot drops from 4 to 1 nugget, one step every 10 s
+  // filon question: one the player missed earlier (its twin, other values), else a random new one
+  function pickFilonQuestion() {
+    const t = curTeam();
+    const solved = new Set(t.solved || []);
+    const missed = [...new Set(t.failed || [])].filter(n => !solved.has(n) && !solved.has(twin(n)));
+    let q;
+    if (missed.length) q = twin(pick(missed)); // a question the player missed, with other values
+    else {
+      const used = new Set(S.deck);
+      const inSeries = n => S.series === "AB" || (S.series === "B" ? n > HALF : n <= HALF);
+      const pool = QS.filter(([n, th]) => S.themes[th] && inSeries(n) && !used.has(n)).map(x => x[0]);
+      q = pool.length ? pick(pool) : S.deck[S.idx];
+    }
+    S.filonFromMissed = missed.length > 0;
+    S.deck[S.idx] = q;
+    (S.filonPicked = S.filonPicked || {})[S.idx] = true;
+  }
+
+  function startFilon() {
+    const STEP = 10000, t0 = performance.now();
+    const secsEl = document.getElementById("secs"), fill = document.getElementById("barfill");
+    S.filonLot = 4;
+    timer = setInterval(() => {
+      const el = performance.now() - t0;
+      // filon: 40 s, fixed 4 nuggets (+1 for every other player)
+      if (el >= 40000) { stopTimer(); answer(null); return; }
+      const left = Math.ceil((40000 - el) / 1000);
+      secsEl.textContent = left + " s";
+      fill.style.width = ((1 - el / 40000) * 100) + "%";
+    }, 100);
+  }
+
+  function startTimer() {
+    if (!isRaid()) return startFilon();
+    return startCountdown(ETIME); // chapardage: 20 s, and the sheriff fines a wrong answer
+    const D = chSecs();
+    deadline = performance.now() + D * 1000;
+    const secsEl = document.getElementById("secs"), fill = document.getElementById("barfill"), box = document.getElementById("timer");
+    let lastSec = D;
+    timer = setInterval(() => {
+      const left = Math.max(0, deadline - performance.now());
+      const s = Math.ceil(left / 1000);
+      secsEl.textContent = s + " s";
+      fill.style.width = (left / (D * 1000) * 100) + "%";
+      box.classList.toggle("low", s <= 5);
+      if (s !== lastSec && s <= 5 && s > 0) beep("tick");
+      lastSec = s;
+      if (left <= 0) { stopTimer(); answer(null); }
+    }, 100);
+  }
+  // normal questions: 30 s, then the answer counts as wrong
+  const QTIME = 30, ETIME = 20, DTIME = 10, RTIME = 30; // normal questions / chapardage / castagne
+  function startCountdown(D, onEnd, quiet) {
+    stopTimer();
+    const end = performance.now() + D * 1000;
+    const secsEl = document.getElementById("secs"), fill = document.getElementById("barfill"), box = document.getElementById("timer");
+    if (!secsEl) return;
+    let lastSec = D;
+    timer = setInterval(() => {
+      const left = Math.max(0, end - performance.now());
+      const s = Math.ceil(left / 1000);
+      secsEl.textContent = s + " s";
+      fill.style.width = (left / (D * 1000) * 100) + "%";
+      box.classList.toggle("low", s <= 5);
+      if (!quiet && s !== lastSec && s <= 5 && s > 0) beep("tick");
+      lastSec = s;
+      if (left <= 0) { stopTimer(); onEnd ? onEnd() : answer(null); }
+    }, 100);
+  }
+  function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+
+  function answer(l) {
+    if (S.answered) return;
+    stopTimer();
+    const q = S.deck[S.idx], right = ANSWER[q], t = curTeam();
+    const ok = l === right;
+    t.tot++;
+    const k = stakeOf();
+    if (ok) {
+      t.score += k; t.ok++; (t.solved = t.solved || []).push(q);
+      if (isRaid()) { victim().score -= k; t.vols = (t.vols || 0) + 1; }
+      else if (isFilon()) { t.ch++; S.teams.forEach(o => { if (o !== t) o.score += 1; }); }
+    }
+    if (!ok) (t.failed = t.failed || []).push(q);
+    let fine = 0;
+    if (!ok && isRaid() && t.score > 0) { fine = 1; t.score -= 1; victim().score += 1; }
+    S.answered = { choice: l, ok, k, fine };
+    app.querySelectorAll(".ans").forEach(b => b.disabled = true);
+    showFeedback(l, true);
+  }
+
+  function showFeedback(l, animate) {
+    const q = S.deck[S.idx], right = ANSWER[q], t = curTeam(), ok = l === right;
+    const k = S.answered && S.answered.k != null ? S.answered.k : stakeOf();
+    app.querySelectorAll(".ans").forEach(b => {
+      if (b.dataset.l === right) b.classList.add("right");
+      else if (b.dataset.l === l) b.classList.add("wrong");
+    });
+    const last = S.timeUp || S.idx === S.deck.length - 1;
+    const msg = ok && isRaid() ? `Coup réussi ! ${esc(t.name)} chaparde ${k} pépite${k > 1 ? "s" : ""} à ${esc(victim().name)}.`
+      : !ok && isRaid() ? (S.answered && S.answered.fine ? `Pris la main dans le sac ! La bonne réponse était ${right.toUpperCase()}. ${esc(t.name)} paie 1 pépite d'amende à ${esc(victim().name)}.` : `Pris la main dans le sac ! La bonne réponse était ${right.toUpperCase()}. ${esc(t.name)} n'a pas de pépite pour payer l'amende.`)
+      : ok && isFilon() ? `Filon exploité ! +${k} pépites pour ${esc(t.name)}${S.teams.length > 1 ? " et +1 pépite pour tous les autres chercheurs" : ""}.`
+      : ok ? `Bien joué ! +${k} pépite${k > 1 ? "s" : ""} pour ${esc(t.name)}.`
+      : (l === null ? `Temps écoulé ! La bonne réponse était ${right.toUpperCase()}.` : `Raté ! La bonne réponse était ${right.toUpperCase()}.`);
+    document.getElementById("fb").innerHTML = `<div class="feedback ${ok ? "ok" : "ko"}">${msg}</div>
+      <button class="primary" id="next" style="margin-top:10px;width:100%">${last ? "Voir le classement" : "Question suivante"}</button>`;
+    const nx = document.getElementById("next");
+    nx.onclick = next; nx.focus();
+    // refresh scores in place
+    const ti = S.idx % S.teams.length, card = document.getElementById("team" + ti);
+    card.querySelector(".score span").textContent = t.score;
+    card.querySelector(".meta").textContent = `${t.ok} / ${t.tot} bonnes réponses`;
+    const vcard = isRaid() ? document.getElementById("team" + S.victim) : null;
+    if (vcard) vcard.querySelector(".score span").textContent = victim().score;
+    if (ok && isFilon()) S.teams.forEach((o, i) => { const c = document.getElementById("team" + i); if (c) c.querySelector(".score span").textContent = o.score; });
+    if (animate) {
+      beep(ok ? "ok" : "ko");
+      if (!ok && vcard && S.answered && S.answered.fine) flyNuggets(1, vcard, card);
+      if (ok) { flyNuggets(k, card, ok ? vcard : null); setTimeout(() => { card.classList.remove("bump"); void card.offsetWidth; card.classList.add("bump"); }, 850); }
+    }
+  }
+
+  function flyNuggets(n, target, from) {
+    const src = (from ? from.querySelector(".score") : document.querySelector(".ans.right")).getBoundingClientRect();
+    const dst = target.querySelector(".score").getBoundingClientRect();
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement("div");
+      el.className = "fly";
+      el.innerHTML = '<svg width="34" height="34"><use href="#nugget"/></svg>';
+      el.style.left = (src.left + src.width / 2 - 17 + (i - (n - 1) / 2) * 26) + "px";
+      el.style.top = (src.top + src.height / 2 - 17) + "px";
+      document.body.appendChild(el);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.transitionDelay = (i * 0.12) + "s";
+        el.style.transform = `translate(${dst.left - parseFloat(el.style.left)}px, ${dst.top - parseFloat(el.style.top)}px) scale(.6) rotate(${200 + i * 40}deg)`;
+        el.style.opacity = "0.2";
+      }));
+      setTimeout(() => el.remove(), 1400 + i * 120);
+    }
+  }
+
+  /* ---------- Game clock ---------- */
+  let clock = null;
+  function clockText() {
+    const left = Math.max(0, Math.ceil((S.endAt - Date.now()) / 1000));
+    return Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+  }
+  function startClock() {
+    if (clock) clearInterval(clock);
+    clock = setInterval(() => {
+      if (S.phase !== "play") { clearInterval(clock); clock = null; return; }
+      const el = document.getElementById("gclock");
+      if (Date.now() >= S.endAt && !S.timeUp) {
+        S.timeUp = true;
+        beep("ch");
+        const nx = document.getElementById("next");
+        if (nx) nx.textContent = "Voir le classement";
+      }
+      if (el) el.textContent = S.timeUp ? "0:00 — dernière question !" : clockText();
+    }, 500);
+  }
+
+  /* ---------- Castagne (duel) ---------- */
+  const themeLabel = id => (THEMES.find(t => t.id === id) || {}).label || "";
+  // each duelist gets a question they already solved, with other values (its twin in the other series)
+  const twin = n => n > HALF ? n - HALF : n + HALF;
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  function makeDuel() {
+    const me = S.idx % S.teams.length;
+    const solvedIn = (i, th) => [...new Set(S.teams[i].solved || [])].filter(n => THEME_OF[n] === th);
+    const options = [];
+    S.teams.forEach((_, opp) => {
+      if (opp === me) return;
+      THEMES.forEach(({ id }) => {
+        if (solvedIn(me, id).length && solvedIn(opp, id).length) options.push([opp, id]);
+      });
+    });
+    if (!options.length) return null; // nobody can duel yet: normal question instead
+    const [opp, th] = pick(options);
+    const q1 = twin(pick(solvedIn(me, th))), q2 = twin(pick(solvedIn(opp, th)));
+    return { me, opp, q1, q2, th, step: 1, a1: null, a2: null, intro: false, done: false };
+  }
+
+  // sauvetage: each player gets a question they missed (other values), and they may help each other
+  function makeRescue() {
+    const me = S.idx % S.teams.length;
+    const missedOf = i => {
+      const t = S.teams[i], sv = new Set(t.solved || []);
+      return [...new Set(t.failed || [])].filter(n => !sv.has(n) && !sv.has(twin(n)));
+    };
+    const mine = missedOf(me);
+    if (!mine.length) return null;
+    const partners = S.teams.map((_, i) => i).filter(i => i !== me && missedOf(i).length);
+    if (!partners.length) return null; // nobody to team up with: normal question instead
+    const opp = pick(partners);
+    const q1 = twin(pick(mine));
+    let other = missedOf(opp).map(twin).filter(n => n !== q1);
+    if (!other.length) other = missedOf(opp).map(twin);
+    return { kind: "rescue", me, opp, q1, q2: pick(other), th: null, step: 1, a1: null, a2: null, intro: false, done: false };
+  }
+
+  function renderDuel() {
+    stopTimer();
+    const d = S.duel;
+    const pIdx = d.step === 1 ? d.me : d.opp;
+    const p = S.teams[pIdx], q = d.step === 1 ? d.q1 : d.q2;
+    const ans = d.step === 1 ? d.a1 : d.a2;
+    const n = String(q).padStart(3, "0");
+    const R = d.kind === "rescue";
+    app.innerHTML = header(`<button class="iconbtn" id="quit">Terminer la partie</button>`) + teamsStrip() + `
+      <div class="play">
+        <div class="board player" style="--pc:${pc(pIdx)}">${R ? '<span class="ribbon rescue">Sauvetage</span>' : `<span class="ribbon duel">Castagne · ${esc(themeLabel(d.th))}</span>`}
+          <img data-q="${q}" alt="Question de castagne : énoncé, figure et réponses a, b, c, d" width="1200" height="1050">
+        </div>
+        <div class="side">
+          <div class="panel">
+            <div class="turn" style="--pc:${pc(pIdx)}">${R ? "Sauvetage : à toi de répondre" : "Castagne : à toi de jouer"}<strong><span class="dot"></span>${esc(p.name)}</strong></div>
+            <div class="duelbox"><span class="who ${d.step === 1 ? "now" : ""}" style="--pc:${pc(d.me)}">${esc(S.teams[d.me].name)}</span><span class="vs">${R ? "avec" : "contre"}</span><span class="who ${d.step === 2 ? "now" : ""}" style="--pc:${pc(d.opp)}">${esc(S.teams[d.opp].name)}</span></div>
+            <div class="progress">Question ${S.idx + 1} sur ${S.deck.length} · ${R ? "sauvetage" : "duel"} ${d.step} / 2</div>
+            <div class="stake">En jeu : <span class="nugs">${nugs(2)}</span> ${R ? "jusqu'à 2 pépites chacun" : "2 pépites"}</div>
+            ${R && !ans ? '<div class="feedback ok" style="font-size:16px">Vous avez le droit de vous entraider !</div>' : ""}
+            ${ans || R ? "" : '<div class="draw" id="draw" aria-live="assertive"></div>'}
+            ${ans ? "" : `<div class="timer" id="timer" style="visibility:hidden"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${R ? RTIME : DTIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>`}
+            <div class="answers" id="duelAns" style="${ans || R ? "" : "visibility:hidden"}">${["a", "b", "c", "d"].map(l => `<button class="ans" data-l="${l}" disabled>${l.toUpperCase()}</button>`).join("")}</div>
+            <div id="fb"></div>
+          </div>
+        </div>
+      </div>`;
+    document.querySelectorAll(".team").forEach((el, i) => {
+      el.classList.toggle("active", i === pIdx);
+      el.classList.toggle("duelist", i === d.me || i === d.opp);
+    });
+    app.querySelectorAll(".ans").forEach(b => b.onclick = () => answerDuel(b.dataset.l));
+    document.getElementById("quit").onclick = () => { S.phase = "end"; renderEnd(); };
+    bindSound();
+    if (ans) duelFeedback(false);
+    else if (d.intro) startDraw();
+    if (!ans && !d.intro) {
+      d.intro = true;
+      beep("ch");
+      const ov = document.createElement("div");
+      ov.className = "overlay";
+      ov.innerHTML = R ? `<div class="box"><div class="title" style="color:var(--ok)">Sauvetage !</div>
+        <p><strong>${esc(S.teams[d.me].name)}</strong> et <strong>${esc(S.teams[d.opp].name)}</strong> font équipe. Chacun reçoit une question qu'il a ratée, avec d'autres valeurs. <strong>Vous avez le droit de vous entraider !</strong></p>
+        <p style="font-size:17px;color:var(--muted)">Chacun a ${RTIME} secondes. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. Aucune : pas de pépite.</p>
+        <button class="primary" id="ready">Commencer le sauvetage</button></div>` : `<div class="box"><div class="title" style="color:#ff8a3d">Castagne !</div>
+        <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong>. Chacun reçoit une question de ${esc(themeLabel(d.th).toLowerCase())} qu'il a déjà réussie, mais avec d'autres valeurs.</p>
+        <p style="font-size:17px;color:var(--muted)">Chacun a ${DTIME} secondes, mais les boutons de réponse n'apparaissent qu'à la fin, pendant « 3, 2, 1, Dégaine ! » : prépare ta réponse ! Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
+        <button class="primary" id="ready">Commencer le duel</button></div>`;
+      document.body.appendChild(ov);
+      document.getElementById("ready").onclick = () => { ov.remove(); startDraw(); };
+      document.getElementById("ready").focus();
+    }
+  }
+
+  // "3, 2, 1, Dégaine !" (4 s) before the answer buttons appear, for each duelist
+  let drawTimers = [];
+  function startDraw() {
+    drawTimers.forEach(clearTimeout); drawTimers = [];
+    const box = document.getElementById("draw"), ansBox = document.getElementById("duelAns");
+    if (S.duel && S.duel.kind === "rescue" && ansBox) {
+      const tb0 = document.getElementById("timer");
+      if (tb0) tb0.style.visibility = "visible";
+      ansBox.querySelectorAll(".ans").forEach(b => { b.disabled = false; });
+      startCountdown(RTIME, () => answerDuel(null));
+      return;
+    }
+    if (!box || !ansBox) return;
+    // the 15 s timer runs from the start; the answer buttons only show during
+    // its last 4 seconds, while "3, 2, 1, Dégaine !" counts down
+    const tb = document.getElementById("timer");
+    if (tb) tb.style.visibility = "visible";
+    startCountdown(DTIME, () => answerDuel(null), true);
+    const open = (DTIME - 4) * 1000;
+    ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawTimers.push(setTimeout(() => {
+      if (!box.isConnected) return;
+      box.textContent = txt;
+      box.classList.toggle("go", i === 3);
+      beep(i === 3 ? "ch" : "tick");
+      if (i === 0) {
+        ansBox.style.visibility = "visible";
+        ansBox.querySelectorAll(".ans").forEach(b => { b.disabled = false; });
+      }
+    }, open + i * 1000)));
+  }
+
+  function answerDuel(l) {
+    stopTimer();
+    drawTimers.forEach(clearTimeout); drawTimers = [];
+    const dbox = document.getElementById("draw"); if (dbox) dbox.textContent = "";
+    const d = S.duel;
+    if ((d.step === 1 && d.a1) || (d.step === 2 && d.a2)) return;
+    const q = d.step === 1 ? d.q1 : d.q2;
+    const res = { choice: l, ok: l === ANSWER[q] };
+    const p = S.teams[d.step === 1 ? d.me : d.opp];
+    p.tot++; if (res.ok) { p.ok++; (p.solved = p.solved || []).push(q); } else (p.failed = p.failed || []).push(q);
+    if (d.step === 1) d.a1 = res; else d.a2 = res;
+    if (d.step === 2) {
+      const A = S.teams[d.me], B = S.teams[d.opp];
+      if (d.kind === "rescue") {
+        const nOk = (d.a1.ok ? 1 : 0) + (d.a2.ok ? 1 : 0), g = nOk === 2 ? 2 : nOk;
+        A.score += g; B.score += g; d.gain = [g, g];
+        if (g) { A.saves = (A.saves || 0) + 1; B.saves = (B.saves || 0) + 1; }
+      }
+      else if (d.a1.ok && d.a2.ok) { A.score += 1; B.score += 1; d.gain = [1, 1]; }
+      else if (d.a1.ok) { A.score += 2; A.duels = (A.duels || 0) + 1; d.gain = [2, 0]; }
+      else if (d.a2.ok) { B.score += 2; B.duels = (B.duels || 0) + 1; d.gain = [0, 2]; }
+      else d.gain = [0, 0];
+      d.done = true;
+      S.answered = { choice: l, ok: res.ok, k: 0 };
+    }
+    app.querySelectorAll(".ans").forEach(b => b.disabled = true);
+    duelFeedback(true);
+  }
+
+  function duelFeedback(animate) {
+    const d = S.duel;
+    const q = d.step === 1 ? d.q1 : d.q2, res = d.step === 1 ? d.a1 : d.a2;
+    const right = ANSWER[q];
+    app.querySelectorAll(".ans").forEach(b => {
+      if (b.dataset.l === right) b.classList.add("right");
+      else if (b.dataset.l === res.choice) b.classList.add("wrong");
+    });
+    const A = S.teams[d.me], B = S.teams[d.opp];
+    let msg, cls = res.ok ? "ok" : "ko", btn;
+    const verdict = res.ok ? "Bonne réponse !" : res.choice === null ? `Temps écoulé ! La bonne réponse était ${right.toUpperCase()}.` : `Raté ! La bonne réponse était ${right.toUpperCase()}.`;
+    if (d.step === 1) {
+      msg = verdict;
+      btn = `Au tour de ${esc(B.name)}`;
+    } else {
+      const [ga, gb] = d.gain;
+      const sum = d.kind === "rescue" ? (ga === 2 ? `Deux bonnes réponses : 2 pépites chacun !` : ga === 1 ? `Une bonne réponse : 1 pépite chacun.` : `Aucune bonne réponse : pas de pépite.`)
+        : ga && gb ? `Les deux ont juste : 1 pépite chacun.`
+        : ga ? `${esc(A.name)} remporte la castagne et gagne 2 pépites !`
+        : gb ? `${esc(B.name)} remporte la castagne et gagne 2 pépites !`
+        : `Les deux ont faux : personne ne gagne de pépite.`;
+      msg = `${verdict} ${sum}`;
+      cls = ga || gb ? "ok" : "ko";
+      btn = S.timeUp || S.idx === S.deck.length - 1 ? "Voir le classement" : "Question suivante";
+    }
+    document.getElementById("fb").innerHTML = `<div class="feedback ${cls}">${msg}</div>
+      <button class="primary" id="next" style="margin-top:10px;width:100%">${btn}</button>`;
+    const nx = document.getElementById("next");
+    nx.focus();
+    nx.onclick = d.step === 1 ? () => { d.step = 2; renderDuel(); } : next;
+    if (d.step === 2) {
+      [d.me, d.opp].forEach((i, j) => {
+        const card = document.getElementById("team" + i);
+        card.querySelector(".score span").textContent = S.teams[i].score;
+        card.querySelector(".meta").textContent = `${S.teams[i].ok} / ${S.teams[i].tot} bonnes réponses`;
+        if (animate && d.gain[j]) {
+          const from = document.querySelector(".ans.right");
+          if (from) flyNuggets(d.gain[j], card);
+          setTimeout(() => { card.classList.remove("bump"); void card.offsetWidth; card.classList.add("bump"); }, 850);
+        }
+      });
+      if (animate) beep(d.gain[0] || d.gain[1] ? "ok" : "ko");
+    } else {
+      const card = document.getElementById("team" + d.me);
+      card.querySelector(".meta").textContent = `${A.ok} / ${A.tot} bonnes réponses`;
+      if (animate) beep(res.ok ? "ok" : "ko");
+    }
+  }
+
+  function next() {
+    if (S.timeUp || S.idx >= S.deck.length - 1) { S.phase = "end"; renderEnd(); return; }
+    S.idx++; S.answered = null; S.duel = null;
+    renderPlay();
+  }
+
+  function renderEnd() {
+    stopTimer();
+    if (clock) { clearInterval(clock); clock = null; }
+    document.querySelectorAll(".overlay").forEach(o => o.remove());
+    const ranked = S.teams.map(t => t).sort((a, b) => b.score - a.score || b.ok - a.ok);
+    let pos = 0, prev = null;
+    const rows = ranked.map((t, i) => {
+      if (prev === null || t.score !== prev) pos = i + 1;
+      prev = t.score;
+      return `<div class="rank ${pos === 1 ? "first" : ""}"><span class="pos">${pos}</span>
+        <div style="min-width:0;--pc:${pc(S.teams.indexOf(t))}"><div class="nm">${esc(t.name)}</div><div class="det">${t.ok} bonne${t.ok > 1 ? "s" : ""} réponse${t.ok > 1 ? "s" : ""} sur ${t.tot} · ${t.ch} filon${t.ch > 1 ? "s" : ""} exploité${t.ch > 1 ? "s" : ""} · ${t.vols || 0} chapardage${(t.vols || 0) > 1 ? "s" : ""} réussi${(t.vols || 0) > 1 ? "s" : ""} · ${t.duels || 0} castagne${(t.duels || 0) > 1 ? "s" : ""} gagnée${(t.duels || 0) > 1 ? "s" : ""} · ${t.saves || 0} sauvetage${(t.saves || 0) > 1 ? "s" : ""} réussi${(t.saves || 0) > 1 ? "s" : ""}</div></div>
+        <span class="pts">${NUG}${t.score}</span></div>`;
+    }).join("");
+    const best = ranked[0];
+    app.innerHTML = header() + `
+      <section class="panel" style="gap:16px">
+        <h2 style="font-family:var(--f-display);font-weight:400;color:var(--gold);margin:0;font-size:clamp(26px,5vw,40px);text-wrap:balance">${S.teams.length > 1 ? `${esc(best.name)} remporte la ruée vers l'or !` : `Tu as récolté ${best.score} pépite${best.score > 1 ? "s" : ""} !`}</h2>
+        <div class="podium">${rows}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="primary" id="again">Rejouer avec les mêmes joueurs</button>
+          <button class="ghost" id="setup">Changer les réglages</button>
+        </div>
+      </section>`;
+    document.getElementById("again").onclick = start;
+    document.getElementById("setup").onclick = () => { S.phase = "setup"; renderSetup(); };
+    bindSound();
+    if (best && best.score > 0) beep("ok");
+  }
+
+  function bindSound() {
+    const b = document.getElementById("snd");
+    if (b) b.onclick = () => { S.sound = !S.sound; b.textContent = S.sound ? "Son : activé" : "Son : coupé"; b.setAttribute("aria-pressed", S.sound); };
+  }
+
+  document.addEventListener("keydown", e => {
+    if (S.phase !== "play" || e.target.tagName === "INPUT") return;
+    const k = e.key.toLowerCase();
+    if (document.querySelector(".overlay")) { if (k === "enter" || k === " ") { e.preventDefault(); document.getElementById("ready").click(); } return; }
+    const l = ["1", "2", "3", "4"].includes(k) ? "abcd"[+k - 1] : k;
+    const btn = document.querySelector(`.ans[data-l="${l}"]`);
+    if (["a", "b", "c", "d"].includes(l) && btn && !btn.disabled) btn.click();
+    else if (k === "enter") { const nx = document.getElementById("next"); if (nx) { e.preventDefault(); nx.click(); } }
+  });
+
+  function boot() {
+    if (S.phase === "play" && S.deck.length) renderPlay();
+    else if (S.phase === "end" && S.teams.length) renderEnd();
+    else { S.phase = "setup"; renderSetup(); }
+  }
+  boot();
+  // question images are packed by 10 into packs/<level>_<k>.js, loaded on demand
+  const packWait = {};
+  function loadPack(key) {
+    if ((window.IMGPACK || {})[key]) return Promise.resolve();
+    if (!packWait[key]) packWait[key] = new Promise((ok, ko) => {
+      const sc = document.createElement("script");
+      sc.src = "packs/" + key + ".js"; sc.onload = ok;
+      sc.onerror = () => { delete packWait[key]; ko(); };
+      document.head.appendChild(sc);
+    });
+    return packWait[key];
+  }
+  const packOf = q => IMG + "_" + Math.floor((q - 1) / 10);
+  function fillImgs() {
+    document.querySelectorAll("img[data-q]:not([src])").forEach(im => {
+      const q = +im.dataset.q, key = packOf(q);
+      im.setAttribute("src", "data:image/gif;base64,R0lGODlhAQABAAAAACw=");
+      loadPack(key).then(() => { im.src = window.IMGPACK[key][q]; }).catch(() => im.removeAttribute("src"));
+    });
+    // fetch ahead the next question of the deck
+    try { const nx = S.deck && S.deck[S.idx + 1]; if (nx) loadPack(packOf(nx)).catch(() => {}); } catch (e) {}
+  }
+  new MutationObserver(fillImgs).observe(document.body, { childList: true, subtree: true });
+  fillImgs();
+
+})();
+
+</script>
+
+</body>
+</html>
