@@ -265,6 +265,16 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 .joinbox input { background: #120d09; color: var(--ink); border: 1px solid var(--plank-hi); border-radius: 8px; padding: 12px; font-size: 20px; font-family: inherit; width: 100%; }
 #jc { font-family: var(--f-display); letter-spacing: 8px; text-transform: uppercase; font-size: 30px; text-align: center; }
 .rank .nm { min-width: 0; }
+.fbar { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 25; width: min(560px, calc(100vw - 24px)); background: linear-gradient(110deg, #3a2a0c, #5a400f); border: 2px solid var(--gold); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 0 24px #f1b52e66, 0 10px 30px #000c; animation: drop .4s; }
+body.hasfbar { padding-bottom: 170px; }
+.fbar .fmsg { color: var(--ore); font-size: 16px; line-height: 1.35; }
+.fbar .fmsg strong { color: var(--gold); }
+.fbar .fbtns { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.fbar .primary { padding: 10px 12px; font-size: 17px; }
+.overlay.fo { z-index: 35; place-items: start center; overflow-y: auto; }
+.fobox { width: min(560px, 100%); display: flex; flex-direction: column; gap: 10px; text-align: center; }
+.fobox .board img { max-height: 55vh; }
+.fobox .ghost, .fobox .primary { width: 100%; }
 @media (max-width: 600px) { .mebar .sc { font-size: 20px; } .mebar .nm { font-size: 15px; } .codebig { letter-spacing: 4px; } }
 </style>
 <div class="wrap" id="app"></div>

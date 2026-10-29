@@ -53,7 +53,7 @@
       <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous !</span></div>
       <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites, chacun sur son téléphone.</span></div>
       <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche.</span></div>
-      <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : si la réponse est correcte, le joueur gagne 4 pépites et tous les autres 1 pépite : coopérez !</span></div>
+      <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : le joueur gagne 4 pépites s'il répond juste. Les autres peuvent tenter la même question : 1 pépite pour ceux qui trouvent, si le joueur du filon trouve aussi.</span></div>
     </div>`;
   }
 
@@ -176,6 +176,9 @@
         q: null, res: p.res, done: false, started: p.k > 0 || !!p.cur || !!p.res };
       if (p.cur) v.q = { id: p.cur.id, n: p.cur.q, kind: p.cur.kind, time: p.cur.time, partner: p.cur.partner || null, th: p.cur.thLabel || null, victim: p.cur.victimName || null, num: p.cur.num || null, stake: p.cur.stake };
       v.done = H.phase === "play" && !p.cur && !p.pending && p.k >= nOf(p);
+      // filons of other players that this one may still try
+      v.filons = H.phase !== "play" ? [] : Object.values(H.filons || {}).filter(f => f.open && f.a !== p.pid && H.players[f.a])
+        .map(f => ({ id: f.id, from: H.players[f.a].name, n: f.q, tried: f.tries[p.pid] !== undefined }));
       if (H.phase === "end") v.ranking = sorted().map(o => ({ name: o.name, color: o.color, score: o.score, rank: rankOf(o) }));
       return v;
     }
@@ -206,7 +209,15 @@
       }
       const p = c._pid && H.players[c._pid];
       if (!p) return;
-      if (m.t === "next") nextFor(p);
+      if (m.t === "ftry") {
+        const f = (H.filons || {})[m.id];
+        if (f && f.open && f.a !== p.pid && f.tries[p.pid] === undefined) {
+          f.tries[p.pid] = ["a", "b", "c", "d"].includes(m.l) ? m.l : null;
+          save();
+        }
+        push(p.pid); render();
+      }
+      else if (m.t === "next") nextFor(p);
       else if (m.t === "ans") answerFor(p, m.id, m.l);
     }
 
@@ -267,7 +278,10 @@
       let q;
       if (missed.length) q = L.twin(pick(missed));
       else { const used = new Set(p.deck); const pl = pool().filter(n => !used.has(n)); q = pl.length ? pick(pl) : cur.q; }
-      Object.assign(cur, { q, kind: "filon", time: FTIME, stake: 4 });
+      const fid = newId();
+      H.filons = H.filons || {};
+      H.filons[fid] = { id: fid, a: p.pid, q, tries: {}, open: true };
+      Object.assign(cur, { q, kind: "filon", time: FTIME, stake: 4, filon: fid });
     }
 
     function nextFor(p) {
@@ -294,7 +308,7 @@
       if (cur.kind === "raid") feed(`${p.name} tente un chapardage sur ${cur.victimName}…`, "raid");
       if (cur.kind === "filon") feed(`${p.name} a trouvé un filon !`, "filon");
       p.cur = cur;
-      save(); push(p.pid); render();
+      save(); if (cur.kind === "filon") pushAll(); else push(p.pid); render();
     }
 
     function answerFor(p, id, l) {
@@ -308,12 +322,16 @@
       const R = right.toUpperCase();
       let text, wait = false, good = ok, changed = false;
       if (c.kind === "filon") {
+        const winners = closeFilon(c.filon, ok);
+        changed = true;
         if (ok) {
-          p.score += 4; p.ch++; changed = true;
-          players().forEach(o => { if (o !== p) { o.score += 1; toast(o.pid, `${p.name} a exploité un filon : +1 pépite pour toi !`); } });
-          feed(`Filon exploité par ${p.name} : +4 pépites, et +1 pour tous les autres !`, "filon");
-          text = players().length > 1 ? "Filon exploité ! +4 pépites pour toi et +1 pour tous les autres." : "Filon exploité ! +4 pépites.";
-        } else text = (l ? "Raté ! " : "Temps écoulé ! ") + `Le filon t'échappe. La bonne réponse était ${R}.`;
+          p.score += 4; p.ch++;
+          feed(`Filon exploité par ${p.name} : +4 pépites${winners.length ? `, et +1 pour ${winners.join(", ")}` : ""} !`, "filon");
+          text = "Filon exploité ! +4 pépites." + (winners.length ? ` ${winners.length} chercheur${winners.length > 1 ? "s ont" : " a"} aussi trouvé : +1 pépite chacun.` : "");
+        } else {
+          feed(`${p.name} a raté son filon.`, "filon");
+          text = (l ? "Raté ! " : "Temps écoulé ! ") + `Le filon t'échappe. La bonne réponse était ${R}.`;
+        }
       } else if (c.kind === "raid") {
         const v = H.players[c.victim];
         if (ok && v) {
@@ -345,6 +363,22 @@
       save();
       if (changed || (lk && lk.done)) pushAll(); else push(p.pid);
       render(); checkAllDone();
+    }
+
+    // close a filon: the others who found the answer get 1 nugget, only if the owner found it too
+    function closeFilon(fid, ownerOk) {
+      const f = (H.filons || {})[fid], winners = [];
+      if (!f || !f.open) return winners;
+      f.open = false;
+      const A = H.players[f.a], right = L.ANSWER[f.q], R = right.toUpperCase(), who = A ? A.name : "le joueur du filon";
+      Object.entries(f.tries).forEach(([pid, l]) => {
+        const o = H.players[pid]; if (!o) return;
+        const okO = l === right;
+        if (okO && ownerOk) { o.score += 1; o.fa = (o.fa || 0) + 1; winners.push(o.name); toast(pid, `Filon de ${who} : vous avez trouvé tous les deux, +1 pépite !`); }
+        else if (okO) toast(pid, `Filon de ${who} : tu avais trouvé (${R}), mais ${who} s'est trompé. Pas de pépite.`);
+        else toast(pid, `Filon de ${who} : raté, la bonne réponse était ${R}. Pas de pépite.`);
+      });
+      return winners;
     }
 
     function resolveLink(lk) {
@@ -387,13 +421,14 @@
       if (!pool().length) { if (err) err.textContent = "Coche au moins un thème."; return; }
       if (!players().length) { if (err) err.textContent = "Attends qu'au moins un élève ait rejoint la partie."; return; }
       H.phase = "play";
-      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null }));
-      H.links = {}; H.feed = []; H.allDoneSaid = false;
+      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null }));
+      H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false;
       feed("La partie commence !");
       save(); pushAll(); render();
     }
     function endGame() {
       Object.values(H.links).forEach(lk => { if (!lk.done) { lk.ra = lk.ra || { ok: false }; lk.rb = lk.rb || { ok: false }; resolveLink(lk); } });
+      Object.keys(H.filons || {}).forEach(fid => closeFilon(fid, false));
       players().forEach(p => { p.cur = null; p.pending = null; });
       H.phase = "end";
       save(); pushAll(); render();
@@ -491,7 +526,7 @@
           <div class="podium">${ps.map(p => { const r = rankOf(p); return `<div class="rank ${r === 1 ? "first" : ""}" style="--pc:${p.color}">
             <span class="pos">${r}</span>
             <span style="min-width:0"><div class="nm">${esc(p.name)}</div>
-              <div class="det">${p.ok} / ${p.tot} bonnes réponses · ${p.ch} filon${p.ch > 1 ? "s" : ""} exploité${p.ch > 1 ? "s" : ""} · ${p.vols} chapardage${p.vols > 1 ? "s" : ""} réussi${p.vols > 1 ? "s" : ""} · ${p.duels} castagne${p.duels > 1 ? "s" : ""} gagnée${p.duels > 1 ? "s" : ""} · ${p.saves} sauvetage${p.saves > 1 ? "s" : ""} réussi${p.saves > 1 ? "s" : ""}</div></span>
+              <div class="det">${p.ok} / ${p.tot} bonnes réponses · ${p.ch} filon${p.ch > 1 ? "s" : ""} exploité${p.ch > 1 ? "s" : ""} · ${p.fa || 0} filon${(p.fa || 0) > 1 ? "s" : ""} partagé${(p.fa || 0) > 1 ? "s" : ""} · ${p.vols} chapardage${p.vols > 1 ? "s" : ""} réussi${p.vols > 1 ? "s" : ""} · ${p.duels} castagne${p.duels > 1 ? "s" : ""} gagnée${p.duels > 1 ? "s" : ""} · ${p.saves} sauvetage${p.saves > 1 ? "s" : ""} réussi${p.saves > 1 ? "s" : ""}</div></span>
             <span class="pts">${p.score} ${NUG}</span></div>`; }).join("")}</div>
           <button class="primary" id="hnew" style="align-self:flex-start">Nouvelle partie</button>
         </section>` + credit;
@@ -581,8 +616,54 @@
       if (m.t === "view") {
         setBanner("");
         if (m.me) store.set(pidKey(), m.me.pid);
-        V = m; joining = false; render();
+        V = m; joining = false; render(); renderFilonOffer();
       } else if (m.t === "toast") toast(m.text);
+    }
+
+    /* ----- other players' filons: a bar to try them, an overlay to answer ----- */
+    let ftry = null; const fskip = {};
+    function busyDuel() { return shown && !shown.answered && shown.q && shown.q.kind === "duel"; }
+    function renderFilonOffer() {
+      const offers = (V && V.phase === "play" && V.filons) || [];
+      // the overlay of a filon that just closed
+      if (ftry && !offers.some(f => f.id === ftry.id)) {
+        const st = $("#fostate");
+        if (st && !ftry.closed) { ftry.closed = true; st.innerHTML = '<div class="feedback">Le filon est terminé : ton résultat arrive en message.</div>'; const b = $("#foans"); if (b) b.querySelectorAll(".ans").forEach(x => { x.disabled = true; }); }
+      }
+      let bar = $("#fbar");
+      const f = offers.find(o => !o.tried && !fskip[o.id] && (!ftry || ftry.id !== o.id));
+      document.body.classList.toggle("hasfbar", !!(f && !ftry && !busyDuel()));
+      if (!f || ftry || busyDuel()) { if (bar) bar.remove(); return; }
+      if (!bar) { bar = document.createElement("div"); bar.id = "fbar"; bar.className = "fbar"; document.body.appendChild(bar); }
+      if (bar.dataset.id === f.id) return;
+      bar.dataset.id = f.id;
+      bar.innerHTML = `<div class="fmsg"><strong>Filon chez ${esc(f.from)} !</strong> Tente sa question : +1 pépite si vous trouvez tous les deux.</div>
+        <div class="fbtns"><button class="primary" id="fgo">Tenter le filon</button><button class="ghost" id="fno">Ignorer</button></div>`;
+      $("#fno").onclick = () => { fskip[f.id] = true; renderFilonOffer(); };
+      $("#fgo").onclick = () => openFilon(f);
+    }
+    function openFilon(f) {
+      const bar = $("#fbar"); if (bar) bar.remove();
+      document.body.classList.remove("hasfbar");
+      ftry = { id: f.id, closed: false };
+      pauseCountdown();
+      const ov = document.createElement("div"); ov.className = "overlay fo"; ov.id = "fov";
+      ov.innerHTML = `<div class="fobox">
+          <div class="title filon" style="font-size:30px">Filon de ${esc(f.from)}</div>
+          <div class="board"><span class="ribbon filon">Filon</span><img id="foimg" alt="Question du filon : énoncé et réponses a, b, c, d" width="1200" height="1050"></div>
+          <div class="answers" id="foans">${["a", "b", "c", "d"].map(l => `<button class="ans" data-l="${l}">${l.toUpperCase()}</button>`).join("")}</div>
+          <div id="fostate" aria-live="polite"><p class="muted" style="margin:0">Ta question est en pause. Le résultat arrive quand ${esc(f.from)} aura répondu.</p></div>
+          <button class="ghost" id="foback">Reprendre ma question</button>
+        </div>`;
+      document.body.appendChild(ov);
+      setImg($("#foimg"), V.img, f.n).catch(() => {});
+      ov.querySelectorAll("#foans .ans").forEach(b => { b.onclick = () => {
+        ov.querySelectorAll("#foans .ans").forEach(x => { x.disabled = true; if (x === b) x.classList.add("picked"); });
+        send({ t: "ftry", id: f.id, l: b.dataset.l });
+        const st = $("#fostate"); if (st && !ftry.closed) st.innerHTML = `<div class="feedback ok">Réponse ${b.dataset.l.toUpperCase()} enregistrée ! Résultat quand ${esc(f.from)} aura répondu.</div>`;
+        $("#foback").className = "primary";
+      }; });
+      $("#foback").onclick = () => { ov.remove(); fskip[f.id] = true; ftry = null; resumeCountdown(); renderFilonOffer(); };
     }
 
     function meBar() {
@@ -592,7 +673,7 @@
         <span class="rk">${me.rank}<sup>${me.rank === 1 ? "er" : "e"}</sup> / ${me.n}</span><span class="sc">${me.score} ${NUG}</span></div>`;
     }
     const top = () => header(esc(V.sub || "")) + `<div class="banner" id="sbanner" ${banner ? "" : "hidden"}>${esc(banner)}</div>` + meBar();
-    function stopTimers() { if (timer) { clearInterval(timer); timer = null; } drawT.forEach(clearTimeout); drawT = []; }
+    function stopTimers() { if (timer) { clearInterval(timer); timer = null; } cd = null; drawT.forEach(clearTimeout); drawT = []; }
 
     function render() {
       if (!V) return;
@@ -646,12 +727,12 @@
       const ribbon = q.kind === "filon" ? '<span class="ribbon filon">Filon</span>' : q.kind === "raid" ? '<span class="ribbon raid">Chapardage</span>'
         : q.kind === "duel" ? `<span class="ribbon duel">Castagne${q.th ? " · " + esc(q.th) : ""}</span>` : q.kind === "rescue" ? '<span class="ribbon rescue">Sauvetage</span>' : "";
       const what = q.num ? `Question ${q.num} sur ${V.me.N}` : q.kind === "duel" ? "Castagne" : q.kind === "rescue" ? "Sauvetage" : "Question";
-      const stake = q.kind === "filon" ? `${nugs(4)} 4 pépites, +1 pour chacun des autres` : q.kind === "raid" ? `${nugs(3)} jusqu'à 3 pépites`
+      const stake = q.kind === "filon" ? `${nugs(4)} 4 pépites` : q.kind === "raid" ? `${nugs(3)} jusqu'à 3 pépites`
         : q.kind === "duel" ? `${nugs(2)} 2 pépites` : q.kind === "rescue" ? `${nugs(2)} jusqu'à 2 pépites chacun` : `${nugs(1)} 1 pépite`;
       const info = q.kind === "raid" && q.victim ? `<div class="feedback ko" style="font-size:15px">Tu chapardes ${esc(q.victim)}. Le shérif veille : si tu te trompes, tu lui paies 1 pépite d'amende.</div>`
         : q.kind === "duel" && q.partner ? `<div class="duelbox"><span class="who now" style="--pc:${V.me.color}">${esc(V.me.name)}</span><span class="vs">contre</span><span class="who" style="--pc:#ff8a3d">${esc(q.partner)}</span></div>`
         : q.kind === "rescue" && q.partner ? `<div class="feedback ok" style="font-size:15px">Sauvetage avec ${esc(q.partner)} : vous avez le droit de vous entraider !</div>`
-        : q.kind === "filon" ? `<div class="feedback ok" style="font-size:15px">Les autres gagnent 1 pépite si tu réussis : ils peuvent t'aider !</div>` : "";
+        : q.kind === "filon" ? `<div class="feedback ok" style="font-size:15px">Les autres chercheurs peuvent tenter ta question : ils gagnent 1 pépite s'ils trouvent et si tu trouves aussi.</div>` : "";
       app.innerHTML = top() + `
         <div class="play">
           <div class="board player" style="--pc:${V.me.color}">${ribbon}
@@ -676,7 +757,7 @@
     }
     function intro(q, then) {
       const ov = document.createElement("div"); ov.className = "overlay";
-      const t = q.kind === "filon" ? ["filon", "Tu as trouvé un filon !", `Tu as <strong>${q.time} secondes</strong>. Si tu réussis, tu gagnes <strong>4 pépites</strong> et <strong>tous les autres chercheurs gagnent 1 pépite</strong>. Tout le monde a intérêt à t'aider !`]
+      const t = q.kind === "filon" ? ["filon", "Tu as trouvé un filon !", `Tu as <strong>${q.time} secondes</strong>. Si tu réussis, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent tenter la même question : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !`]
         : q.kind === "raid" ? ["", "Chapardage !", `Réponds juste en ${q.time} secondes et tu prends jusqu'à <strong>3 pépites</strong> à <strong>${esc(q.victim || "")}</strong>, le plus riche. Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu lui paies 1 pépite d'amende !`]
         : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> sur une question que tu as déjà réussie, avec d'autres valeurs. Les réponses apparaissent au signal « Dégaine ! ». Juste et l'autre faux : 2 pépites. Les deux justes : 1 pépite chacun.`]
         : ["", "Sauvetage !", `Tu fais équipe avec <strong>${esc(q.partner || "")}</strong>. Chacun refait une question ratée, avec d'autres valeurs. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. <strong>Vous avez le droit de vous entraider !</strong>`];
@@ -691,6 +772,7 @@
       if (!ansBox) return;
       const enable = () => { ansBox.style.visibility = "visible"; ansBox.querySelectorAll(".ans").forEach(b => { b.disabled = false; }); };
       countdown(q.time, () => answer(null));
+      if (ftry) pauseCountdown(); // the player is busy on someone else's filon
       if (q.kind !== "duel") { enable(); return; }
       // castagne: the buttons appear for the last 4 seconds, while "3, 2, 1, Dégaine !" counts down
       const box = $("#draw"), open = (q.time - 4) * 1000;
@@ -700,18 +782,27 @@
         if (i === 0) enable();
       }, open + i * 1000)));
     }
-    function countdown(D, onEnd) {
+    let cd = null; // running countdown {D, end, onEnd} or paused {D, left, onEnd}
+    function countdown(D, onEnd, leftMs) {
       if (timer) clearInterval(timer);
-      const end = performance.now() + D * 1000;
+      const end = performance.now() + (leftMs != null ? leftMs : D * 1000);
+      cd = { D, end, onEnd };
       const secsEl = $("#secs"), fill = $("#barfill"), box = $("#timer");
       if (!secsEl) return;
       timer = setInterval(() => {
         const left = Math.max(0, end - performance.now()), s = Math.ceil(left / 1000);
         secsEl.textContent = s + " s"; fill.style.width = (left / (D * 1000) * 100) + "%";
         box.classList.toggle("low", s <= 5);
-        if (left <= 0) { clearInterval(timer); timer = null; onEnd(); }
+        if (left <= 0) { clearInterval(timer); timer = null; cd = null; onEnd(); }
       }, 100);
     }
+    function pauseCountdown() {
+      if (!timer || !cd) return;
+      clearInterval(timer); timer = null;
+      cd = { D: cd.D, left: Math.max(0, cd.end - performance.now()), onEnd: cd.onEnd, paused: true };
+      const secs = $("#secs"); if (secs) secs.textContent = "pause";
+    }
+    function resumeCountdown() { if (cd && cd.paused) countdown(cd.D, cd.onEnd, cd.left); }
     function answer(l) {
       if (!shown || shown.answered) return;
       stopTimers();
