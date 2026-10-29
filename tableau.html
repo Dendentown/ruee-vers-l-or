@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}.primary:disabled { opacity: .6; cursor: wait; transform: none; box-shadow: 0 4px 0 #6b420a; }
+</style>
 </head>
 <body>
 <title>La Ruée vers l'Or</title>
@@ -467,6 +468,22 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     else if (ch) showChallengeIntro();
     else whenShown(() => startCountdown(QTIME));
   }
+  // an event's start button stays disabled until its question is displayed behind the overlay
+  const boardShown = () => { const im = document.querySelector(".board img"); return !!(im && im.complete && im.naturalWidth > 1 && /^data:image\/png/.test(im.src)); };
+  function gateReady(btn) {
+    if (!btn) return;
+    const label = btn.textContent;
+    const check = () => {
+      if (!btn.isConnected) return;
+      if (boardShown()) { btn.disabled = false; btn.textContent = label; btn.focus(); }
+      else {
+        btn.disabled = true; btn.textContent = "Chargement de la question…";
+        const im = document.querySelector(".board img"); if (im && !im.getAttribute("src")) fillImgs(); // ask again for a pack that failed
+        setTimeout(check, 400);
+      }
+    };
+    check();
+  }
   // run fn once the question image on the board is fully displayed (the timer must not run before)
   function whenShown(fn) {
     const id = S.idx, secs = document.getElementById("secs");
@@ -503,7 +520,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     document.body.appendChild(ov);
     const go = () => { ov.remove(); whenShown(startTimer); };
     document.getElementById("ready").onclick = go;
-    document.getElementById("ready").focus();
+    gateReady(document.getElementById("ready"));
   }
 
   // filon: no time limit, the jackpot drops from 4 to 1 nugget, one step every 10 s
@@ -758,7 +775,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <button class="primary" id="ready">Commencer le duel</button></div>`;
       document.body.appendChild(ov);
       document.getElementById("ready").onclick = () => { ov.remove(); whenShown(startDraw); };
-      document.getElementById("ready").focus();
+      gateReady(document.getElementById("ready"));
     }
   }
 

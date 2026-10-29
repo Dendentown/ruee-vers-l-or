@@ -755,7 +755,7 @@
       const secs = $("#secs"); if (secs) secs.textContent = "…";
       const ready = loadQuestion(im, q);
       const begin = () => ready.then(() => { if (shown && shown.id === q.id && !shown.answered) startQ(q); });
-      if (q.kind !== "normal") intro(q, begin); else begin();
+      if (q.kind !== "normal") intro(q, begin, ready); else begin();
     }
     // resolves only when the question image is loaded and drawn; retries on a bad connection
     function loadQuestion(im, q) {
@@ -783,7 +783,7 @@
         attempt();
       });
     }
-    function intro(q, then) {
+    function intro(q, then, ready) {
       const ov = document.createElement("div"); ov.className = "overlay";
       const t = q.kind === "filon" ? ["filon", "Tu as trouvé un filon !", `Tu as <strong>${q.time} secondes</strong>. Si tu réussis, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent tenter la même question : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !`]
         : q.kind === "raid" ? ["", "Chapardage !", `Réponds juste en ${q.time} secondes et tu prends jusqu'à <strong>3 pépites</strong> à <strong>${esc(q.victim || "")}</strong>, le plus riche. Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu lui paies 1 pépite d'amende !`]
@@ -792,8 +792,13 @@
       const col = q.kind === "duel" ? "#ff8a3d" : q.kind === "rescue" ? "var(--ok)" : q.kind === "raid" ? "var(--bad)" : "";
       ov.innerHTML = `<div class="box"><div class="title ${t[0]}" ${col ? `style="color:${col}"` : ""}>${t[1]}</div><p>${t[2]}</p><button class="primary" id="ready">C'est parti !</button></div>`;
       document.body.appendChild(ov);
-      const b = ov.querySelector("#ready"); b.focus();
+      const b = ov.querySelector("#ready");
       b.onclick = () => { ov.remove(); then(); };
+      // the start button waits until the question is displayed
+      if (ready) {
+        b.disabled = true; b.textContent = "Chargement de la question…";
+        ready.then(() => { if (b.isConnected) { b.disabled = false; b.textContent = "C'est parti !"; b.focus(); } });
+      } else b.focus();
     }
     function startQ(q) {
       const ansBox = $("#ans");
