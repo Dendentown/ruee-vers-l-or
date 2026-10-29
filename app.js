@@ -750,10 +750,38 @@
         </div>` + credit;
       app.querySelectorAll(".ans").forEach(b => { b.onclick = () => answer(b.dataset.l); });
       const im = $("#qimg");
-      const ready = setImg(im, V.img, q.n).catch(() => { $("#fb").innerHTML = '<div class="feedback ko">Image introuvable. Recharge la page.</div>'; });
-      if (res) { showResult(res); return; }
-      const begin = () => Promise.race([ready, new Promise(r => setTimeout(r, 5000))]).then(() => { if (shown && shown.id === q.id && !shown.answered) startQ(q); });
+      if (res) { setImg(im, V.img, q.n).catch(() => {}); showResult(res); return; }
+      // the timer only starts once the question is fully displayed
+      const secs = $("#secs"); if (secs) secs.textContent = "…";
+      const ready = loadQuestion(im, q);
+      const begin = () => ready.then(() => { if (shown && shown.id === q.id && !shown.answered) startQ(q); });
       if (q.kind !== "normal") intro(q, begin); else begin();
+    }
+    // resolves only when the question image is loaded and drawn; retries on a bad connection
+    function loadQuestion(im, q) {
+      return new Promise(resolve => {
+        let tries = 0;
+        const fb = () => $("#fb");
+        const attempt = () => {
+          if (!shown || shown.q !== q) return;
+          setImg(im, V.img, q.n).then(() => {
+            if (!(im.complete && im.naturalWidth > 1)) throw new Error("img");
+            const f = fb(); if (f && f.dataset.loading) { f.innerHTML = ""; delete f.dataset.loading; }
+            resolve();
+          }).catch(() => {
+            tries++;
+            const f = fb();
+            if (f) {
+              f.dataset.loading = "1";
+              f.innerHTML = `<div class="feedback">Chargement de la question… Le chrono démarrera quand elle sera affichée.</div>
+                <button class="ghost" id="imgretry" style="margin-top:8px;width:100%">Réessayer</button>`;
+              const b = $("#imgretry"); if (b) b.onclick = () => { b.disabled = true; attempt(); };
+            }
+            setTimeout(attempt, Math.min(8000, 1500 * tries));
+          });
+        };
+        attempt();
+      });
     }
     function intro(q, then) {
       const ov = document.createElement("div"); ov.className = "overlay";

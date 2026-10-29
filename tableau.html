@@ -465,7 +465,23 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     bindSound();
     if (done) showFeedback(done.choice, false);
     else if (ch) showChallengeIntro();
-    else startCountdown(QTIME);
+    else whenShown(() => startCountdown(QTIME));
+  }
+  // run fn once the question image on the board is fully displayed (the timer must not run before)
+  function whenShown(fn) {
+    const id = S.idx, secs = document.getElementById("secs");
+    if (secs) secs.textContent = "…";
+    const check = () => {
+      if (S.phase !== "play" || S.idx !== id) return;
+      const im = document.querySelector(".board img");
+      if (im && im.complete && im.naturalWidth > 1 && /^data:image\/png/.test(im.src)) {
+        (im.decode ? im.decode().catch(() => {}) : Promise.resolve()).then(() => { if (S.phase === "play" && S.idx === id) fn(); });
+      } else {
+        if (im && !im.getAttribute("src")) fillImgs(); // a pack that failed is asked again
+        setTimeout(check, 150);
+      }
+    };
+    check();
   }
 
   function showChallengeIntro() {
@@ -485,7 +501,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     ov.innerHTML = `<div class="box">${body}
       <button class="primary" id="ready">C'est parti !</button></div>`;
     document.body.appendChild(ov);
-    const go = () => { ov.remove(); startTimer(); };
+    const go = () => { ov.remove(); whenShown(startTimer); };
     document.getElementById("ready").onclick = go;
     document.getElementById("ready").focus();
   }
@@ -727,7 +743,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     document.getElementById("quit").onclick = () => { S.phase = "end"; renderEnd(); };
     bindSound();
     if (ans) duelFeedback(false);
-    else if (d.intro) startDraw();
+    else if (d.intro) whenShown(startDraw);
     if (!ans && !d.intro) {
       d.intro = true;
       beep("ch");
@@ -741,7 +757,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <p style="font-size:17px;color:var(--muted)">Chacun a ${DTIME} secondes, mais les boutons de réponse n'apparaissent qu'à la fin, pendant « 3, 2, 1, Dégaine ! » : prépare ta réponse ! Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
         <button class="primary" id="ready">Commencer le duel</button></div>`;
       document.body.appendChild(ov);
-      document.getElementById("ready").onclick = () => { ov.remove(); startDraw(); };
+      document.getElementById("ready").onclick = () => { ov.remove(); whenShown(startDraw); };
       document.getElementById("ready").focus();
     }
   }
