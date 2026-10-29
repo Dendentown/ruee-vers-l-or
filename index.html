@@ -206,6 +206,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 .primary:disabled { opacity: .6; cursor: wait; transform: none; box-shadow: 0 4px 0 #6b420a; }
+[hidden] { display: none !important; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -268,11 +269,12 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 .rank .nm { min-width: 0; }
 .fbar { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 25; width: min(560px, calc(100vw - 24px)); background: linear-gradient(110deg, #3a2a0c, #5a400f); border: 2px solid var(--gold); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 0 24px #f1b52e66, 0 10px 30px #000c; animation: drop .4s; }
 body.hasfbar { padding-bottom: 170px; }
+.fowait { background: #fff4c4; color: #3a2a0c; border-radius: 6px; min-height: 200px; display: grid; place-items: center; padding: 20px; font-weight: 700; font-size: 18px; text-align: center; }
 .fbar .fmsg { color: var(--ore); font-size: 16px; line-height: 1.35; }
 .fbar .fmsg strong { color: var(--gold); }
 .fbar .fbtns { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 .fbar .primary { padding: 10px 12px; font-size: 17px; }
-.overlay.fo { z-index: 35; place-items: start center; overflow-y: auto; }
+.overlay.fo { z-index: 35; place-items: start center; overflow-y: auto; background: #0b0806; }
 .fobox { width: min(560px, 100%); display: flex; flex-direction: column; gap: 10px; text-align: center; }
 .fobox .board img { max-height: 55vh; }
 .fobox .ghost, .fobox .primary { width: 100%; }

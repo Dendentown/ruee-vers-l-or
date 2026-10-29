@@ -14,6 +14,7 @@
   const PCOL = ["#ff5a5a", "#4da3ff", "#4fd27b", "#c084ff", "#ff9f43", "#3fe0d6", "#ff7ad9", "#c9e265", "#ffd166", "#8fa8ff", "#f78c6b", "#7ee8c7"];
   const PREFIX = "ruee-or-dvm-";
   const QTIME = 30, ETIME = 20, DTIME = 10, RTIME = 30, FTIME = 40;
+  const F_CHOOSE = 15000, F_LOAD = 20000; // filon: time to sign up, then the longest wait for everybody's question to load
   const KIND = { normal: "", filon: "Filon", raid: "Chapardage", duel: "Castagne", rescue: "Sauvetage" };
   const params = new URLSearchParams(location.search);
   const store = {
@@ -176,9 +177,15 @@
         q: null, res: p.res, done: false, started: p.k > 0 || !!p.cur || !!p.res };
       if (p.cur) v.q = { id: p.cur.id, n: p.cur.q, kind: p.cur.kind, time: p.cur.time, partner: p.cur.partner || null, th: p.cur.thLabel || null, victim: p.cur.victimName || null, num: p.cur.num || null, stake: p.cur.stake };
       v.done = H.phase === "play" && !p.cur && !p.pending && p.k >= nOf(p);
-      // filons of other players that this one may still try
+      // filons of the other players: sign up, wait for everybody to load, then answer together
       v.filons = H.phase !== "play" ? [] : Object.values(H.filons || {}).filter(f => f.open && f.a !== p.pid && H.players[f.a])
-        .map(f => ({ id: f.id, from: H.players[f.a].name, n: f.q, tried: f.tries[p.pid] !== undefined }));
+        .map(f => ({ id: f.id, from: H.players[f.a].name, stage: f.stage, left: Math.max(0, f.until - Date.now()),
+          joined: f.joins[p.pid], loaded: !!f.loaded[p.pid], tried: f.tries[p.pid] !== undefined,
+          n: f.stage !== "choose" && f.joins[p.pid] === true ? f.q : null, ...filonCounts(f) }));
+      if (p.cur && p.cur.kind === "filon" && H.filons && H.filons[p.cur.filon]) {
+        const f = H.filons[p.cur.filon];
+        Object.assign(v.q, { fid: f.id, fstage: f.stage, fleft: Math.max(0, f.until - Date.now()), ...filonCounts(f) });
+      }
       if (H.phase === "end") v.ranking = sorted().map(o => ({ name: o.name, color: o.color, score: o.score, rank: rankOf(o) }));
       return v;
     }
@@ -209,9 +216,21 @@
       }
       const p = c._pid && H.players[c._pid];
       if (!p) return;
+      if (m.t === "fjoin") {
+        const f = (H.filons || {})[m.id];
+        if (f && f.open && f.stage === "choose" && f.a !== p.pid && f.joins[p.pid] === undefined) {
+          f.joins[p.pid] = !!m.yes; save(); filonTick();
+        }
+        pushAll(); render(); return;
+      }
+      if (m.t === "floaded") {
+        const f = (H.filons || {})[m.id];
+        if (f && f.open && (f.a === p.pid || f.joins[p.pid] === true) && !f.loaded[p.pid]) { f.loaded[p.pid] = true; save(); filonTick(); pushAll(); }
+        return;
+      }
       if (m.t === "ftry") {
         const f = (H.filons || {})[m.id];
-        if (f && f.open && f.a !== p.pid && f.tries[p.pid] === undefined) {
+        if (f && f.open && f.stage === "play" && f.joins[p.pid] === true && f.loaded[p.pid] && f.a !== p.pid && f.tries[p.pid] === undefined) {
           f.tries[p.pid] = ["a", "b", "c", "d"].includes(m.l) ? m.l : null;
           save();
         }
@@ -280,7 +299,7 @@
       else { const used = new Set(p.deck); const pl = pool().filter(n => !used.has(n)); q = pl.length ? pick(pl) : cur.q; }
       const fid = newId();
       H.filons = H.filons || {};
-      H.filons[fid] = { id: fid, a: p.pid, q, tries: {}, open: true };
+      H.filons[fid] = { id: fid, a: p.pid, q, tries: {}, open: true, stage: "choose", joins: {}, loaded: {}, until: Date.now() + F_CHOOSE };
       Object.assign(cur, { q, kind: "filon", time: FTIME, stake: 4, filon: fid });
     }
 
@@ -304,7 +323,7 @@
         } else if (k >= 3 && u < pr + 1 / 8) done = makeDuel(p, cur);
         else if (k >= 3 && u < pr + 1 / 8 + 1 / 12) done = makeRescue(p, cur);
       }
-      if (!done && k >= 2 && Math.random() < filonChance(p) * (n > 1 ? f : 1)) makeFilon(p, cur);
+      if (!done && k >= 2 && (window.__forceFilon || Math.random() < filonChance(p) * (n > 1 ? f : 1))) { window.__forceFilon = false; makeFilon(p, cur); }
       if (cur.kind === "raid") feed(`${p.name} tente un chapardage sur ${cur.victimName}…`, "raid");
       if (cur.kind === "filon") feed(`${p.name} a trouvé un filon !`, "filon");
       p.cur = cur;
@@ -314,6 +333,7 @@
     function answerFor(p, id, l) {
       const c = p.cur;
       if (!c || c.id !== id) { push(p.pid); return; }
+      if (c.kind === "filon" && H.filons && H.filons[c.filon] && H.filons[c.filon].stage !== "play") { push(p.pid); return; }
       p.cur = null;
       l = ["a", "b", "c", "d"].includes(l) ? l : null;
       const right = L.ANSWER[c.q], ok = l === right;
@@ -364,6 +384,38 @@
       if (changed || (lk && lk.done)) pushAll(); else push(p.pid);
       render(); checkAllDone();
     }
+
+    // filon stages: "choose" (15 s to sign up) -> "load" (everybody loads the question, hidden) -> "play" (shown to all at once)
+    const filonNeed = f => [f.a, ...Object.keys(f.joins).filter(pid => f.joins[pid] === true && H.players[pid] && H.players[pid].online)];
+    function filonCounts(f) {
+      const need = f.stage === "choose" ? [] : filonNeed(f);
+      return { nPart: Object.values(f.joins).filter(x => x === true).length, nNeed: need.length, nReady: need.filter(pid => f.loaded[pid]).length };
+    }
+    function filonTick() {
+      if (!H || H.phase !== "play") return;
+      let changed = false;
+      Object.values(H.filons || {}).forEach(f => {
+        if (!f.open) return;
+        if (f.stage === "choose") {
+          const others = players().filter(o => o.pid !== f.a && o.online);
+          if (Date.now() >= f.until || others.every(o => f.joins[o.pid] !== undefined)) {
+            f.stage = "load"; f.until = Date.now() + F_LOAD; changed = true;
+            const names = Object.keys(f.joins).filter(pid => f.joins[pid] === true).map(pid => H.players[pid] && H.players[pid].name).filter(Boolean);
+            const A = H.players[f.a];
+            if (A) feed(names.length ? `Filon de ${A.name} : ${names.join(", ")} ${names.length > 1 ? "participent" : "participe"}.` : `Filon de ${A.name} : personne ne participe.`, "filon");
+          }
+        }
+        if (f.stage === "load") {
+          const need = filonNeed(f);
+          if (need.every(pid => f.loaded[pid]) || Date.now() >= f.until) {
+            f.stage = "play"; changed = true;
+            need.forEach(pid => { if (!f.loaded[pid] && pid !== f.a) { f.joins[pid] = false; toast(pid, "La question du filon n'a pas pu se charger à temps : tu ne participes pas à ce filon."); } });
+          }
+        }
+      });
+      if (changed) { save(); pushAll(); render(); }
+    }
+    setInterval(filonTick, 500);
 
     // close a filon: the others who found the answer get 1 nugget, only if the owner found it too
     function closeFilon(fid, ownerOk) {
@@ -616,54 +668,139 @@
       if (m.t === "view") {
         setBanner("");
         if (m.me) store.set(pidKey(), m.me.pid);
-        V = m; joining = false; render(); renderFilonOffer();
+        V = m; joining = false; render(); renderFilonOffer(); updateFilonOwner();
       } else if (m.t === "toast") toast(m.text);
     }
 
-    /* ----- other players' filons: a bar to try them, an overlay to answer ----- */
+    /* ----- other players' filons: sign up in a bar, then wait and answer in an overlay ----- */
     let ftry = null; const fskip = {};
-    function busyDuel() { return shown && !shown.answered && shown.q && shown.q.kind === "duel"; }
+    let fdead = {}; // filon id -> local time when its current stage ends
+    function busy() { return shown && !shown.answered && shown.q && (shown.q.kind === "duel" || shown.q.kind === "filon"); }
+    const secsTo = id => Math.max(0, Math.ceil(((fdead[id] || 0) - Date.now()) / 1000));
+    setInterval(() => { document.querySelectorAll("[data-fleft]").forEach(el => { el.textContent = secsTo(el.dataset.fleft); }); }, 250);
     function renderFilonOffer() {
       const offers = (V && V.phase === "play" && V.filons) || [];
-      // the overlay of a filon that just closed
-      if (ftry && !offers.some(f => f.id === ftry.id)) {
-        const st = $("#fostate");
-        if (st && !ftry.closed) { ftry.closed = true; st.innerHTML = '<div class="feedback">Le filon est terminé : ton résultat arrive en message.</div>'; const b = $("#foans"); if (b) b.querySelectorAll(".ans").forEach(x => { x.disabled = true; }); }
+      offers.forEach(f => { fdead[f.id] = Date.now() + f.left; });
+      if (V && V.q && V.q.fid) fdead[V.q.fid] = Date.now() + V.q.fleft;
+      // the filon I take part in
+      if (ftry) {
+        const f = offers.find(o => o.id === ftry.id);
+        updateFilonOverlay(f);
+      } else {
+        const mine = offers.find(o => o.joined === true && !fskip[o.id]);
+        if (mine) { openFilon(mine); return; } // e.g. after reloading the page
       }
+      // sign-up bar
       let bar = $("#fbar");
-      const f = offers.find(o => !o.tried && !fskip[o.id] && (!ftry || ftry.id !== o.id));
-      document.body.classList.toggle("hasfbar", !!(f && !ftry && !busyDuel()));
-      if (!f || ftry || busyDuel()) { if (bar) bar.remove(); return; }
+      const f = offers.find(o => o.stage === "choose" && o.joined == null && !fskip[o.id]);
+      const show = !!(f && !ftry && !busy());
+      document.body.classList.toggle("hasfbar", show);
+      if (!show) { if (bar) bar.remove(); return; }
       if (!bar) { bar = document.createElement("div"); bar.id = "fbar"; bar.className = "fbar"; document.body.appendChild(bar); }
       if (bar.dataset.id === f.id) return;
       bar.dataset.id = f.id;
-      bar.innerHTML = `<div class="fmsg"><strong>Filon chez ${esc(f.from)} !</strong> Tente sa question : +1 pépite si vous trouvez tous les deux.</div>
-        <div class="fbtns"><button class="primary" id="fgo">Tenter le filon</button><button class="ghost" id="fno">Ignorer</button></div>`;
-      $("#fno").onclick = () => { fskip[f.id] = true; renderFilonOffer(); };
-      $("#fgo").onclick = () => openFilon(f);
+      bar.innerHTML = `<div class="fmsg"><strong>Filon chez ${esc(f.from)} !</strong> Veux-tu participer ? Tu gagnes 1 pépite si vous trouvez tous les deux. Réponds dans <strong data-fleft="${f.id}">${secsTo(f.id)}</strong> s.</div>
+        <div class="fbtns"><button class="primary" id="fgo">Je participe</button><button class="ghost" id="fno">Non merci</button></div>`;
+      $("#fno").onclick = () => { fskip[f.id] = true; send({ t: "fjoin", id: f.id, yes: false }); renderFilonOffer(); };
+      $("#fgo").onclick = () => { send({ t: "fjoin", id: f.id, yes: true }); openFilon(Object.assign({}, f, { joined: true })); };
     }
     function openFilon(f) {
       const bar = $("#fbar"); if (bar) bar.remove();
       document.body.classList.remove("hasfbar");
-      ftry = { id: f.id, closed: false };
+      ftry = { id: f.id, from: f.from, closed: false, loading: false, ready: false, shownQ: false, answered: false };
       pauseCountdown();
       const ov = document.createElement("div"); ov.className = "overlay fo"; ov.id = "fov";
       ov.innerHTML = `<div class="fobox">
           <div class="title filon" style="font-size:30px">Filon de ${esc(f.from)}</div>
-          <div class="board"><span class="ribbon filon">Filon</span><img id="foimg" alt="Question du filon : énoncé et réponses a, b, c, d" width="1200" height="1050"></div>
-          <div class="answers" id="foans">${["a", "b", "c", "d"].map(l => `<button class="ans" data-l="${l}">${l.toUpperCase()}</button>`).join("")}</div>
-          <div id="fostate" aria-live="polite"><p class="muted" style="margin:0">Ta question est en pause. Le résultat arrive quand ${esc(f.from)} aura répondu.</p></div>
-          <button class="ghost" id="foback">Reprendre ma question</button>
+          <div class="board" id="foboard"><span class="ribbon filon">Filon</span>
+            <div class="fowait" id="fowait">La question s'affichera en même temps pour tout le monde.</div>
+            <img id="foimg" alt="Question du filon : énoncé et réponses a, b, c, d" width="1200" height="1050" style="display:none"></div>
+          <div class="answers" id="foans">${["a", "b", "c", "d"].map(l => `<button class="ans" data-l="${l}" disabled>${l.toUpperCase()}</button>`).join("")}</div>
+          <div id="fostate" aria-live="polite"></div>
+          <button class="ghost" id="foback" hidden>Reprendre ma question</button>
         </div>`;
       document.body.appendChild(ov);
-      setImg($("#foimg"), V.img, f.n).catch(() => {});
       ov.querySelectorAll("#foans .ans").forEach(b => { b.onclick = () => {
+        if (!ftry || ftry.answered) return;
+        ftry.answered = true;
         ov.querySelectorAll("#foans .ans").forEach(x => { x.disabled = true; if (x === b) x.classList.add("picked"); });
-        send({ t: "ftry", id: f.id, l: b.dataset.l });
-        const st = $("#fostate"); if (st && !ftry.closed) st.innerHTML = `<div class="feedback ok">Réponse ${b.dataset.l.toUpperCase()} enregistrée ! Résultat quand ${esc(f.from)} aura répondu.</div>`;
-        $("#foback").className = "primary";
+        send({ t: "ftry", id: ftry.id, l: b.dataset.l });
+        $("#fostate").innerHTML = `<div class="feedback ok">Réponse ${b.dataset.l.toUpperCase()} enregistrée ! Résultat quand ${esc(ftry.from)} aura répondu.</div>`;
+        showBack();
       }; });
-      $("#foback").onclick = () => { ov.remove(); fskip[f.id] = true; ftry = null; resumeCountdown(); renderFilonOffer(); };
+      $("#foback").onclick = () => { const id = ftry && ftry.id; ov.remove(); if (id) fskip[id] = true; ftry = null; resumeCountdown(); renderFilonOffer(); };
+      updateFilonOverlay(f);
+    }
+    function showBack() { const b = $("#foback"); if (b) { b.hidden = false; b.className = "primary"; } }
+    function updateFilonOverlay(f) {
+      if (!ftry || !$("#fov")) return;
+      const st = $("#fostate"), wait = $("#fowait"), im = $("#foimg");
+      if (!f) { // the filon is over
+        if (!ftry.closed) {
+          ftry.closed = true;
+          $("#foans").querySelectorAll(".ans").forEach(x => { x.disabled = true; });
+          if (!ftry.answered) st.innerHTML = '<div class="feedback">Le filon est terminé.</div>';
+          else st.insertAdjacentHTML("beforeend", '<div class="feedback" style="margin-top:8px">Le filon est terminé : ton résultat arrive en message.</div>');
+          showBack();
+        }
+        return;
+      }
+      if (f.joined === false) { // could not load in time
+        wait.textContent = "La question n'a pas pu se charger à temps."; st.innerHTML = ""; showBack(); return;
+      }
+      if (f.stage === "choose") {
+        st.innerHTML = `<p class="muted" style="margin:0">Tu participes ! Ta question est en pause. Les inscriptions se terminent dans <strong data-fleft="${f.id}">${secsTo(f.id)}</strong> s.</p>`;
+        return;
+      }
+      if (f.n && !ftry.loading) { // load the question now, hidden until everybody is ready
+        ftry.loading = true;
+        const go = () => setImg(im, V.img, f.n).then(() => {
+          if (!(im.complete && im.naturalWidth > 1)) throw new Error("img");
+          ftry.ready = true; send({ t: "floaded", id: f.id });
+        }).catch(() => setTimeout(() => { if (ftry && ftry.id === f.id && $("#fov")) go(); }, 1500));
+        go();
+      }
+      if (f.stage === "load") {
+        st.innerHTML = `<p class="muted" style="margin:0">Chargement de la question… ${f.nReady} / ${f.nNeed} chercheurs prêts.</p>`;
+        return;
+      }
+      if (f.stage === "play" && f.loaded && !ftry.shownQ) {
+        ftry.shownQ = true;
+        wait.style.display = "none"; im.style.display = "";
+        if (!ftry.answered) {
+          $("#foans").querySelectorAll(".ans").forEach(x => { x.disabled = false; });
+          st.innerHTML = `<p class="muted" style="margin:0">À toi ! Réponds avant ${esc(ftry.from)}.</p>`;
+        }
+      }
+    }
+
+    /* ----- my own filon: wait while the others sign up and load ----- */
+    function filonOwnerOverlay(q) {
+      let ov = $("#fown");
+      if (!ov) {
+        ov = document.createElement("div"); ov.className = "overlay"; ov.id = "fown";
+        ov.innerHTML = `<div class="box"><div class="title filon">Tu as trouvé un filon !</div>
+          <p>Tu auras <strong>${q.time} secondes</strong>. Si tu réponds juste, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent participer : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !</p>
+          <p id="fownst" style="font-size:18px;color:var(--muted)"></p></div>`;
+        document.body.appendChild(ov);
+      }
+      return ov;
+    }
+    function updateFilonOwner() {
+      const q = V && V.q;
+      if (!q || q.kind !== "filon" || !shown || shown.id !== q.id || shown.answered) { const o = $("#fown"); if (o) o.remove(); return; }
+      if (q.fstage === "play") {
+        const o = $("#fown"); if (o) o.remove();
+        if (!shown.started) shown.ready.then(() => {
+          if (shown && shown.id === q.id && !shown.answered && !shown.started) { shown.started = true; $("#qimg").style.visibility = ""; startQ(q); }
+        });
+        return;
+      }
+      filonOwnerOverlay(q);
+      const st = $("#fownst");
+      st.innerHTML = q.fstage === "choose"
+        ? `Les autres chercheurs choisissent s'ils participent : <strong data-fleft="${q.fid}">${secsTo(q.fid)}</strong> s. Participants : <strong>${q.nPart}</strong>.`
+        : `Chargement de la question chez tout le monde… ${q.nReady} / ${q.nNeed} prêts.`;
     }
 
     function meBar() {
@@ -696,6 +833,7 @@
       if (V.q) {
         if (shown && shown.id === V.q.id) {
           refreshBar();
+          if (V.q.fid && V.q.fstage === "load" && shown.ready) shown.ready.then(() => send({ t: "floaded", id: V.q.fid }));
           if (shown.answered && shown.choice !== undefined) send({ t: "ans", id: shown.id, l: shown.choice }); // the answer was lost on the way
           return;
         }
@@ -754,6 +892,12 @@
       // the timer only starts once the question is fully displayed
       const secs = $("#secs"); if (secs) secs.textContent = "…";
       const ready = loadQuestion(im, q);
+      if (q.kind === "filon" && q.fid) { // shown to everybody at the same time
+        im.style.visibility = "hidden";
+        shown.ready = ready;
+        ready.then(() => send({ t: "floaded", id: q.fid }));
+        return;
+      }
       const begin = () => ready.then(() => { if (shown && shown.id === q.id && !shown.answered) startQ(q); });
       if (q.kind !== "normal") intro(q, begin, ready); else begin();
     }
@@ -860,12 +1004,12 @@
       const nx = $("#snext");
       nx.onclick = () => { nx.disabled = true; send({ t: "next" }); };
     }
-    return { init };
+    return { init, _v: () => V };
   })();
 
   /* ---------- boot ---------- */
   if (params.has("p")) Student.init(params.get("p"));
   else if (params.has("prof")) Host.init();
   else renderMenu();
-  window.__ruee = { Host };
+  window.__ruee = { Host, Student };
 })();
