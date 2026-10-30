@@ -92,10 +92,58 @@
           <button class="primary" id="mJoin">Rejoindre une partie (élève)</button>
           <p>Sur le téléphone : scanne le QR code ou tape le code affiché au tableau.</p>
           <a class="ghost" href="tableau.html" style="text-align:center;text-decoration:none">Jouer sur un seul écran, au tableau</a>
+          <button class="ghost" id="mOff">Télécharger la version hors ligne</button>
+          <p>Le jeu au tableau (5ème, Terminale, CAPES) dans un fichier zip : on le décompresse, puis on ouvre <strong>jouer.html</strong>, même sans internet.</p>
+          <div id="offst" aria-live="polite"></div>
         </section>
       </div>` + credit;
     $("#mHost").onclick = () => Host.init();
     $("#mJoin").onclick = () => Student.init("");
+    $("#mOff").onclick = downloadOffline;
+  }
+
+  /* ---------- offline version: zip built in the browser from the site's own files ---------- */
+  function loadScript(src) {
+    return new Promise((ok, ko) => { const sc = document.createElement("script"); sc.src = src; sc.onload = ok; sc.onerror = ko; document.head.appendChild(sc); });
+  }
+  async function downloadOffline() {
+    const btn = $("#mOff"), st = $("#offst");
+    const show = (pct, txt) => { st.innerHTML = `<div class="bar" style="margin-top:4px"><i style="width:${pct}%"></i></div><p style="margin-top:6px">${txt}</p>`; };
+    btn.disabled = true;
+    try {
+      if (!window.JSZip) await loadScript("lib/jszip.min.js");
+      const files = [];
+      Object.values(D.LEVELS).forEach(L => { for (let k = 0; k * 10 < L.qs.length; k++) files.push(`packs/${L.img}_${k}.js`); });
+      const zip = new JSZip(), dir = zip.folder("La_Ruee_vers_l_Or_hors_ligne");
+      const site = location.origin + location.pathname.replace(/[^/]*$/, "");
+      const get = async f => { const r = await fetch(f, { cache: "no-cache" }); if (!r.ok) throw new Error(f); return r.text(); };
+      show(0, "Préparation…");
+      // the board game; its link to the network game points to this site
+      let html = await get("tableau.html");
+      html = html.replace(/href="index\.html"/g, `href="${site}"`);
+      dir.file("jouer.html", html);
+      let done = 0;
+      for (let i = 0; i < files.length; i += 6) {
+        await Promise.all(files.slice(i, i + 6).map(async f => { dir.file(f, await get(f)); done++; }));
+        show(Math.round(done / files.length * 90), `Téléchargement des questions… ${done} / ${files.length}`);
+      }
+      dir.file("LISEZMOI.txt", "La Ruée vers l'Or - version hors ligne\r\n\r\n" +
+        "1. Décompresser ce dossier (clic droit > Extraire tout).\r\n" +
+        "2. Ouvrir jouer.html avec un navigateur (Chrome, Firefox, Edge, Safari).\r\n" +
+        "3. Choisir le niveau (5ème, Terminale, CAPES) et jouer au tableau, même sans internet.\r\n\r\n" +
+        "La partie en réseau sur téléphones demande internet : " + site + "\r\n\r\n" +
+        "Copyleft Denis Vanmai, avec l'aide de mon ami Claude\r\n");
+      show(92, "Création du fichier zip…");
+      const blob = await zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } }, m => show(92 + Math.round(m.percent * 0.08), "Création du fichier zip…"));
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = "La_Ruee_vers_l_Or_hors_ligne.zip";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+      show(100, `C'est prêt : le fichier <strong>La_Ruee_vers_l_Or_hors_ligne.zip</strong> (${Math.round(blob.size / 1e6)} Mo) est dans vos téléchargements.`);
+    } catch (e) {
+      st.innerHTML = '<div class="feedback ko">Le téléchargement a échoué. Vérifiez la connexion internet et réessayez.</div>';
+    }
+    btn.disabled = false;
   }
 
   /* =====================================================================
