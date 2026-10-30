@@ -382,7 +382,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <button class="primary" id="go">Partir à la mine</button>
       </section>
     </div>
-    <footer class="credit"><a href="index.html" style="color:var(--muted);margin-right:14px">Partie en réseau (téléphones)</a><span class="cl" aria-hidden="true">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</footer>`;
+    <footer class="credit"><span class="cl" aria-hidden="true">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</footer>`;
 
     const bindSeg = (id, key, rerender) => app.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { saveNames(); S[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; rerender ? renderSetup() : app.querySelectorAll(`#${id} button`).forEach(x => x.setAttribute("aria-pressed", x === b)); });
     bindSeg("nt", "nTeams", true); bindSeg("nq", "nQ"); bindSeg("se", "series");
