@@ -421,7 +421,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
           <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs s'entraident sur des questions ratées, jusqu'à 2 pépites chacun.</span></div>
           <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites.</span></div>
           <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche.</span></div>
-          <div class="rule item"><span class="big">${icon("lampe")}${icon("pioche")}${icon("tamis")}</span><span>Objets : la lampe donne une astuce, la pioche ajoute 50 % de pépites, le tamis retire deux mauvaises réponses. On en trouve en réussissant un sauvetage, et on peut se les faire voler en castagne ou en chapardage !</span></div>
+          <div class="rule item"><span class="big">${icon("lampe")}${icon("pioche")}${icon("tamis")}</span><span>Objets : la lampe donne une astuce, la pioche ajoute 50 % de pépites, le tamis retire deux mauvaises réponses. Un sauvetage où les deux trouvent rapporte un objet à chacun (une seule bonne réponse : une chance sur deux). On peut se les faire voler en castagne ou en chapardage !</span></div>
           <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : si la réponse est correcte, le joueur gagne 4 pépites et tous les autres 1 pépite : coopérez !</span></div>
         </div>
         <p class="keys">Au clavier : touches A, B, C, D pour répondre, Entrée pour passer à la suite.</p>
@@ -436,7 +436,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <label class="f">Nombre de joueurs ${segs("nt", [1, 2, 3, 4, 5, 6], S.nTeams)}</label>
         <div class="names">${Array.from({ length: S.nTeams }, (_, i) => `<input id="name${i}" aria-label="Nom du joueur ${i + 1}" value="${esc(S.names[i])}" maxlength="24" style="--pc:${pc(i)}">`).join("")}</div>
         <label class="f">Nombre de questions ${segs("nq", [10, 20, 40, 60], S.nQ)}</label>
-        <label class="f">Série de questions ${segs("se", ["A", "B", "AB"], S.series, v => v === "AB" ? "A et B" : "Série " + v)}</label>
         <div class="f" style="font-weight:700;font-size:15px;display:flex;flex-direction:column;gap:6px">Thèmes
           <div class="checks">${THEMES.map(t => `<label><input type="checkbox" id="th-${t.id}" ${S.themes[t.id] ? "checked" : ""}> ${t.label}</label>`).join("")}</div>
         </div>
@@ -447,7 +446,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     <footer class="credit"><span class="cl" aria-hidden="true">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</footer>`;
 
     const bindSeg = (id, key, rerender) => app.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { saveNames(); S[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; rerender ? renderSetup() : app.querySelectorAll(`#${id} button`).forEach(x => x.setAttribute("aria-pressed", x === b)); });
-    bindSeg("nt", "nTeams", true); bindSeg("nq", "nQ"); bindSeg("se", "series");
+    bindSeg("nt", "nTeams", true); bindSeg("nq", "nQ");
     const applyLevel = key => { S.level = key; setLevel(S.level); S.themes = {}; THEMES.forEach(t => { S.themes[t.id] = true; }); renderSetup(); };
     // mixed subjects: one level per ticked subject
     const applyMix = () => {
@@ -495,6 +494,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   }
 
   function start() {
+    S.series = "AB"; // the whole bank (series A and B)
     saveNames();
     let pool = [];
     const inSeries = n => S.series === "AB" || (S.series === "B" ? isB(n) : !isB(n));
@@ -1021,9 +1021,9 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       if (d.a1.pioche && ga) ga = boost(ga);
       if (d.a2.pioche && gb) gb = boost(gb);
       A.score += ga; B.score += gb; d.gain = [ga, gb];
-      // items: found in a successful rescue (1 chance out of 2 each), stolen by the winner of a castagne
+      // items: both right in a rescue = an item each for sure (one right: 1 chance out of 2 each); the winner of a castagne steals one
       d.loot = [];
-      if (d.kind === "rescue") [[A, ga], [B, gb]].forEach(([P, g]) => { if (g > 0 && Math.random() < 0.5) d.loot.push(`${esc(P.name)} trouve ${esc(un(giveItem(P)))} !`); });
+      if (d.kind === "rescue") [[A, ga], [B, gb]].forEach(([P, g]) => { if (g > 0 && ((d.a1.ok && d.a2.ok) || Math.random() < 0.5)) d.loot.push(`${esc(P.name)} trouve ${esc(un(giveItem(P)))} !`); });
       else if (d.a1.ok !== d.a2.ok) {
         const [W, Lo] = d.a1.ok ? [A, B] : [B, A], st = stealItem(Lo, W);
         if (st) d.loot.push(`${esc(W.name)} vole ${esc(le(st))} de ${esc(Lo.name)} !`);

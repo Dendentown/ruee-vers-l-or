@@ -149,7 +149,7 @@
       <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous !</span></div>
       <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites, chacun sur son téléphone.</span></div>
       <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche.</span></div>
-      <div class="rule item"><span class="big">${icon("lampe")}${icon("pioche")}${icon("tamis")}</span><span>Objets : la lampe donne une astuce, la pioche ajoute 50 % de pépites, le tamis retire deux mauvaises réponses. On en trouve en réussissant un sauvetage, et on peut se les faire voler en castagne ou en chapardage !</span></div>
+      <div class="rule item"><span class="big">${icon("lampe")}${icon("pioche")}${icon("tamis")}</span><span>Objets : la lampe donne une astuce, la pioche ajoute 50 % de pépites, le tamis retire deux mauvaises réponses. Un sauvetage où les deux trouvent rapporte un objet à chacun (une seule bonne réponse : une chance sur deux). On peut se les faire voler en castagne ou en chapardage !</span></div>
       <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : le joueur gagne 4 pépites s'il répond juste. Les autres peuvent tenter la même question : 1 pépite pour ceux qui trouvent, si le joueur du filon trouve aussi.</span></div>
     </div>`;
   }
@@ -710,7 +710,7 @@
       if (pb) tb += ` Pioche : +${pb} de plus.`;
       if (lk.type === "rescue") {
         [[A, ga, "a"], [B, gb, "b"]].forEach(([P, g, side]) => {
-          if (g > 0 && Math.random() < 0.5) {
+          if (g > 0 && ((a && b) || Math.random() < 0.5)) { // both right: an item each for sure
             const it = giveItem(P), t = ` Tu trouves ${un(it)} !`;
             if (side === "a") ta += t; else tb += t;
             feed(`${P.name} trouve ${unN(it)}.`, "rescue");
@@ -744,6 +744,7 @@
       if (H.phase === "play" && allDone() && !H.allDoneSaid) { H.allDoneSaid = true; feed("Tous les chercheurs ont fini leurs questions !"); setTimeout(() => { if (H.phase === "play" && allDone()) endGame(); }, 1500); }
     }
     function startGame() {
+      H.series = "AB";
       const err = $("#herr");
       if (!pool().length) { if (err) err.textContent = "Coche au moins un thème."; return; }
       if (!players().length) { if (err) err.textContent = "Attends qu'au moins un élève ait rejoint la partie."; return; }
@@ -798,7 +799,6 @@
                 ${segs("mxl-" + sb, LKEYS.filter(k => D.LEVELS[k].subject === sb), (H.mixLv || {})[sb], v => D.LEVELS[v].label)}</div>`).join("")}</div>`
             : `<label class="f">Niveau ${segs("lv", LKEYS.filter(k => D.LEVELS[k].subject === D.LEVELS[H.level].subject), H.level, v => D.LEVELS[v].label)}</label>`}
             <label class="f">Questions par joueur ${segs("nq", [10, 20, 40], H.nQ)}</label>
-            <label class="f">Série de questions ${segs("se", ["A", "B", "AB"], H.series, v => v === "AB" ? "A et B" : "Série " + v)}</label>
             <div class="f"><span style="font-weight:700;font-size:15px">Thèmes</span>
               <div class="checks">${L.themes.map(t => `<label><input type="checkbox" data-th="${t.id}" ${H.themes[t.id] ? "checked" : ""}> ${esc(t.label)}</label>`).join("")}</div></div>
             <div class="f"><span style="font-weight:700;font-size:15px">Joueurs connectés : ${ps.length}</span>
@@ -827,7 +827,6 @@
       }; });
       Object.keys(D.SUBJECTS).forEach(sb => bindSeg("mxl-" + sb, v => { H.mixLv[sb] = v; H.mixSel[sb] = true; applyMix(); }));
       bindSeg("nq", v => { H.nQ = +v; save(); draw(); });
-      bindSeg("se", v => { H.series = v; save(); draw(); });
       app.querySelectorAll("[data-th]").forEach(cb => { cb.onchange = () => { H.themes[cb.dataset.th] = cb.checked; save(); }; });
       $("#hgo").onclick = startGame;
     }
