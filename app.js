@@ -41,8 +41,25 @@
   }
 
   const credit = `<div class="credit"><span class="cl">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</div>`;
+  // yellow back button on every screen except the menu
+  let atMenu = false, mode = "";
+  const BACK = `<button class="backbtn" id="backbtn" type="button"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Retour</span></button>`;
+  let backArmed = 0;
+  function goBack() {
+    const b = $("#backbtn");
+    const H = mode === "host" && Host._state(), V = mode === "student" && Student._v();
+    const playing = (H && H.phase === "play") || (V && V.phase === "play");
+    if (playing && Date.now() - backArmed > 4000) { // leaving a running game: ask for a second click
+      backArmed = Date.now();
+      if (b) { b.classList.add("armed"); b.querySelector("span").textContent = mode === "host" ? "Quitter la partie ? Cliquer encore" : "Quitter ? Cliquer encore"; }
+      setTimeout(() => { const b2 = $("#backbtn"); if (b2) { b2.classList.remove("armed"); b2.querySelector("span").textContent = "Retour"; } }, 4000);
+      return;
+    }
+    location.href = location.pathname; // the menu (the game of the teacher stays saved: « Reprendre cette partie »)
+  }
+  document.addEventListener("click", e => { if (e.target.closest && e.target.closest("#backbtn")) goBack(); });
   function header(sub, extra) {
-    return `<header class="top"><div><h1>La Ruée vers l'Or</h1><div class="sub">${sub}</div></div>
+    return `<header class="top"><div class="ttl">${atMenu ? "" : BACK}<div><h1>La Ruée vers l'Or</h1><div class="sub">${sub}</div></div></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${extra || ""}</div></header>`;
   }
   const segs = (id, vals, cur, lab) => `<div class="seg" id="${id}" role="group">${vals.map(v => `<button type="button" data-v="${v}" aria-pressed="${String(v) === String(cur)}">${lab ? lab(v) : v}</button>`).join("")}</div>`;
@@ -80,7 +97,10 @@
 
   /* ---------- menu ---------- */
   function renderMenu() {
-    app.innerHTML = header("Chercheurs d'or · partie en réseau") + `
+    atMenu = true;
+    const h = header("Chercheurs d'or · partie en réseau");
+    atMenu = false;
+    app.innerHTML = h + `
       <div class="setup">
         <section class="panel"><h2>Le principe</h2>
           <p>Chaque chercheur d'or répond à ses questions sur son téléphone, à son rythme. Une bonne réponse rapporte des pépites. De temps en temps, les joueurs peuvent tomber sur des événements spéciaux.</p>
@@ -162,6 +182,7 @@
     const nOf = p => p.deck.length || H.nQ;
 
     function init() {
+      mode = "host";
       try { history.replaceState(null, "", location.pathname + "?prof" + extraQS()); } catch (e) {}
       const old = store.get(KEY);
       if (old && old.phase !== "end" && old.code && Object.keys(old.players || {}).length) {
@@ -644,6 +665,7 @@
     const pidKey = () => "ruee-pid-" + code;
 
     function init(c) {
+      mode = "student";
       code = String(c || "").toUpperCase().replace(/[^0-9A-Z]/g, "");
       name = store.get("ruee-name") || "";
       if (code && store.get(pidKey())) { join(); return; }

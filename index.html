@@ -270,6 +270,12 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 .fbar { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 25; width: min(560px, calc(100vw - 24px)); background: linear-gradient(110deg, #3a2a0c, #5a400f); border: 2px solid var(--gold); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 0 24px #f1b52e66, 0 10px 30px #000c; animation: drop .4s; }
 body.hasfbar { padding-bottom: 170px; }
 .fowait { background: #fff4c4; color: #3a2a0c; border-radius: 6px; min-height: 200px; display: grid; place-items: center; padding: 20px; font-weight: 700; font-size: 18px; text-align: center; }
+.ttl { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.backbtn { flex: none; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(#ffd34d, var(--gold)); color: #2a1a03; border: 0; border-radius: 12px; padding: 9px 14px 9px 10px; font-family: inherit; font-size: 17px; font-weight: 800; box-shadow: 0 4px 0 #6b420a; cursor: pointer; }
+.backbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b420a; }
+.backbtn:focus-visible { outline: 3px solid #fff4c4; outline-offset: 2px; }
+.backbtn.armed { background: linear-gradient(#ff9f7a, var(--bad)); color: #2a0b05; }
+@media (max-width: 600px) { .backbtn { padding: 6px 10px 6px 8px; font-size: 14px; border-radius: 10px; } .backbtn svg { width: 18px; height: 18px; } .ttl { gap: 8px; } }
 .fbar .fmsg { color: var(--ore); font-size: 16px; line-height: 1.35; }
 .fbar .fmsg strong { color: var(--gold); }
 .fbar .fbtns { display: grid; grid-template-columns: 1fr auto; gap: 8px; }

@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}.primary:disabled { opacity: .6; cursor: wait; transform: none; box-shadow: 0 4px 0 #6b420a; }
+.ttl { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.backbtn { flex: none; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(#ffd34d, var(--gold)); color: #2a1a03; border: 0; border-radius: 12px; padding: 9px 14px 9px 10px; font-family: inherit; font-size: 17px; font-weight: 800; box-shadow: 0 4px 0 #6b420a; cursor: pointer; }
+.backbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b420a; }
+.backbtn:focus-visible { outline: 3px solid #fff4c4; outline-offset: 2px; }
+.backbtn.armed { background: linear-gradient(#ff9f7a, var(--bad)); color: #2a0b05; }
+@media (max-width: 600px) { .backbtn { padding: 6px 10px 6px 8px; font-size: 14px; border-radius: 10px; } .backbtn svg { width: 18px; height: 18px; } .ttl { gap: 8px; } }
 </style>
 </head>
 <body>
@@ -323,9 +329,23 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   }
 
   /* ---------- Views ---------- */
+  // yellow back button to the site's menu (not in the downloaded offline copy, which has no menu)
+  const HAS_MENU = location.protocol !== "file:";
+  let backArmed = 0;
+  function goBack() {
+    const b = document.getElementById("backbtn");
+    if (S.phase === "play" && Date.now() - backArmed > 4000) {
+      backArmed = Date.now();
+      if (b) { b.classList.add("armed"); b.querySelector("span").textContent = "Quitter la partie ? Cliquer encore"; }
+      setTimeout(() => { const b2 = document.getElementById("backbtn"); if (b2) { b2.classList.remove("armed"); b2.querySelector("span").textContent = "Retour"; } }, 4000);
+      return;
+    }
+    stopTimer(); location.href = "index.html";
+  }
+  document.addEventListener("click", e => { if (e.target.closest && e.target.closest("#backbtn")) goBack(); });
   function header(extra) {
     return `<header class="top">
-      <div><h1>La Ruée vers l'Or</h1><div class="sub">Chercheurs d'or · ${LEVEL_SUB}</div></div>
+      <div class="ttl">${HAS_MENU ? `<button class="backbtn" id="backbtn" type="button"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Retour</span></button>` : ""}<div><h1>La Ruée vers l'Or</h1><div class="sub">Chercheurs d'or · ${LEVEL_SUB}</div></div></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">${extra || ""}
         <button class="iconbtn" id="snd" aria-pressed="${S.sound}">${S.sound ? "Son : activé" : "Son : coupé"}</button></div>
     </header>`;
