@@ -146,6 +146,8 @@
           <p>À ouvrir sur l'ordinateur relié au tableau : un code et un QR code s'affichent, puis le classement en direct.</p>
           <button class="primary" id="mJoin">Rejoindre une partie (élève)</button>
           <p>Sur le téléphone : scanne le QR code ou tape le code affiché au tableau.</p>
+          <button class="primary purple" id="mPlay">Créer une partie et y jouer</button>
+          <p>Sans écran de prof : tu crées la partie sur ton téléphone ou ton ordinateur, les autres scannent ton QR code, et tout le monde joue, toi compris.</p>
           <button class="ghost" id="mTest">Tester la connexion de ce réseau</button>
           <div id="nettest" aria-live="polite"></div>
           <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer en ligne au tableau (un seul écran)</a>
@@ -157,6 +159,7 @@
       </div>` + credit;
     $("#mHost").onclick = () => Host.init();
     $("#mJoin").onclick = () => Student.init("");
+    $("#mPlay").onclick = () => Host.initPlay();
     $("#mOff").onclick = downloadOffline;
     $("#mTest").onclick = testConnection;
   }
@@ -219,16 +222,34 @@
     const joinURL = () => location.origin + location.pathname + "?p=" + H.code + extraQS();
     const nOf = p => p.deck.length || H.nQ;
 
+    // "Créer une partie et y jouer": the creator is also a player (no teacher screen once the game starts)
+    let selfPlay = false, selfJoined = false;
+    function initPlay() {
+      mode = "host";
+      const old = store.get(KEY);
+      if (old && old.phase !== "end" && old.selfPlay && Object.keys(old.players || {}).length) { selfPlay = true; return init(); }
+      app.innerHTML = header("Créer une partie et y jouer") + `<section class="panel joinbox">
+          <p>Tu vas créer la partie et y jouer avec les autres. Garde cette page ouverte pendant toute la partie : c'est elle qui fait tourner le jeu.</p>
+          <label class="f">Ton nom <input id="sn" maxlength="18" autocomplete="nickname" value="${esc(store.get("ruee-name") || "")}"></label>
+          <button class="primary" id="sgo">Créer la partie</button>
+          <div class="err" id="serr" aria-live="polite"></div></section>` + credit;
+      const go = () => {
+        const n = $("#sn").value.trim();
+        if (!n) { $("#serr").textContent = "Écris ton nom."; return; }
+        store.set("ruee-name", n); selfPlay = true; store.del(KEY); init();
+      };
+      $("#sgo").onclick = go; $("#sn").onkeydown = e => { if (e.key === "Enter") go(); }; $("#sn").focus();
+    }
     function init() {
       mode = "host";
-      try { history.replaceState(null, "", location.pathname + "?prof" + extraQS()); } catch (e) {}
+      try { history.replaceState(null, "", location.pathname + (selfPlay ? "?jeu" : "?prof") + extraQS()); } catch (e) {}
       const old = store.get(KEY);
       if (old && old.phase !== "end" && old.code && Object.keys(old.players || {}).length) {
         app.innerHTML = header("Professeur") + `<section class="panel joinbox"><h2>Partie en cours</h2>
           <p>Une partie (code <strong>${esc(old.code)}</strong>, ${Object.keys(old.players).length} joueur${Object.keys(old.players).length > 1 ? "s" : ""}) n'est pas terminée.</p>
           <button class="primary" id="resume">Reprendre cette partie</button>
           <button class="ghost" id="fresh">Nouvelle partie</button></section>` + credit;
-        $("#resume").onclick = () => { H = old; L = level(H.level); players().forEach(p => { p.online = false; }); connect(); };
+        $("#resume").onclick = () => { H = old; L = level(H.level); selfPlay = !!H.selfPlay; players().forEach(p => { p.online = false; }); connect(); };
         $("#fresh").onclick = () => { store.del(KEY); newGame(); };
         return;
       }
@@ -238,7 +259,9 @@
     function newGame() {
       detach(true);
       conns = {};
-      H = { code: newCode(), level: (H && H.level) || "5e", nQ: (H && H.nQ) || 20, series: (H && H.series) || "A", themes: null, phase: "lobby", players: {}, links: {}, feed: [], seq: 0, cids: {} };
+      H = { code: newCode(), level: (H && H.level) || "5e", nQ: (H && H.nQ) || 20, series: (H && H.series) || "A", themes: null, phase: "lobby", players: {}, links: {}, feed: [], seq: 0, cids: {},
+        selfPlay, selfName: selfPlay ? store.get("ruee-name") || "Chercheur" : null };
+      selfJoined = false;
       L = level(H.level);
       H.themes = Object.fromEntries(L.themes.map(t => [t.id, true]));
       save();
@@ -306,6 +329,8 @@
       setStatus(fbOnline ? "" : "Connexion au serveur…"); render();
       clearTimeout(blockT);
       if (!fbOnline) blockT = setTimeout(() => { if (!fbOnline) setStatus(HBLOCKED); }, 15000);
+      // the creator joins his own game as a player, quietly, like any phone
+      if (H.selfPlay && !selfJoined) { selfJoined = true; Student.joinQuiet(H.code, H.selfName || store.get("ruee-name") || "Chercheur"); }
     }
     // one "connection" per phone (cid); a phone already known gets its player back at once
     function connFor(cid) {
@@ -659,13 +684,14 @@
     }
     function draw() {
       if (!H) return;
+      if (H.selfPlay && H.phase !== "lobby") return; // the creator now sees his player's screen
       if (H.phase === "lobby") drawLobby();
       else if (H.phase === "play") drawLive();
       else drawEnd();
     }
     function drawLobby() {
       const ps = players();
-      app.innerHTML = header(`Professeur · ${esc(L.sub)}`, statusHTML()) + `
+      app.innerHTML = header(`${H.selfPlay ? "Partie entre joueurs" : "Professeur"} · ${esc(L.sub)}`, statusHTML()) + `
         <div class="lobby">
           <section class="panel joinpanel">
             <h2>Rejoindre la partie</h2>
@@ -748,7 +774,7 @@
         </section>` + credit;
       $("#hnew").onclick = () => { store.del(KEY); newGame(); };
     }
-    return { init, _state: () => H };
+    return { init, initPlay, _state: () => H };
   })();
 
   /* =====================================================================
@@ -758,6 +784,11 @@
     let peer = null, conn = null, code = "", name = "", V = null, shown = null, timer = null, drawT = [], retry = null, banner = "", joining = false;
     const pidKey = () => "ruee-pid-" + code;
 
+    let quiet = false; // the creator's own player: no join screen, no lobby screen (the creator sees the settings)
+    function joinQuiet(c, n) {
+      quiet = true; code = c; name = n;
+      open();
+    }
     function init(c) {
       mode = "student";
       code = String(c || "").toUpperCase().replace(/[^0-9A-Z]/g, "");
@@ -767,6 +798,7 @@
     }
     function renderJoin(err) {
       joining = false;
+      if (quiet) { if (err) console.warn(err); return; }
       app.innerHTML = header("Rejoindre une partie") + `
         <section class="panel joinbox">
           <label class="f">Code de la partie <input id="jc" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" value="${esc(code)}"></label>
@@ -997,10 +1029,11 @@
 
     function render() {
       if (!V) return;
+      if (quiet && V.phase === "lobby") return;
       if (V.phase === "lobby") {
         stopTimers(); shown = null;
         app.innerHTML = top() + `<section class="panel"><h2>Bienvenue ${esc(V.me ? V.me.name : "")} !</h2>
-          <p>Tu es dans la partie <strong>${esc(V.code)}</strong>. Attends que le professeur la lance.</p>${rulesHTML()}</section>` + credit;
+          <p>Tu es dans la partie <strong>${esc(V.code)}</strong>. Attends que la partie soit lancée.</p>${rulesHTML()}</section>` + credit;
         return;
       }
       if (V.phase === "end") {
@@ -1187,12 +1220,13 @@
       const nx = $("#snext");
       nx.onclick = () => { nx.disabled = true; send({ t: "next" }); };
     }
-    return { init, _v: () => V };
+    return { init, joinQuiet, _v: () => V };
   })();
 
   /* ---------- boot ---------- */
   if (params.has("p")) Student.init(params.get("p"));
   else if (params.has("prof")) Host.init();
+  else if (params.has("jeu")) Host.initPlay();
   else renderMenu();
   window.__ruee = { Host, Student };
 })();
