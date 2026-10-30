@@ -187,17 +187,17 @@
         </section>
         <section class="panel menu"><h2>Jouer</h2>
           <button class="primary" id="mHost">Créer une partie (professeur)</button>
-          <p>À ouvrir sur l'ordinateur relié au tableau : un code et un QR code s'affichent, puis le classement en direct.</p>
+          <p>Affiche un code pour que les joueurs rejoignent la partie, puis suis le classement en direct.</p>
           <button class="primary" id="mJoin">Rejoindre une partie (élève)</button>
-          <p>Sur le téléphone : scanne le QR code ou tape le code affiché au tableau.</p>
+          <p>Entre le code de la partie pour jouer à ton rythme.</p>
           <button class="primary purple" id="mPlay">Créer une partie et y jouer</button>
-          <p>Sans écran de prof : tu crées la partie sur ton téléphone ou ton ordinateur, les autres scannent ton QR code, et tout le monde joue, toi compris.</p>
+          <p>Crée une partie, invite les autres avec ton code et joue avec eux.</p>
           <button class="ghost" id="mTest">Tester la connexion de ce réseau</button>
           <div id="nettest" aria-live="polite"></div>
           <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer sur le même appareil</a>
-          <p>Le même jeu que la version hors ligne, directement en ligne : les joueurs répondent chacun leur tour sur le même appareil (ordinateur relié au tableau, tablette…).</p>
+          <p>Jouez chacun votre tour sur le même écran, ou seul contre des bots.</p>
           <button class="primary green" id="mOff">Télécharger la version hors ligne</button>
-          <p>Le jeu au tableau (maths 5ème, Terminale, CAPES et histoire 3ème) dans un fichier zip : on le décompresse, puis on ouvre <strong>jouer.html</strong>, même sans internet.</p>
+          <p>Télécharge le jeu et ouvre le fichier <strong>jouer.html</strong> pour y jouer sans internet.</p>
           <div id="offst" aria-live="polite"></div>
         </section>
       </div>` + credit;
