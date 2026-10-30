@@ -17,16 +17,6 @@
 .rule.item .big { color: var(--ore); }
 .rule.item { align-items: flex-start; }
 .rule.item > span:last-child { line-height: 1.6; }
-.fpart { display: flex; flex-direction: column; gap: 6px; background: #120d0966; border: 1px solid var(--gold-deep); border-radius: 10px; padding: 8px 10px; }
-.fptitle { font-size: 14px; color: var(--ore); line-height: 1.35; }
-.fprow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.fpname { font-weight: 800; color: var(--pc); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fpbtns { display: flex; gap: 4px; flex: none; }
-.fpb { width: 34px; height: 30px; border-radius: 7px; border: 1px solid var(--gold-deep); background: #2a1f16; color: var(--gold); font-weight: 800; font-family: inherit; cursor: pointer; }
-.fpb.picked { background: var(--gold); color: #2a1a03; }
-.fpb.right { background: var(--ok); color: #0e2a12; border-color: var(--ok); }
-.fpb.wrong { background: var(--bad); color: #2a0b05; border-color: var(--bad); }
-.fpb:disabled { cursor: default; }
 .mixbox { gap: 8px; }
 .mixrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .mixchk { display: flex; align-items: center; gap: 8px; min-width: 150px; font-weight: 600; }
@@ -362,11 +352,10 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   const isFilon = () => S.challenges.includes(S.idx) && S.filonOn !== false;
   // chance of a filon on this player's turn: 1/4 for the last of the ranking, down to 0 for the first
   function filonChance(i) {
-    if (/[?&]filon=1\b/.test(location.search)) return 1; // test switch: a filon at each turn
     const n = S.teams.length;
     if (n === 1) return 1 / 8;
     const above = S.teams.filter(t => t.score > S.teams[i].score).length;
-    return 0.25 * above / (n - 1) * Math.min(1, 4 / n);
+    return 0.25 * above / (n - 1);
   }
   // a theft can only target the single richest player, never the current player
   function leaderIdx() {
@@ -431,10 +420,10 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <div class="rules">
           <div class="rule"><span class="big">0</span><span>Mauvaise réponse ou temps écoulé : aucune pépite.</span></div>
           <div class="rule"><span class="big">1 ${NUG}</span><span>Bonne réponse à une question normale.</span></div>
-          <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous ! Si les deux trouvent, chacun gagne un objet (si un seul trouve : une chance sur deux pour chacun).</span></div>
+          <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs s'entraident sur des questions ratées, jusqu'à 2 pépites chacun. Si les deux trouvent, chacun gagne un objet (si un seul trouve : une chance sur deux pour chacun).</span></div>
           <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites. Le gagnant vole aussi un objet à l'autre.</span></div>
           <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche, et l'un de ses objets.</span></div>
-          <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : le joueur gagne 4 pépites s'il répond juste. Les autres peuvent tenter la même question : 1 pépite pour ceux qui trouvent, si le joueur du filon trouve aussi.</span></div>
+          <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : si la réponse est correcte, le joueur gagne 4 pépites et tous les autres 1 pépite : coopérez !</span></div>
           <div class="rule item"><span class="big"></span><span><strong>Objets</strong><br>${icon("lampe")} Lampe : donne une astuce pour la question.<br>${icon("pioche")} Pioche : augmente la récompense pour une question.<br>${icon("tamis")} Tamis : retire deux mauvaises réponses.</span></div>
         </div>
         <p class="keys">Au clavier : touches A, B, C, D pour répondre, Entrée pour passer à la suite.</p>
@@ -549,7 +538,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     }
     S.duel = null;
     S.teams = Array.from({ length: S.nTeams }, (_, i) => ({ name: S.names[i], score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [], inv: [newItem()] })); // everybody starts with one item
-    S.use = null; S.fpart = {};
+    S.use = null;
     if (/[?&]objets=1\b/.test(location.search)) S.teams.forEach(t => { t.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
     S.idx = 0; S.answered = null; S.victim = null; S.phase = "play";
     S.timeUp = false;
@@ -603,24 +592,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     if (S.use.removed) S.use.removed.forEach(l => { const b = app.querySelector(`.ans[data-l="${l}"]`); if (b) { b.classList.add("gone"); b.disabled = true; } });
   }
 
-  // filon on one screen: the other players may give their answer too (+1 nugget if they are right and the filon player is right)
-  function filonBoxHTML(owner, done) {
-    S.fpart = S.fpart || {};
-    const right = done ? ANSWER[S.deck[S.idx]] : null;
-    return `<div class="fpart"><div class="fptitle">Les autres chercheurs peuvent répondre aussi : +1 pépite pour ceux qui trouvent, si ${esc(owner.name)} trouve aussi.</div>
-      ${S.teams.map((o, i) => o === owner ? "" : `<div class="fprow" style="--pc:${pc(i)}"><span class="fpname">${esc(o.name)}</span><span class="fpbtns">${["a", "b", "c", "d"].map(l => {
-        const pickd = S.fpart[i] === l, cls = done ? (l === right ? (pickd ? "right" : "") : pickd ? "wrong" : "") : pickd ? "picked" : "";
-        return `<button class="fpb ${cls}" data-i="${i}" data-l="${l}" ${done ? "disabled" : ""} aria-pressed="${pickd}">${l.toUpperCase()}</button>`; }).join("")}</span></div>`).join("")}</div>`;
-  }
-  function bindFilonBox(done) {
-    if (done) return;
-    app.querySelectorAll(".fpb").forEach(b => b.onclick = () => {
-      const i = +b.dataset.i;
-      S.fpart[i] = S.fpart[i] === b.dataset.l ? undefined : b.dataset.l; // a second click removes the answer
-      app.querySelectorAll(`.fpb[data-i="${i}"]`).forEach(x => { const on = S.fpart[i] === x.dataset.l; x.classList.toggle("picked", on); x.setAttribute("aria-pressed", on); });
-    });
-  }
-
   function teamsStrip() {
     return `<div class="teams">${S.teams.map((t, i) => `<div class="team ${S.phase === "play" && i === S.idx % S.teams.length ? "active" : ""} ${S.phase === "play" && isRaid() && i === S.victim ? "target" : ""}" id="team${i}" style="--pc:${pc(i)}">
       <span class="name">${esc(t.name)}</span>
@@ -661,9 +632,8 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
             <div class="turn" style="--pc:${pc(S.idx % S.teams.length)}">À toi de creuser<strong><span class="dot"></span>${esc(t.name)}</strong></div>
             <div class="progress">Question ${S.idx + 1} sur ${S.deck.length}</div>
             <div class="stake">En jeu : <span class="nugs">${nugs(done && done.k != null ? done.k : stakeOf())}</span> ${done && done.k != null ? done.k : stakeOf()} pépite${(done && done.k != null ? done.k : stakeOf()) > 1 ? "s" : ""}${isRaid() ? ` à chaparder à ${esc(victim().name)}` : ""}</div>
-            ${isRaid() ? `<div class="feedback ko" style="font-size:16px">Le shérif veille ! Si tu te trompes, tu paies 1 pépite d'amende à ${esc(victim().name)}.</div><div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${ETIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>` : ch ? `<div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${S.filonLot || 4} pépite${(S.filonLot || 4) > 1 ? "s" : ""}</span></div><div class="bar"><i id="barfill"></i></div></div><div class="feedback ok" style="font-size:16px">Tu as le droit de demander de l'aide !</div>` : done ? "" : `<div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${QTIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>`}
+            ${isRaid() ? `<div class="feedback ko" style="font-size:16px">Le shérif veille ! Si tu te trompes, tu paies 1 pépite d'amende à ${esc(victim().name)}.</div><div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${ETIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>` : ch ? `<div class="timer" id="timer"><div class="row"><span>Temps restant · coopération !</span><span class="secs" id="secs">${S.filonLot || 4} pépite${(S.filonLot || 4) > 1 ? "s" : ""}</span></div><div class="bar"><i id="barfill"></i></div></div><div class="feedback ok" style="font-size:16px">Tu as le droit de demander de l'aide !</div>` : done ? "" : `<div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${QTIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>`}
             ${done ? "" : useBarHTML(t)}<div id="usefx"></div>
-            ${ch && !isRaid() && S.teams.length > 1 ? filonBoxHTML(t, done) : ""}
             <div class="answers">${["a", "b", "c", "d"].map(l => `<button class="ans" data-l="${l}" ${done ? "disabled" : ""}>${l.toUpperCase()}</button>`).join("")}</div>
             <div id="fb"></div>
           </div>
@@ -671,7 +641,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       </div>`;
     app.querySelectorAll(".ans").forEach(b => b.onclick = () => answer(b.dataset.l, b));
     if (!done) bindUse(t, q); else showUse(q);
-    if (ch && !isRaid()) bindFilonBox(done);
     document.getElementById("quit").onclick = () => { stopTimer(); S.phase = "end"; renderEnd(); };
     bindSound();
     if (done) showFeedback(done.choice, false);
@@ -722,9 +691,9 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       <p>Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu paies 1 pépite d'amende à ${esc(victim().name)} !</p>
       <p style="color:var(--gold);font-size:28px;display:flex;gap:4px;align-items:center">${nugs(k)} <span style="margin-left:8px">${k} pépite${k > 1 ? "s" : ""} à chaparder</span></p>`
       : `<div class="title filon">Vous êtes tombés sur un filon !</div>
-      <p>${esc(curTeam().name)}, tu as <strong>${FTIME} secondes</strong> pour trouver la bonne réponse. Si tu réussis, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent donner leur réponse eux aussi : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !</p>
+      <p>${esc(curTeam().name)}, tu as <strong>${FTIME} secondes</strong> pour trouver la bonne réponse. Si tu réussis, tu gagnes <strong>4 pépites</strong> et <strong>tous les autres chercheurs gagnent 1 pépite</strong>. Toute la classe a intérêt à t'aider !</p>
       <p>${S.filonFromMissed ? "C'est une question que tu n'as pas réussie, avec d'autres valeurs : retente ta chance ! " : ""}<strong>Tu as le droit de demander de l'aide !</strong></p>
-      <p style="color:var(--gold);font-size:28px;display:flex;gap:4px;align-items:center">${nugs(4)} <span style="margin-left:8px">4 pépites</span></p>`;
+      <p style="color:var(--gold);font-size:28px;display:flex;gap:4px;align-items:center">${nugs(4)} <span style="margin-left:8px">4 pépites, +1 pour chacun des autres</span></p>`;
     ov.innerHTML = `<div class="box">${body}
       <button class="primary" id="ready">C'est parti !</button></div>`;
     document.body.appendChild(ov);
@@ -820,12 +789,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         const st = stealItem(victim(), t);
         if (st) loot = ` ${esc(t.name)} lui vole aussi ${esc(son(st))} !`;
       }
-      else if (isFilon()) {
-        t.ch++;
-        const winners = S.teams.filter((o, i) => o !== t && (S.fpart || {})[i] === right);
-        winners.forEach(o => { o.score += 1; o.fa = (o.fa || 0) + 1; });
-        if (winners.length) loot += ` +1 pépite pour ${winners.map(o => esc(o.name)).join(", ")}, qui ${winners.length > 1 ? "ont" : "a"} aussi trouvé.`;
-      }
+      else if (isFilon()) { t.ch++; S.teams.forEach(o => { if (o !== t) o.score += 1; }); }
     }
     if (!ok) (t.failed = t.failed || []).push(q);
     let fine = 0;
@@ -845,7 +809,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     const last = S.timeUp || S.idx === S.deck.length - 1;
     const msg = ok && isRaid() ? `Coup réussi ! ${esc(t.name)} chaparde ${k} pépite${k > 1 ? "s" : ""} à ${esc(victim().name)}.`
       : !ok && isRaid() ? (S.answered && S.answered.fine ? `Pris la main dans le sac ! La bonne réponse était ${right.toUpperCase()}. ${esc(t.name)} paie 1 pépite d'amende à ${esc(victim().name)}.` : `Pris la main dans le sac ! La bonne réponse était ${right.toUpperCase()}. ${esc(t.name)} n'a pas de pépite pour payer l'amende.`)
-      : ok && isFilon() ? `Filon exploité ! +${k} pépites pour ${esc(t.name)}.`
+      : ok && isFilon() ? `Filon exploité ! +${k} pépites pour ${esc(t.name)}${S.teams.length > 1 ? " et +1 pépite pour tous les autres chercheurs" : ""}.`
       : ok ? `Bien joué ! +${k} pépite${k > 1 ? "s" : ""} pour ${esc(t.name)}.`
       : (l === null ? `Temps écoulé ! La bonne réponse était ${right.toUpperCase()}.` : `Raté ! La bonne réponse était ${right.toUpperCase()}.`);
     document.getElementById("fb").innerHTML = `<div class="feedback ${ok ? "ok" : "ko"}">${msg}${S.answered && S.answered.loot ? S.answered.loot : ""}</div>
@@ -860,11 +824,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     const vcard = isRaid() ? document.getElementById("team" + S.victim) : null;
     if (vcard) vcard.querySelector(".score span").textContent = victim().score;
     if (ok && isFilon()) S.teams.forEach((o, i) => { const c = document.getElementById("team" + i); if (c) c.querySelector(".score span").textContent = o.score; });
-    if (isFilon()) app.querySelectorAll(".fpb").forEach(b => {
-      b.disabled = true; b.classList.remove("picked");
-      const mine = (S.fpart || {})[+b.dataset.i] === b.dataset.l;
-      if (mine) b.classList.add(b.dataset.l === right ? "right" : "wrong");
-    });
     if (animate) {
       beep(ok ? "ok" : "ko");
       if (!ok && vcard && S.answered && S.answered.fine) flyNuggets(1, vcard, card);
@@ -1132,7 +1091,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 
   function next() {
     if (S.timeUp || S.idx >= S.deck.length - 1) { S.phase = "end"; renderEnd(); return; }
-    S.idx++; S.answered = null; S.duel = null; S.use = null; S.fpart = {};
+    S.idx++; S.answered = null; S.duel = null; S.use = null;
     renderPlay();
   }
 
@@ -1146,7 +1105,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       if (prev === null || t.score !== prev) pos = i + 1;
       prev = t.score;
       return `<div class="rank ${pos === 1 ? "first" : ""}"><span class="pos">${pos}</span>
-        <div style="min-width:0;--pc:${pc(S.teams.indexOf(t))}"><div class="nm">${esc(t.name)}</div><div class="det">${t.ok} bonne${t.ok > 1 ? "s" : ""} réponse${t.ok > 1 ? "s" : ""} sur ${t.tot} · ${t.ch} filon${t.ch > 1 ? "s" : ""} exploité${t.ch > 1 ? "s" : ""} · ${t.fa || 0} filon${(t.fa || 0) > 1 ? "s" : ""} partagé${(t.fa || 0) > 1 ? "s" : ""} · ${t.vols || 0} chapardage${(t.vols || 0) > 1 ? "s" : ""} réussi${(t.vols || 0) > 1 ? "s" : ""} · ${t.duels || 0} castagne${(t.duels || 0) > 1 ? "s" : ""} gagnée${(t.duels || 0) > 1 ? "s" : ""} · ${t.saves || 0} sauvetage${(t.saves || 0) > 1 ? "s" : ""} réussi${(t.saves || 0) > 1 ? "s" : ""}</div></div>
+        <div style="min-width:0;--pc:${pc(S.teams.indexOf(t))}"><div class="nm">${esc(t.name)}</div><div class="det">${t.ok} bonne${t.ok > 1 ? "s" : ""} réponse${t.ok > 1 ? "s" : ""} sur ${t.tot} · ${t.ch} filon${t.ch > 1 ? "s" : ""} exploité${t.ch > 1 ? "s" : ""} · ${t.vols || 0} chapardage${(t.vols || 0) > 1 ? "s" : ""} réussi${(t.vols || 0) > 1 ? "s" : ""} · ${t.duels || 0} castagne${(t.duels || 0) > 1 ? "s" : ""} gagnée${(t.duels || 0) > 1 ? "s" : ""} · ${t.saves || 0} sauvetage${(t.saves || 0) > 1 ? "s" : ""} réussi${(t.saves || 0) > 1 ? "s" : ""}</div></div>
         <span class="pts">${NUG}${t.score}</span></div>`;
     }).join("");
     const best = ranked[0];
