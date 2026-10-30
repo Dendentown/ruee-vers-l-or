@@ -194,8 +194,8 @@
           <p>Sans écran de prof : tu crées la partie sur ton téléphone ou ton ordinateur, les autres scannent ton QR code, et tout le monde joue, toi compris.</p>
           <button class="ghost" id="mTest">Tester la connexion de ce réseau</button>
           <div id="nettest" aria-live="polite"></div>
-          <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer en ligne au tableau (un seul écran)</a>
-          <p>Le même jeu que la version hors ligne, directement en ligne : les joueurs répondent chacun leur tour au tableau, sans téléphone.</p>
+          <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer sur le même appareil</a>
+          <p>Le même jeu que la version hors ligne, directement en ligne : les joueurs répondent chacun leur tour sur le même appareil (ordinateur relié au tableau, tablette…).</p>
           <button class="primary green" id="mOff">Télécharger la version hors ligne</button>
           <p>Le jeu au tableau (maths 5ème, Terminale, CAPES et histoire 3ème) dans un fichier zip : on le décompresse, puis on ouvre <strong>jouer.html</strong>, même sans internet.</p>
           <div id="offst" aria-live="polite"></div>
