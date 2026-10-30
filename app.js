@@ -114,7 +114,7 @@
           <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer en ligne au tableau (un seul écran)</a>
           <p>Le même jeu que la version hors ligne, directement en ligne : les joueurs répondent chacun leur tour au tableau, sans téléphone.</p>
           <button class="primary green" id="mOff">Télécharger la version hors ligne</button>
-          <p>Le jeu au tableau (5ème, Terminale, CAPES) dans un fichier zip : on le décompresse, puis on ouvre <strong>jouer.html</strong>, même sans internet.</p>
+          <p>Le jeu au tableau (maths 5ème, Terminale, CAPES et histoire 3ème) dans un fichier zip : on le décompresse, puis on ouvre <strong>jouer.html</strong>, même sans internet.</p>
           <div id="offst" aria-live="polite"></div>
         </section>
       </div>` + credit;
@@ -151,7 +151,7 @@
       dir.file("LISEZMOI.txt", "La Ruée vers l'Or - version hors ligne\r\n\r\n" +
         "1. Décompresser ce dossier (clic droit > Extraire tout).\r\n" +
         "2. Ouvrir jouer.html avec un navigateur (Chrome, Firefox, Edge, Safari).\r\n" +
-        "3. Choisir le niveau (5ème, Terminale, CAPES) et jouer au tableau, même sans internet.\r\n\r\n" +
+        "3. Choisir la matière et le niveau et jouer au tableau, même sans internet.\r\n\r\n" +
         "La partie en réseau sur téléphones demande internet : " + site + "\r\n\r\n" +
         "Copyleft Denis Vanmai, avec l'aide de mon ami Claude\r\n");
       show(92, "Création du fichier zip…");
@@ -585,7 +585,8 @@
           </section>
           <section class="panel setup1">
             <h2>Préparer la partie</h2>
-            <label class="f">Niveau ${segs("lv", Object.keys(D.LEVELS), H.level, v => D.LEVELS[v].label)}</label>
+            <label class="f">Matière ${segs("mat", Object.keys(D.SUBJECTS), D.LEVELS[H.level].subject, v => D.SUBJECTS[v])}</label>
+            <label class="f">Niveau ${segs("lv", Object.keys(D.LEVELS).filter(k => D.LEVELS[k].subject === D.LEVELS[H.level].subject), H.level, v => D.LEVELS[v].label)}</label>
             <label class="f">Questions par joueur ${segs("nq", [10, 20, 40], H.nQ)}</label>
             <label class="f">Série de questions ${segs("se", ["A", "B", "AB"], H.series, v => v === "AB" ? "A et B" : "Série " + v)}</label>
             <div class="f"><span style="font-weight:700;font-size:15px">Thèmes</span>
@@ -596,7 +597,9 @@
             <div class="err" id="herr"></div>
           </section>
         </div>` + credit;
-      bindSeg("lv", v => { if (v === H.level) return; H.level = v; L = level(v); H.themes = Object.fromEntries(L.themes.map(t => [t.id, true])); save(); pushAll(); draw(); });
+      const setLv = v => { if (v === H.level) return; H.level = v; L = level(v); H.themes = Object.fromEntries(L.themes.map(t => [t.id, true])); save(); pushAll(); draw(); };
+      bindSeg("lv", setLv);
+      bindSeg("mat", v => { if (v !== D.LEVELS[H.level].subject) setLv(Object.keys(D.LEVELS).find(k => D.LEVELS[k].subject === v)); });
       bindSeg("nq", v => { H.nQ = +v; save(); draw(); });
       bindSeg("se", v => { H.series = v; save(); draw(); });
       app.querySelectorAll("[data-th]").forEach(cb => { cb.onchange = () => { H.themes[cb.dataset.th] = cb.checked; save(); }; });
