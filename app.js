@@ -551,9 +551,9 @@
       const n = players().length, f = Math.min(1, 4 / n); // big classes: thefts and filons stay as frequent as with 4 players
       let done = false;
       if (n > 1 && k >= 2) {
-        const u = Math.random(), pr = f / 4;
-        // same rates as the board game: chapardage 1/4, castagne 1/3, sauvetage 1/4
-        const want = u < pr ? "raid" : u < pr + 1 / 3 ? "duel" : u < pr + 1 / 3 + 1 / 4 ? "rescue" : null;
+        const u = Math.random(), pr = f / 5;
+        // same rates as the board game: chapardage 1/5, castagne 1/4, sauvetage 1/3
+        const want = u < pr ? "raid" : u < pr + 1 / 4 ? "duel" : u < pr + 1 / 4 + 1 / 3 ? "rescue" : null;
         // the drawn event first; if it cannot happen (no leader, no partner yet…), one of the others
         const tryEv = ev => {
           if (ev === "raid") {
