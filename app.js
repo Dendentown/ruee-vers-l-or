@@ -426,7 +426,7 @@
           H.seq++;
           const pid = "p" + H.seq + newId();
           p = H.players[pid] = { pid, name, color: PCOL[(H.seq - 1) % PCOL.length], join: H.seq, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0,
-            k: 0, deck: H.phase === "play" ? makeDeck() : [], solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: [] };
+            k: 0, deck: H.phase === "play" ? makeDeck() : [], solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: H.phase === "play" ? [newItem()] : [] };
           if (H.phase === "play") feed(`${name} rejoint la partie.`);
         }
         if (conns[p.pid] && conns[p.pid] !== c) { try { conns[p.pid].close(); } catch (e) {} }
@@ -749,7 +749,7 @@
       if (!pool().length) { if (err) err.textContent = "Coche au moins un thème."; return; }
       if (!players().length) { if (err) err.textContent = "Attends qu'au moins un élève ait rejoint la partie."; return; }
       H.phase = "play";
-      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null, inv: [] }));
+      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null, inv: [newItem()] })); // everybody starts with one item
       H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false;
       if (params.get("objets") === "1") players().forEach(p => { p.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
       feed("La partie commence !");

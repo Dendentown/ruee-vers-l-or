@@ -537,7 +537,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       }
     }
     S.duel = null;
-    S.teams = Array.from({ length: S.nTeams }, (_, i) => ({ name: S.names[i], score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [], inv: [] }));
+    S.teams = Array.from({ length: S.nTeams }, (_, i) => ({ name: S.names[i], score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [], inv: [newItem()] })); // everybody starts with one item
     S.use = null;
     if (/[?&]objets=1\b/.test(location.search)) S.teams.forEach(t => { t.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
     S.idx = 0; S.answered = null; S.victim = null; S.phase = "play";
