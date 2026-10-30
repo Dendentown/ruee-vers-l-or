@@ -319,7 +319,8 @@
     const solvedIn = (o, th) => [...new Set(o.solved)].filter(n => L.THEME_OF[n] === th);
     const missedOf = o => { const sv = new Set(o.solved); return [...new Set(o.failed)].filter(n => !sv.has(n) && !sv.has(L.twin(n))); };
     // a partner must still have questions to ask for, so that the pending one is served
-    const canPartner = (o, p) => o !== p && !o.pending && o.k < nOf(o) && o.online;
+    // a partner must not have been picked for one of his last 2 questions (no flood of extra questions)
+    const canPartner = (o, p) => o !== p && !o.pending && o.k < nOf(o) && o.online && (o.partnerAt == null || o.k - o.partnerAt >= 2);
     function filonChance(p) {
       const n = players().length;
       if (n === 1) return 1 / 8;
@@ -344,6 +345,7 @@
       const lid = newId(), thLabel = L.themes.find(t => t.id === th).label;
       H.links[lid] = { id: lid, type: "duel", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
       Object.assign(cur, { q: L.twin(pick(solvedIn(p, th))), kind: "duel", time: DTIME, stake: 2, link: lid, partner: o.name, thLabel });
+      o.partnerAt = o.k;
       o.pending = { q: L.twin(pick(solvedIn(o, th))), kind: "duel", time: DTIME, stake: 2, link: lid, partner: p.name, thLabel, extra: true };
       feed(`Castagne : ${p.name} défie ${o.name} (${thLabel}).`, "duel");
       toast(o.pid, `${p.name} te défie en castagne ! Elle arrive à ta prochaine question.`);
@@ -357,6 +359,7 @@
       const o = pick(partners), lid = newId();
       H.links[lid] = { id: lid, type: "rescue", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
       Object.assign(cur, { q: L.twin(pick(mine)), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: o.name });
+      o.partnerAt = o.k;
       o.pending = { q: L.twin(pick(missedOf(o))), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: p.name, extra: true };
       feed(`Sauvetage : ${p.name} et ${o.name} font équipe.`, "rescue");
       toast(o.pid, `Sauvetage avec ${p.name} ! Il arrive à ta prochaine question.`);
@@ -387,7 +390,7 @@
       let done = false;
       if (n > 1 && k >= 2) {
         const u = Math.random(), pr = f / 4;
-        const want = u < pr ? "raid" : u < pr + 1 / 6 ? "duel" : u < pr + 1 / 6 + 1 / 8 ? "rescue" : null;
+        const want = u < pr ? "raid" : u < pr + 1 / 8 ? "duel" : u < pr + 1 / 8 + 1 / 10 ? "rescue" : null;
         // the drawn event first; if it cannot happen (no leader, no partner yet…), one of the others
         const tryEv = ev => {
           if (ev === "raid") {
@@ -550,7 +553,7 @@
       if (!pool().length) { if (err) err.textContent = "Coche au moins un thème."; return; }
       if (!players().length) { if (err) err.textContent = "Attends qu'au moins un élève ait rejoint la partie."; return; }
       H.phase = "play";
-      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null }));
+      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null }));
       H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false;
       feed("La partie commence !");
       save(); pushAll(); render();
