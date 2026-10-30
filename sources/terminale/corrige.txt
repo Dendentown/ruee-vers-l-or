@@ -1,0 +1,192 @@
+Q1 (Suites) : a) $23$
+Q2 (Suites) : a) $-19$
+Q3 (Suites) : b) $63$
+Q4 (Suites) : d) $121$
+Q5 (Suites) : b) $\dfrac{3}{2}$
+Q6 (Suites) : b) $\dfrac{4}{7}$
+Q7 (Suites) : a) $6$
+Q8 (Suites) : a) $6$
+Q9 (Suites) : d) $26$
+Q10 (Suites) : c) $39$
+Q11 (Suites) : d) $\dfrac{2}{3}$
+Q12 (Suites) : d) $\dfrac{5}{2}$
+Q13 (Suites) : b) $20$
+Q14 (Suites) : c) $18$
+Q15 (Suites) : a) $10$
+Q16 (Suites) : d) $6$
+Q17 (Fonctions) : b) $6$
+Q18 (Fonctions) : d) $36$
+Q19 (Fonctions) : a) $-1$
+Q20 (Fonctions) : c) $\dfrac{5}{9}$
+Q21 (Fonctions) : a) $y=3x+1$
+Q22 (Fonctions) : b) $y=2x-1$
+Q23 (Fonctions) : d) $x=3$
+Q24 (Fonctions) : d) $x=-2$
+Q25 (Fonctions) : b) $-1$
+Q26 (Fonctions) : b) $2$
+Q27 (Fonctions) : b) $3$
+Q28 (Fonctions) : a) $1$
+Q29 (Fonctions) : a) $4$
+Q30 (Fonctions) : c) $6$
+Q31 (Fonctions) : b) $\dfrac{1}{3}$
+Q32 (Fonctions) : b) $\dfrac{3}{8}$
+Q33 (Exponentielle et logarithme) : b) $e^{4}$
+Q34 (Exponentielle et logarithme) : d) $e^{2}$
+Q35 (Exponentielle et logarithme) : d) $-1$
+Q36 (Exponentielle et logarithme) : c) $1$
+Q37 (Exponentielle et logarithme) : b) $\ln 2$
+Q38 (Exponentielle et logarithme) : c) $2\ln 3$
+Q39 (Exponentielle et logarithme) : c) $2e$
+Q40 (Exponentielle et logarithme) : c) $3e^{2}$
+Q41 (Exponentielle et logarithme) : a) $\dfrac{2}{3}$
+Q42 (Exponentielle et logarithme) : a) $\dfrac{5}{2}$
+Q43 (Exponentielle et logarithme) : c) $1$
+Q44 (Exponentielle et logarithme) : a) $\dfrac{4}{5}$
+Q45 (Exponentielle et logarithme) : a) $7$
+Q46 (Exponentielle et logarithme) : d) $11$
+Q47 (Exponentielle et logarithme) : d) $\dfrac{\ln 3-1}{2}$
+Q48 (Exponentielle et logarithme) : c) $\dfrac{\ln 5+2}{3}$
+Q49 (Intégrales et équations différentielles) : c) $\dfrac{8}{3}$
+Q50 (Intégrales et équations différentielles) : b) $\dfrac{9}{2}$
+Q51 (Intégrales et équations différentielles) : a) $\dfrac{e^{2}-1}{2}$
+Q52 (Intégrales et équations différentielles) : b) $\dfrac{e^{3}-1}{3}$
+Q53 (Intégrales et équations différentielles) : b) $e+1$
+Q54 (Intégrales et équations différentielles) : d) $2e+1$
+Q55 (Intégrales et équations différentielles) : a) $F(x)=\frac{1}{2}\,e^{2x}+\frac{1}{2}$
+Q56 (Intégrales et équations différentielles) : a) $F(x)=\frac{1}{3}\,e^{3x}-\frac{1}{3}$
+Q57 (Intégrales et équations différentielles) : c) $3$
+Q58 (Intégrales et équations différentielles) : a) $12$
+Q59 (Intégrales et équations différentielles) : a) $y=-3$
+Q60 (Intégrales et équations différentielles) : a) $y=\dfrac{1}{3}$
+Q61 (Intégrales et équations différentielles) : d) $3e^{2}$
+Q62 (Intégrales et équations différentielles) : c) $5e^{-1}$
+Q63 (Intégrales et équations différentielles) : a) $1$
+Q64 (Intégrales et équations différentielles) : c) $e^{2}+1$
+Q65 (Géométrie dans l'espace) : c) $1$
+Q66 (Géométrie dans l'espace) : d) $3$
+Q67 (Géométrie dans l'espace) : b) $3$
+Q68 (Géométrie dans l'espace) : c) $7$
+Q69 (Géométrie dans l'espace) : c) $m=4$
+Q70 (Géométrie dans l'espace) : c) $m=-\dfrac{7}{2}$
+Q71 (Géométrie dans l'espace) : c) $x+2y-z+1=0$
+Q72 (Géométrie dans l'espace) : c) $2x-y+3z-2=0$
+Q73 (Géométrie dans l'espace) : a) $(5;1;1)$
+Q74 (Géométrie dans l'espace) : c) $(-1;3;-2)$
+Q75 (Géométrie dans l'espace) : d) $m=6$
+Q76 (Géométrie dans l'espace) : c) $m=-3$
+Q77 (Géométrie dans l'espace) : d) $3$
+Q78 (Géométrie dans l'espace) : a) $3$
+Q79 (Géométrie dans l'espace) : a) $(3;5;0)$
+Q80 (Géométrie dans l'espace) : b) $(1;1;3)$
+Q81 (Probabilités et dénombrement) : b) $\dfrac{3}{8}$
+Q82 (Probabilités et dénombrement) : c) $\dfrac{5}{32}$
+Q83 (Probabilités et dénombrement) : b) $5$
+Q84 (Probabilités et dénombrement) : b) $10$
+Q85 (Probabilités et dénombrement) : b) $\dfrac{5}{2}$
+Q86 (Probabilités et dénombrement) : a) $\dfrac{15}{4}$
+Q87 (Probabilités et dénombrement) : a) $0{,}12$
+Q88 (Probabilités et dénombrement) : b) $0{,}3$
+Q89 (Probabilités et dénombrement) : d) $0{,}29$
+Q90 (Probabilités et dénombrement) : b) $0{,}28$
+Q91 (Probabilités et dénombrement) : c) $10$
+Q92 (Probabilités et dénombrement) : a) $20$
+Q93 (Probabilités et dénombrement) : a) $81$
+Q94 (Probabilités et dénombrement) : c) $32$
+Q95 (Probabilités et dénombrement) : a) $\dfrac{7}{8}$
+Q96 (Probabilités et dénombrement) : b) $\dfrac{5}{9}$
+Q1 B (Suites) : b) $56$
+Q2 B (Suites) : a) $67$
+Q3 B (Suites) : a) $255$
+Q4 B (Suites) : d) $364$
+Q5 B (Suites) : b) $\dfrac{5}{2}$
+Q6 B (Suites) : c) $\dfrac{3}{2}$
+Q7 B (Suites) : a) $6$
+Q8 B (Suites) : a) $4$
+Q9 B (Suites) : c) $51$
+Q10 B (Suites) : b) $81$
+Q11 B (Suites) : b) $\dfrac{3}{7}$
+Q12 B (Suites) : a) $\dfrac{4}{5}$
+Q13 B (Suites) : a) $12$
+Q14 B (Suites) : a) $2$
+Q15 B (Suites) : c) $13$
+Q16 B (Suites) : a) $7$
+Q17 B (Fonctions) : a) $-12$
+Q18 B (Fonctions) : b) $12$
+Q19 B (Fonctions) : b) $5$
+Q20 B (Fonctions) : c) $-\dfrac{5}{9}$
+Q21 B (Fonctions) : b) $y=x-2$
+Q22 B (Fonctions) : a) $y=6x-4$
+Q23 B (Fonctions) : c) $x=5$
+Q24 B (Fonctions) : b) $x=1$
+Q25 B (Fonctions) : d) $-\dfrac{2}{3}$
+Q26 B (Fonctions) : b) $1$
+Q27 B (Fonctions) : d) $3$
+Q28 B (Fonctions) : b) $1$
+Q29 B (Fonctions) : c) $10$
+Q30 B (Fonctions) : a) $8$
+Q31 B (Fonctions) : d) $\dfrac{1}{4}$
+Q32 B (Fonctions) : b) $1$
+Q33 B (Exponentielle et logarithme) : d) $e^{2}$
+Q34 B (Exponentielle et logarithme) : a) $e^{4}$
+Q35 B (Exponentielle et logarithme) : c) $0$
+Q36 B (Exponentielle et logarithme) : c) $2$
+Q37 B (Exponentielle et logarithme) : b) $4\ln 2$
+Q38 B (Exponentielle et logarithme) : d) $2\ln 5$
+Q39 B (Exponentielle et logarithme) : c) $0$
+Q40 B (Exponentielle et logarithme) : b) $4e^{3}$
+Q41 B (Exponentielle et logarithme) : b) $\dfrac{3}{4}$
+Q42 B (Exponentielle et logarithme) : b) $\dfrac{7}{5}$
+Q43 B (Exponentielle et logarithme) : b) $\dfrac{3}{2}$
+Q44 B (Exponentielle et logarithme) : b) $\dfrac{2}{5}$
+Q45 B (Exponentielle et logarithme) : a) $14$
+Q46 B (Exponentielle et logarithme) : d) $13$
+Q47 B (Exponentielle et logarithme) : a) $\ln 2-4$
+Q48 B (Exponentielle et logarithme) : d) $\dfrac{\ln 7+1}{2}$
+Q49 B (Intégrales et équations différentielles) : d) $\dfrac{1}{4}$
+Q50 B (Intégrales et équations différentielles) : a) $4$
+Q51 B (Intégrales et équations différentielles) : a) $e-1$
+Q52 B (Intégrales et équations différentielles) : a) $\dfrac{e^{4}-1}{4}$
+Q53 B (Intégrales et équations différentielles) : b) $3e-2$
+Q54 B (Intégrales et équations différentielles) : d) $e+3$
+Q55 B (Intégrales et équations différentielles) : c) $F(x)=-e^{-x}+3$
+Q56 B (Intégrales et équations différentielles) : a) $F(x)=\frac{1}{4}\,e^{4x}+\frac{3}{4}$
+Q57 B (Intégrales et équations différentielles) : c) $\dfrac{4}{3}$
+Q58 B (Intégrales et équations différentielles) : b) $\dfrac{1}{3}$
+Q59 B (Intégrales et équations différentielles) : b) $y=4$
+Q60 B (Intégrales et équations différentielles) : a) $y=-2$
+Q61 B (Intégrales et équations différentielles) : c) $e^{3}$
+Q62 B (Intégrales et équations différentielles) : c) $4e$
+Q63 B (Intégrales et équations différentielles) : b) $2e^{3}+1$
+Q64 B (Intégrales et équations différentielles) : b) $3e^{4}+1$
+Q65 B (Géométrie dans l'espace) : d) $-9$
+Q66 B (Géométrie dans l'espace) : b) $-1$
+Q67 B (Géométrie dans l'espace) : b) $\sqrt{3}$
+Q68 B (Géométrie dans l'espace) : b) $3$
+Q69 B (Géométrie dans l'espace) : c) $m=6$
+Q70 B (Géométrie dans l'espace) : d) $m=3$
+Q71 B (Géométrie dans l'espace) : c) $x+y+z-4=0$
+Q72 B (Géométrie dans l'espace) : a) $3x-2z-1=0$
+Q73 B (Géométrie dans l'espace) : d) $(-1;6;2)$
+Q74 B (Géométrie dans l'espace) : a) $(2;2;0)$
+Q75 B (Géométrie dans l'espace) : d) $m=-8$
+Q76 B (Géométrie dans l'espace) : b) $m=8$
+Q77 B (Géométrie dans l'espace) : a) $5$
+Q78 B (Géométrie dans l'espace) : c) $3$
+Q79 B (Géométrie dans l'espace) : b) $(4;1;-2)$
+Q80 B (Géométrie dans l'espace) : b) $(3;3;4)$
+Q81 B (Probabilités et dénombrement) : a) $\dfrac{5}{16}$
+Q82 B (Probabilités et dénombrement) : b) $\dfrac{5}{16}$
+Q83 B (Probabilités et dénombrement) : d) $2$
+Q84 B (Probabilités et dénombrement) : a) $15$
+Q85 B (Probabilités et dénombrement) : a) $4$
+Q86 B (Probabilités et dénombrement) : b) $3$
+Q87 B (Probabilités et dénombrement) : c) $0{,}14$
+Q88 B (Probabilités et dénombrement) : b) $0{,}2$
+Q89 B (Probabilités et dénombrement) : a) $0{,}6$
+Q90 B (Probabilités et dénombrement) : a) $0{,}42$
+Q91 B (Probabilités et dénombrement) : a) $28$
+Q92 B (Probabilités et dénombrement) : b) $35$
+Q93 B (Probabilités et dénombrement) : a) $64$
+Q94 B (Probabilités et dénombrement) : b) $25$
+Q95 B (Probabilités et dénombrement) : b) $\dfrac{15}{16}$
+Q96 B (Probabilités et dénombrement) : a) $\dfrac{37}{64}$
