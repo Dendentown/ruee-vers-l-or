@@ -111,9 +111,9 @@
           <p>À ouvrir sur l'ordinateur relié au tableau : un code et un QR code s'affichent, puis le classement en direct.</p>
           <button class="primary" id="mJoin">Rejoindre une partie (élève)</button>
           <p>Sur le téléphone : scanne le QR code ou tape le code affiché au tableau.</p>
-          <a class="primary" href="tableau.html" style="text-align:center;text-decoration:none">Jouer en ligne au tableau (un seul écran)</a>
+          <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer en ligne au tableau (un seul écran)</a>
           <p>Le même jeu que la version hors ligne, directement en ligne : les joueurs répondent chacun leur tour au tableau, sans téléphone.</p>
-          <button class="primary" id="mOff">Télécharger la version hors ligne</button>
+          <button class="primary green" id="mOff">Télécharger la version hors ligne</button>
           <p>Le jeu au tableau (5ème, Terminale, CAPES) dans un fichier zip : on le décompresse, puis on ouvre <strong>jouer.html</strong>, même sans internet.</p>
           <div id="offst" aria-live="polite"></div>
         </section>
