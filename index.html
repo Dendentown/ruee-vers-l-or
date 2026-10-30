@@ -292,6 +292,8 @@ body.hasfbar { padding-bottom: 170px; }
 .hint { background: #fff4c41a; border: 1px solid var(--gold); color: var(--ore); border-radius: 10px; padding: 8px 12px; font-size: 16px; line-height: 1.4; }
 .ans.gone { opacity: .12 !important; text-decoration: line-through; }
 .rule.item .big { color: var(--ore); }
+.rule.item { align-items: flex-start; }
+.rule.item > span:last-child { line-height: 1.6; }
 .mixbox { display: flex; flex-direction: column; gap: 8px; }
 .mixrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .mixchk { display: flex; align-items: center; gap: 8px; min-width: 150px; font-weight: 600; font-size: 15px; }
@@ -311,10 +313,10 @@ body.hasfbar { padding-bottom: 170px; }
 @media (max-width: 600px) { .mebar .sc { font-size: 20px; } .mebar .nm { font-size: 15px; } .codebig { letter-spacing: 4px; } }
 </style>
 <div class="wrap" id="app"></div>
-<script src="lib/firebase-app-compat.js?v=20261030211417"></script>
-<script src="lib/firebase-database-compat.js?v=20261030211417"></script>
-<script src="lib/qrcode.js?v=20261030211417"></script>
-<script src="data.js?v=20261030211417"></script>
-<script src="app.js?v=20261030211417"></script>
+<script src="lib/firebase-app-compat.js?v=20261030211522"></script>
+<script src="lib/firebase-database-compat.js?v=20261030211522"></script>
+<script src="lib/qrcode.js?v=20261030211522"></script>
+<script src="data.js?v=20261030211522"></script>
+<script src="app.js?v=20261030211522"></script>
 </body>
 </html>
