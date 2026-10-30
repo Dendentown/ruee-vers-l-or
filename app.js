@@ -387,11 +387,18 @@
       let done = false;
       if (n > 1 && k >= 2) {
         const u = Math.random(), pr = f / 4;
-        if (u < pr) {
-          const v = leaderFor(p);
-          if (v) { Object.assign(cur, { kind: "raid", time: ETIME, victim: v.pid, victimName: v.name, stake: Math.min(3, v.score) }); done = true; }
-        } else if (k >= 3 && u < pr + 1 / 6) done = makeDuel(p, cur);
-        else if (k >= 3 && u < pr + 1 / 6 + 1 / 8) done = makeRescue(p, cur);
+        const want = u < pr ? "raid" : u < pr + 1 / 6 ? "duel" : u < pr + 1 / 6 + 1 / 8 ? "rescue" : null;
+        // the drawn event first; if it cannot happen (no leader, no partner yet…), one of the others
+        const tryEv = ev => {
+          if (ev === "raid") {
+            const v = leaderFor(p);
+            if (v) { Object.assign(cur, { kind: "raid", time: ETIME, victim: v.pid, victimName: v.name, stake: Math.min(3, v.score) }); return true; }
+            return false;
+          }
+          if (k < 3) return false;
+          return ev === "duel" ? makeDuel(p, cur) : makeRescue(p, cur);
+        };
+        if (want) for (const ev of [want, ...shuffle(["raid", "duel", "rescue"].filter(x => x !== want))]) if ((done = tryEv(ev))) break;
       }
       if (!done && k >= 2 && (window.__forceFilon || Math.random() < filonChance(p) * (n > 1 ? f : 1))) { window.__forceFilon = false; makeFilon(p, cur); }
       if (cur.kind === "raid") feed(`${p.name} tente un chapardage sur ${cur.victimName}…`, "raid");

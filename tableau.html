@@ -428,7 +428,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     if (![10, 20, 40, 60].includes(S.nQ)) S.nQ = 20;
     S.deck = shuffle(pool).slice(0, Math.min(S.nQ, pool.length));
     // filons are drawn turn by turn, see filonChance()
-    S.challenges = []; S.filonPicked = {}; S.filonRolled = {};
+    S.challenges = []; S.filonPicked = {}; S.filonRolled = {}; S.fallbackTried = {};
     // one theft slot in each block of 4 questions, on a question that is not a filon
     S.raids = [];
     if (S.nTeams > 1) {
@@ -478,6 +478,16 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     if (!S.answered) { S.victim = (S.raids || []).includes(S.idx) ? leaderIdx() : null; S.filonLot = 4; S.filonOn = true; }
     if (!S.answered && !S.duel && (S.duels || []).includes(S.idx) && S.teams.length > 1) S.duel = makeDuel();
     if (!S.answered && !S.duel && (S.rescues || []).includes(S.idx) && S.teams.length > 1) S.duel = makeRescue();
+    // an event slot whose event cannot happen (no leader, no partner yet…) tries the other events
+    if (!S.answered && !S.duel && !isRaid() && S.teams.length > 1 && [S.raids, S.duels, S.rescues].some(a => (a || []).includes(S.idx))
+        && !(S.fallbackTried = S.fallbackTried || {})[S.idx]) {
+      S.fallbackTried[S.idx] = true;
+      for (const ev of shuffle(["raid", "duel", "rescue"])) {
+        if (ev === "raid" && S.idx >= 2) { const v = leaderIdx(); if (v !== null) { S.raids.push(S.idx); S.victim = v; break; } }
+        if (ev === "duel" && S.idx >= 3) { const d = makeDuel(); if (d) { S.duel = d; break; } }
+        if (ev === "rescue" && S.idx >= 3) { const d = makeRescue(); if (d) { S.duel = d; break; } }
+      }
+    }
     if (!S.answered && !S.duel && !isRaid() && S.idx >= 2 && !(S.filonRolled = S.filonRolled || {})[S.idx]) {
       S.filonRolled[S.idx] = true;
       if (Math.random() < filonChance(S.idx % S.teams.length)) S.challenges.push(S.idx);
