@@ -1025,8 +1025,8 @@
       countdown(q.time, () => answer(null));
       if (ftry) pauseCountdown(); // the player is busy on someone else's filon
       if (q.kind !== "duel") { enable(); return; }
-      // castagne: the buttons appear at "3, 2, 1, Dégaine !" and stay for the last 14 seconds
-      const box = $("#draw"), open = (q.time - 14) * 1000;
+      // castagne: the buttons appear for the last 4 seconds, while "3, 2, 1, Dégaine !" counts down
+      const box = $("#draw"), open = (q.time - 4) * 1000;
       ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawT.push(setTimeout(() => {
         if (!box || !box.isConnected) return;
         box.textContent = txt; box.classList.toggle("go", i === 3);

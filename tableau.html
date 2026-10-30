@@ -812,7 +812,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <p style="font-size:17px;color:var(--muted)">Chacun a ${RTIME} secondes. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. Aucune : pas de pépite.</p>
         <button class="primary" id="ready">Commencer le sauvetage</button></div>` : `<div class="box"><div class="title" style="color:#ff8a3d">Castagne !</div>
         <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong>. Chacun reçoit une question de ${esc(themeLabel(d.th).toLowerCase())} qu'il a déjà réussie, mais avec d'autres valeurs.</p>
-        <p style="font-size:17px;color:var(--muted)">Chacun a ${DTIME} secondes. Les boutons de réponse apparaissent au signal « 3, 2, 1, Dégaine ! » : prépare ta réponse, puis tu as 14 secondes pour répondre. Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
+        <p style="font-size:17px;color:var(--muted)">Chacun a ${DTIME} secondes, mais les boutons de réponse n'apparaissent qu'à la fin, pendant « 3, 2, 1, Dégaine ! » : prépare ta réponse ! Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
         <button class="primary" id="ready">Commencer le duel</button></div>`;
       document.body.appendChild(ov);
       document.getElementById("ready").onclick = () => { ov.remove(); whenShown(startDraw); };
@@ -833,12 +833,12 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       return;
     }
     if (!box || !ansBox) return;
-    // the timer runs from the start; the answer buttons show at "3, 2, 1, Dégaine !"
-    // and stay for the last 14 seconds
+    // the timer runs from the start; the answer buttons only show during
+    // its last 4 seconds, while "3, 2, 1, Dégaine !" counts down
     const tb = document.getElementById("timer");
     if (tb) tb.style.visibility = "visible";
     startCountdown(DTIME, () => answerDuel(null), true);
-    const open = (DTIME - 14) * 1000;
+    const open = (DTIME - 4) * 1000;
     ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawTimers.push(setTimeout(() => {
       if (!box.isConnected) return;
       box.textContent = txt;
