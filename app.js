@@ -107,16 +107,15 @@
   const ITEMS = { lampe: "Lampe", pioche: "Pioche", tamis: "Tamis" };
   const ITEM_HELP = { lampe: "donne une astuce", pioche: "+50 % de pépites si c'est juste", tamis: "retire deux mauvaises réponses" };
   const icon = t => `<svg class="ico" aria-hidden="true"><use href="#i-${t}"/></svg>`;
-  // durability = rarity: 1 use (3 chances out of 6), 2 uses (2 out of 6), 3 uses (1 out of 6)
-  function newItem() { const r = Math.random(); return { t: pick(Object.keys(ITEMS)), u: r < 3 / 6 ? 1 : r < 5 / 6 ? 2 : 3 }; }
+    function newItem() { return { t: pick(Object.keys(ITEMS)), u: 1 }; } // every item is used only once
   const boost = k => Math.ceil(k * 1.5);
-  const itemName = it => `${ITEMS[it.t].toLowerCase()} (${it.u} utilisation${it.u > 1 ? "s" : ""})`;
+  const itemName = it => ITEMS[it.t].toLowerCase();
   // articles: la lampe, la pioche, le tamis
   const art = (it, f, m) => (it.t === "tamis" ? m : f) + " ";
   const un = it => art(it, "une", "un") + itemName(it), le = it => art(it, "la", "le") + itemName(it);
   const son = it => art(it, "sa", "son") + itemName(it), ton = it => art(it, "ta", "ton") + itemName(it);
   const unN = it => art(it, "une", "un") + ITEMS[it.t].toLowerCase();
-  const invHTML = inv => (inv || []).map(it => `<span class="inv" title="${ITEMS[it.t]} : ${ITEM_HELP[it.t]}">${icon(it.t)}${it.u}</span>`).join("");
+  const invHTML = inv => (inv || []).map(it => `<span class="inv" title="${ITEMS[it.t]} : ${ITEM_HELP[it.t]}">${icon(it.t)}</span>`).join("");
 
   const credit = `<div class="credit"><span class="cl">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</div>`;
   // yellow back button on every screen except the menu
@@ -752,7 +751,7 @@
       H.phase = "play";
       players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null, inv: [] }));
       H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false;
-      if (params.get("objets") === "1") players().forEach(p => { p.inv = [{ t: "lampe", u: 3 }, { t: "pioche", u: 3 }, { t: "tamis", u: 3 }]; }); // test switch
+      if (params.get("objets") === "1") players().forEach(p => { p.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
       feed("La partie commence !");
       save(); pushAll(); render();
     }
@@ -1142,7 +1141,7 @@
       }
       const inv = (V.me && V.me.inv) || [];
       if (shown.answered || !inv.length) { bar.innerHTML = ""; return; }
-      bar.innerHTML = `<div class="usebar" aria-label="Objets">${inv.map((it, i) => `<button class="usebtn" data-i="${i}" title="${ITEM_HELP[it.t]}">${icon(it.t)} ${ITEMS[it.t]} <b>×${it.u}</b></button>`).join("")}</div>`;
+      bar.innerHTML = `<div class="usebar" aria-label="Objets">${inv.map((it, i) => `<button class="usebtn" data-i="${i}" title="${ITEM_HELP[it.t]}">${icon(it.t)} ${ITEMS[it.t]}</button>`).join("")}</div>`;
       bar.querySelectorAll(".usebtn").forEach(b => { b.onclick = () => {
         bar.querySelectorAll(".usebtn").forEach(x => { x.disabled = true; });
         send({ t: "use", id: shown.id, i: +b.dataset.i });

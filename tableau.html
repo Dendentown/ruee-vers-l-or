@@ -539,7 +539,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     S.duel = null;
     S.teams = Array.from({ length: S.nTeams }, (_, i) => ({ name: S.names[i], score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [], inv: [] }));
     S.use = null;
-    if (/[?&]objets=1\b/.test(location.search)) S.teams.forEach(t => { t.inv = [{ t: "lampe", u: 3 }, { t: "pioche", u: 3 }, { t: "tamis", u: 3 }]; }); // test switch
+    if (/[?&]objets=1\b/.test(location.search)) S.teams.forEach(t => { t.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
     S.idx = 0; S.answered = null; S.victim = null; S.phase = "play";
     S.timeUp = false;
     beep("tick");
@@ -550,16 +550,15 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   const ITEMS = { lampe: "Lampe", pioche: "Pioche", tamis: "Tamis" };
   const ITEM_HELP = { lampe: "donne une astuce", pioche: "+50 % de pépites si c'est juste", tamis: "retire deux mauvaises réponses" };
   const icon = t => `<svg class="ico" aria-hidden="true"><use href="#i-${t}"/></svg>`;
-  // durability = rarity: 1 use (3 chances out of 6), 2 uses (2 out of 6), 3 uses (1 out of 6)
-  function newItem() { const r = Math.random(); return { t: pick(Object.keys(ITEMS)), u: r < 3 / 6 ? 1 : r < 5 / 6 ? 2 : 3 }; }
+    function newItem() { return { t: pick(Object.keys(ITEMS)), u: 1 }; } // every item is used only once
   const boost = k => Math.ceil(k * 1.5);
-  const itemName = it => `${ITEMS[it.t].toLowerCase()} (${it.u} utilisation${it.u > 1 ? "s" : ""})`;
+  const itemName = it => ITEMS[it.t].toLowerCase();
   // articles: la lampe, la pioche, le tamis
   const art = (it, f, m) => (it.t === "tamis" ? m : f) + " ";
   const un = it => art(it, "une", "un") + itemName(it), le = it => art(it, "la", "le") + itemName(it);
   const son = it => art(it, "sa", "son") + itemName(it), ton = it => art(it, "ta", "ton") + itemName(it);
   const unN = it => art(it, "une", "un") + ITEMS[it.t].toLowerCase();
-  const invHTML = t => (t.inv || []).map(it => `<span class="inv" title="${ITEMS[it.t]} : ${ITEM_HELP[it.t]} (${it.u} utilisation${it.u > 1 ? "s" : ""})">${icon(it.t)}${it.u}</span>`).join("");
+  const invHTML = t => (t.inv || []).map(it => `<span class="inv" title="${ITEMS[it.t]} : ${ITEM_HELP[it.t]}">${icon(it.t)}</span>`).join("");
   function giveItem(t) { const it = newItem(); (t.inv = t.inv || []).push(it); return it; }
   function stealItem(from, to) {
     if (!from.inv || !from.inv.length) return null;
@@ -570,7 +569,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   // one item per question: S.use = { t, removed } for the question on screen
   function useBarHTML(t) {
     if (!t.inv || !t.inv.length) return "";
-    return `<div class="usebar" id="usebar" aria-label="Objets">${t.inv.map((it, i) => `<button class="usebtn" data-i="${i}" title="${ITEM_HELP[it.t]}" ${S.use ? "disabled" : ""}>${icon(it.t)} ${ITEMS[it.t]} <b>×${it.u}</b></button>`).join("")}</div>`;
+    return `<div class="usebar" id="usebar" aria-label="Objets">${t.inv.map((it, i) => `<button class="usebtn" data-i="${i}" title="${ITEM_HELP[it.t]}" ${S.use ? "disabled" : ""}>${icon(it.t)} ${ITEMS[it.t]}</button>`).join("")}</div>`;
   }
   function bindUse(t, q) {
     app.querySelectorAll(".usebtn").forEach(b => b.onclick = () => {
