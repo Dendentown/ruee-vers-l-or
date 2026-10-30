@@ -1,0 +1,13 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "games": {
+      ".read": true,
+      ".indexOn": ["createdAt"],
+      "$code": {
+        ".write": "$code.length <= 8"
+      }
+    }
+  }
+}

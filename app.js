@@ -22,16 +22,51 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
     del(k) { try { localStorage.removeItem(k); } catch (e) {} },
   };
-  // PeerJS options; ?peerhost=… lets a test use its own signalling server
-  function peerOpts() {
-    const o = { debug: 0, config: { iceServers: [{ urls: "stun:stun.l.google.com:19302" }, { urls: "stun:stun1.l.google.com:19302" }] } };
-    if (params.get("peerhost")) {
-      o.host = params.get("peerhost"); o.port = +(params.get("peerport") || 9000);
-      o.path = params.get("peerpath") || "/"; o.secure = params.get("peersecure") === "1";
-    }
-    return o;
+  /* ---------- connection: Firebase Realtime Database (Google's servers, usual secure web port) ----------
+     The teacher's page and the phones never connect directly: they exchange messages through the base,
+     which goes through school and university firewalls. */
+  const FB_CONFIG = {
+    apiKey: "AIzaSyDS1suX6wywyxf80TGWU3BsP6Cid3hS2Y4",
+    authDomain: "ruee-vers-l-or.firebaseapp.com",
+    databaseURL: "https://ruee-vers-l-or-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "ruee-vers-l-or",
+    storageBucket: "ruee-vers-l-or.firebasestorage.app",
+    messagingSenderId: "528254486654",
+    appId: "1:528254486654:web:04b72ce470f67d9313b02f",
+  };
+  let fdb = null;
+  function fbase() {
+    if (fdb) return fdb;
+    if (!window.firebase || !firebase.database) return null;
+    try {
+      if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(FB_CONFIG);
+      fdb = firebase.database();
+    } catch (e) { console.error(e); return null; }
+    return fdb;
   }
-  const extraQS = () => ["peerhost", "peerport", "peerpath", "peersecure"].filter(k => params.get(k)).map(k => `&${k}=${encodeURIComponent(params.get(k))}`).join("");
+  const gref = code => fbase().ref("games/" + code);
+  const TS = () => firebase.database.ServerValue.TIMESTAMP;
+  // messages travel as JSON text: the base keeps them exactly as sent
+  const enc = m => ({ j: JSON.stringify(m) });
+  const dec = v => { try { return v && v.j ? JSON.parse(v.j) : null; } catch (e) { return null; } };
+  const extraQS = () => "";
+
+  // "Tester la connexion": write to the base and read it back
+  function testConnection() {
+    const out = $("#nettest");
+    out.innerHTML = '<p>Test en cours…</p>';
+    const fail = why => { out.innerHTML = `<div class="feedback ko">Le jeu en réseau ne passe pas sur ce réseau (${esc(why)}). Essayez la 4G ou un autre wifi. Le jeu au tableau, lui, fonctionne.</div>`; };
+    if (!fbase()) return fail("bibliothèque non chargée");
+    const r = gref("_t" + Math.random().toString(36).slice(2, 7));
+    const t0 = Date.now(); let done = false;
+    const to = setTimeout(() => { if (!done) { done = true; fail("pas de réponse en 10 s"); } }, 10000);
+    r.child("createdAt").set(TS()).then(() => r.child("createdAt").once("value")).then(snap => {
+      if (done) return; done = true; clearTimeout(to);
+      r.remove().catch(() => {});
+      if (!snap.exists()) return fail("lecture impossible");
+      out.innerHTML = `<div class="feedback ok">La connexion fonctionne sur ce réseau (${Date.now() - t0} ms). Le jeu en réseau peut être utilisé.</div>`;
+    }).catch(e => { if (done) return; done = true; clearTimeout(to); fail(e && e.code ? e.code : "accès refusé"); });
+  }
 
   function level(key) {
     const L = D.LEVELS[key] || D.LEVELS["5e"];
@@ -111,6 +146,8 @@
           <p>À ouvrir sur l'ordinateur relié au tableau : un code et un QR code s'affichent, puis le classement en direct.</p>
           <button class="primary" id="mJoin">Rejoindre une partie (élève)</button>
           <p>Sur le téléphone : scanne le QR code ou tape le code affiché au tableau.</p>
+          <button class="ghost" id="mTest">Tester la connexion de ce réseau</button>
+          <div id="nettest" aria-live="polite"></div>
           <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer en ligne au tableau (un seul écran)</a>
           <p>Le même jeu que la version hors ligne, directement en ligne : les joueurs répondent chacun leur tour au tableau, sans téléphone.</p>
           <button class="primary green" id="mOff">Télécharger la version hors ligne</button>
@@ -121,6 +158,7 @@
     $("#mHost").onclick = () => Host.init();
     $("#mJoin").onclick = () => Student.init("");
     $("#mOff").onclick = downloadOffline;
+    $("#mTest").onclick = testConnection;
   }
 
   /* ---------- offline version: zip built in the browser from the site's own files ---------- */
@@ -198,45 +236,87 @@
     }
     function newCode() { const A = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; return Array.from({ length: 5 }, () => A[Math.floor(Math.random() * A.length)]).join(""); }
     function newGame() {
-      if (peer) { try { peer.destroy(); } catch (e) {} peer = null; }
+      detach(true);
       conns = {};
-      H = { code: newCode(), level: (H && H.level) || "5e", nQ: (H && H.nQ) || 20, series: (H && H.series) || "A", themes: null, phase: "lobby", players: {}, links: {}, feed: [], seq: 0 };
+      H = { code: newCode(), level: (H && H.level) || "5e", nQ: (H && H.nQ) || 20, series: (H && H.series) || "A", themes: null, phase: "lobby", players: {}, links: {}, feed: [], seq: 0, cids: {} };
       L = level(H.level);
       H.themes = Object.fromEntries(L.themes.map(t => [t.id, true]));
-      save(); connect();
+      save();
+      if (!fbase()) { connect(); return; }
+      // old games (more than a day) are removed from the base
+      fbase().ref("games").orderByChild("createdAt").endAt(Date.now() - 864e5).once("value")
+        .then(snap => snap.forEach(c => { c.ref.remove(); })).catch(() => {});
+      // a new game takes a code that nobody uses
+      const pickFree = n => gref(H.code).child("host").once("value").then(snap => {
+        if (snap.exists() && n < 5) { H.code = newCode(); save(); return pickFree(n + 1); }
+      });
+      statusText = "Connexion au serveur…"; render();
+      clearTimeout(blockT);
+      blockT = setTimeout(() => { if (!fbOnline) setStatus(HBLOCKED); }, 15000);
+      fbase().ref(".info/connected").on("value", snap => { if (snap.val()) clearTimeout(blockT); });
+      pickFree(0).then(() => gref(H.code).child("createdAt").set(TS())).then(connect)
+        .catch(() => { statusText = "Connexion impossible : le réseau bloque peut-être le jeu (essayez la 4G). Nouvelle tentative…"; render(); setTimeout(connect, 4000); });
     }
 
     function setStatus(t) { statusText = t; const el = $("#hstatus"); if (el) { el.textContent = t; el.hidden = !t; } }
-    function connect() {
-      if (peer) { try { peer.destroy(); } catch (e) {} }
-      if (!window.Peer) { statusText = "La bibliothèque de connexion n'a pas pu se charger."; render(); return; }
-      statusText = "Connexion au serveur…"; render();
-      const me = peer = new Peer(PREFIX + H.code, peerOpts());
-      me.on("open", () => { if (peer !== me) return; tries = 0; setStatus(""); render(); });
-      me.on("connection", c => { if (peer === me) onConn(c); });
-      me.on("disconnected", () => {
-        if (peer !== me || me.destroyed) return;
-        setStatus("Connexion au serveur perdue, reconnexion…");
-        setTimeout(() => { if (peer === me && !me.destroyed) { try { me.reconnect(); } catch (e) {} } }, 1500);
-      });
-      me.on("error", e => {
-        if (peer !== me) return;
-        if (e.type === "peer-unavailable") return;
-        if (e.type === "unavailable-id") {
-          if (H.phase === "lobby" && !players().length) { H.code = newCode(); save(); return setTimeout(connect, 200); }
-          if (tries++ < 30) { setStatus("Le code de la partie se libère, nouvelle tentative…"); return setTimeout(connect, 3000); }
-        }
-        setStatus("Problème de connexion (" + e.type + "). Vérifiez la connexion internet ; nouvelle tentative…");
-        if (["network", "server-error", "socket-error", "socket-closed"].includes(e.type)) setTimeout(() => { if (peer === me) connect(); }, 4000);
-      });
+    let gameRef = null, fconns = {}, watching = false, fbOnline = false, blockT = null;
+    const HBLOCKED = "Connexion impossible au serveur du jeu : le réseau bloque peut-être le jeu (essayez la 4G). Le jeu au tableau fonctionne, lui.";
+    function detach(removeData) {
+      const g = gameRef; gameRef = null; fconns = {};
+      if (!g) return;
+      try { g.child("up").off(); g.child("peers").off(); g.child("host").onDisconnect().cancel && g.child("host").onDisconnect().cancel(); } catch (e) {}
+      (removeData ? g.remove() : g.child("host").remove()).catch(() => {});
     }
-    function onConn(c) {
-      c.on("data", m => { try { onMsg(c, m); } catch (e) { console.error(e); } });
-      c.on("close", () => {
+    function announceHost() {
+      if (!gameRef) return;
+      gameRef.child("host").set({ on: true, at: TS() }).catch(() => {});
+      gameRef.child("host").onDisconnect().remove();
+    }
+    function connect() {
+      if (!fbase()) { statusText = "La connexion n'a pas pu se charger : vérifiez internet puis rechargez la page."; render(); return; }
+      if (gameRef) { try { gameRef.child("up").off(); gameRef.child("peers").off(); } catch (e) {} }
+      fconns = {};
+      const g = gameRef = gref(H.code);
+      const live = () => gameRef === g;
+      if (!watching) {
+        watching = true;
+        fbase().ref(".info/connected").on("value", snap => {
+          fbOnline = !!snap.val();
+          if (fbOnline) { clearTimeout(blockT); if (gameRef) announceHost(); setStatus(""); }
+          else if (gameRef) setStatus("Connexion au serveur perdue, reconnexion…");
+        });
+      }
+      announceHost();
+      // messages from the phones
+      g.child("up").on("child_added", snap => {
+        if (!live()) return;
+        const v = snap.val(); snap.ref.remove();
+        const m = dec(v), c = v && connFor(v.c);
+        if (m && c) { try { onMsg(c, m); } catch (e) { console.error(e); } }
+      });
+      // phones present / gone
+      g.child("peers").on("child_added", snap => { if (live()) connFor(snap.key); });
+      g.child("peers").on("child_removed", snap => {
+        if (!live()) return;
+        const c = fconns[snap.key]; if (!c) return;
+        delete fconns[snap.key]; c.open = false;
         const pid = c._pid;
         if (pid && conns[pid] === c) { delete conns[pid]; const p = H.players[pid]; if (p) { p.online = false; save(); render(); } }
       });
-      c.on("error", () => {});
+      setStatus(fbOnline ? "" : "Connexion au serveur…"); render();
+      clearTimeout(blockT);
+      if (!fbOnline) blockT = setTimeout(() => { if (!fbOnline) setStatus(HBLOCKED); }, 15000);
+    }
+    // one "connection" per phone (cid); a phone already known gets its player back at once
+    function connFor(cid) {
+      if (!cid || !gameRef) return null;
+      let c = fconns[cid];
+      if (c) return c;
+      const g = gameRef;
+      c = fconns[cid] = { cid, open: true, _pid: null, send: m => { g.child("down/" + cid).push(enc(m)); }, close() { this.open = false; } };
+      const pid = (H.cids || {})[cid];
+      if (pid && H.players[pid]) { c._pid = pid; conns[pid] = c; H.players[pid].online = true; save(); push(pid); render(); }
+      return c;
     }
     function send(pid, m) { const c = conns[pid]; if (c && c.open) { try { c.send(m); } catch (e) {} } }
     function toast(pid, text) { send(pid, { t: "toast", text }); }
@@ -281,6 +361,7 @@
         }
         if (conns[p.pid] && conns[p.pid] !== c) { try { conns[p.pid].close(); } catch (e) {} }
         c._pid = p.pid; conns[p.pid] = c; p.online = true;
+        if (c.cid) (H.cids = H.cids || {})[c.cid] = p.pid;
         save(); push(p.pid); render();
         return;
       }
@@ -709,39 +790,56 @@
       app.innerHTML = header("Rejoindre une partie") + `<section class="panel joinbox"><p>Connexion à la partie <strong>${esc(code)}</strong>…</p></section>` + credit;
       open();
     }
+    let gameRef = null, cid = null, joinTimer = null, watching = false, hostChecked = false;
+    function getCid() {
+      try {
+        let c = sessionStorage.getItem("ruee-cid");
+        if (!c) { c = "c" + Math.random().toString(36).slice(2, 12); sessionStorage.setItem("ruee-cid", c); }
+        return c;
+      } catch (e) { return cid || "c" + Math.random().toString(36).slice(2, 12); }
+    }
+    const BLOCKED = "Connexion impossible : le réseau bloque peut-être le jeu. Essaie avec la 4G ou un autre wifi.";
     function open() {
-      clearTimeout(retry);
-      if (peer) { try { peer.destroy(); } catch (e) {} }
-      if (!window.Peer) { renderJoin("La connexion n'a pas pu se charger. Recharge la page."); return; }
-      const me = peer = new Peer(peerOpts());
-      me.on("open", () => {
-        if (peer !== me) return;
-        const c = conn = me.connect(PREFIX + code, { reliable: true });
-        c.on("open", () => { if (conn === c) c.send({ t: "hello", pid: store.get(pidKey()), name }); });
-        c.on("data", m => { if (conn === c) { try { onMsg(m); } catch (e) { console.error(e); } } });
-        c.on("close", () => { if (conn === c) lost(); });
-        c.on("error", () => { if (conn === c) lost(); });
-      });
-      me.on("error", e => {
-        if (peer !== me) return;
-        if (e.type === "peer-unavailable" && !V) {
-          try { me.destroy(); } catch (_) {}
-          peer = null; store.del(pidKey());
+      if (!fbase()) { renderJoin("La connexion n'a pas pu se charger. Vérifie internet puis recharge la page."); return; }
+      cid = getCid(); hostChecked = false;
+      const g = gameRef = gref(code);
+      clearTimeout(joinTimer);
+      joinTimer = setTimeout(() => { if (gameRef === g && !V) { gameRef = null; renderJoin(BLOCKED); } }, 15000);
+      if (!watching) {
+        watching = true;
+        fbase().ref(".info/connected").on("value", snap => {
+          if (snap.val()) { if (hostChecked) announce(); if (V) setBanner(""); }
+          else if (V) setBanner("Connexion perdue… reconnexion en cours.");
+        });
+      }
+      g.child("host").once("value").then(snap => {
+        if (gameRef !== g) return;
+        if (!snap.exists() && !V) {
+          clearTimeout(joinTimer); gameRef = null; store.del(pidKey());
           renderJoin("Partie introuvable : vérifie le code. Le professeur doit avoir ouvert la partie.");
           return;
         }
-        lost();
-      });
-      me.on("disconnected", () => { if (peer === me && !me.destroyed) { try { me.reconnect(); } catch (e) {} } });
+        hostChecked = true;
+        g.child("down/" + cid).on("child_added", d => {
+          if (gameRef !== g) return;
+          const v = d.val(); d.ref.remove();
+          const m = dec(v);
+          if (m) { try { onMsg(m); } catch (e) { console.error(e); } }
+        });
+        g.child("host").on("value", h => { if (gameRef === g && V) setBanner(h.exists() ? "" : "Le professeur s'est déconnecté… La partie reprendra dès son retour."); });
+        announce();
+      }).catch(() => { if (gameRef === g) { clearTimeout(joinTimer); gameRef = null; renderJoin(BLOCKED); } });
     }
-    function lost() {
-      if (!V && !joining) return;
-      conn = null;
-      setBanner("Connexion perdue… reconnexion en cours.");
-      clearTimeout(retry); retry = setTimeout(open, 2500);
+    // tells the teacher's page that this phone is here (again)
+    function announce() {
+      if (!gameRef) return;
+      const me = gameRef.child("peers/" + cid);
+      me.set(true).catch(() => {});
+      me.onDisconnect().remove();
+      send({ t: "hello", pid: store.get(pidKey()), name });
     }
     function setBanner(t) { banner = t; const el = $("#sbanner"); if (el) { el.textContent = t; el.hidden = !t; } }
-    function send(m) { if (conn && conn.open) { try { conn.send(m); return true; } catch (e) {} } return false; }
+    function send(m) { if (!gameRef) return false; gameRef.child("up").push(Object.assign({ c: cid }, enc(m))).catch(() => {}); return true; }
     function toast(text) {
       const t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = text;
       document.querySelectorAll(".toast").forEach((o, i) => { o.style.top = (10 + (i + 1) * 64) + "px"; });
@@ -750,6 +848,7 @@
     }
     function onMsg(m) {
       if (m.t === "view") {
+        clearTimeout(joinTimer);
         setBanner("");
         if (m.me) store.set(pidKey(), m.me.pid);
         V = m; joining = false; render(); renderFilonOffer(); updateFilonOwner();
