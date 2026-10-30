@@ -13,7 +13,7 @@
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const PCOL = ["#ff5a5a", "#4da3ff", "#4fd27b", "#c084ff", "#ff9f43", "#3fe0d6", "#ff7ad9", "#c9e265", "#ffd166", "#8fa8ff", "#f78c6b", "#7ee8c7"];
   const PREFIX = "ruee-or-dvm-";
-  const QTIME = 30, ETIME = 20, DTIME = 10, RTIME = 30, FTIME = 40;
+  const QTIME = 40, ETIME = 30, DTIME = 20, RTIME = 40, FTIME = 50;
   const F_CHOOSE = 15000, F_LOAD = 20000; // filon: time to sign up, then the longest wait for everybody's question to load
   const KIND = { normal: "", filon: "Filon", raid: "Chapardage", duel: "Castagne", rescue: "Sauvetage" };
   const params = new URLSearchParams(location.search);
@@ -1025,8 +1025,8 @@
       countdown(q.time, () => answer(null));
       if (ftry) pauseCountdown(); // the player is busy on someone else's filon
       if (q.kind !== "duel") { enable(); return; }
-      // castagne: the buttons appear for the last 4 seconds, while "3, 2, 1, Dégaine !" counts down
-      const box = $("#draw"), open = (q.time - 4) * 1000;
+      // castagne: the buttons appear at "3, 2, 1, Dégaine !" and stay for the last 14 seconds
+      const box = $("#draw"), open = (q.time - 14) * 1000;
       ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawT.push(setTimeout(() => {
         if (!box || !box.isConnected) return;
         box.textContent = txt; box.classList.toggle("go", i === 3);
