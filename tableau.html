@@ -230,14 +230,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   .overlay p { font-size: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
-.team .botb { align-self: flex-start; justify-self: start; width: max-content; }
-.botb { font-family: var(--f-body); font-size: 12px; font-weight: 700; letter-spacing: 0; padding: 1px 6px; border-radius: 6px; background: rgba(255,255,255,.1); color: #f3c969; white-space: nowrap; vertical-align: middle; }
-.botinfo { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--muted); }
-.botrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
-.botrow strong { color: var(--pc); }
-.thinking { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.06); font-weight: 700; animation: think 1.2s ease-in-out infinite; }
-.thinking .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--pc); }
-@keyframes think { 50% { opacity: .55; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -331,7 +323,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     nTeams: 2,
     names: ["Buffalo Bill", "Calamity Jane", "Billy the Kid", "Lucky Luke", "Jesse James", "Poupoune Debien"],
     nQ: 20, timeUp: false, series: "A", level: "5e",
-    mode: "amis", nBots: 3, botLvl: 2,
     secs: 300,
     themes: {},
     teams: [], deck: [], challenges: [], raids: [], victim: null, steal: true, duels: [], duel: null, fight: true, idx: 0, answered: null, sound: true,
@@ -379,84 +370,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   const victim = () => S.teams[S.victim];
   const isChallenge = () => isFilon() || isRaid();
   const stakeOf = () => isRaid() ? Math.min(3, victim().score) : isFilon() ? (S.filonLot || 4) : 1;
-
-  /* ---------- Solo mode: bots ---------- */
-  // each difficulty is a band of accuracy; the bots of a game are spread over the band (weakest first)
-  const BOT_LV = {
-    1: { label: "Facile", lo: 0.30, hi: 0.48, desc: "Des prospecteurs débutants : ils se trompent souvent et réfléchissent longtemps." },
-    2: { label: "Moyen", lo: 0.48, hi: 0.66, desc: "Des chercheurs réguliers : à peu près une bonne réponse sur deux, parfois plus." },
-    3: { label: "Difficile", lo: 0.66, hi: 0.82, desc: "De vieux briscards : ils trouvent souvent, vite, et savent se servir de leurs objets." },
-    4: { label: "Expert", lo: 0.82, hi: 0.95, desc: "Des légendes de l'Ouest : presque toujours juste, en quelques secondes." },
-  };
-  const BOT_NAMES = ["Doc Holliday", "Belle Starr", "Wyatt Earp", "Jesse James", "Wild Bill", "Annie Oakley"];
-  const botName = i => { const h = (S.names[0] || "").toLowerCase(); return BOT_NAMES.filter(n => n.toLowerCase() !== h)[i]; };
-  function botSpecs(nb, lv) {
-    const L = BOT_LV[lv] || BOT_LV[2];
-    return Array.from({ length: nb }, (_, i) => ({ p: nb === 1 ? (L.lo + L.hi) / 2 : L.lo + (L.hi - L.lo) * i / (nb - 1) }));
-  }
-  // every bot also has stronger and weaker themes (±8 points)
-  const makeBot = sp => ({ p: sp.p, th: Object.fromEntries(THEMES.map(t => [t.id, (Math.random() * 2 - 1) * 0.08])) });
-  const stars = p => { const n = Math.max(1, Math.min(5, 1 + Math.floor((p - 0.30) / 0.13))); return "★".repeat(n) + "☆".repeat(5 - n); };
-  const BOTF = /[?&]vite=1\b/.test(location.search) ? 0.08 : 1; // test switch: fast bots
-  let botT = [];
-  function clearBot() { botT.forEach(clearTimeout); botT = []; }
-  const actor = () => S.duel ? S.teams[S.duel.step === 1 ? S.duel.me : S.duel.opp] : curTeam();
-  // the human cannot click for a bot
-  function lockBot() { const a = actor(); if (a && a.bot) app.querySelectorAll(".ans, .usebtn").forEach(b => { b.disabled = true; }); }
-  // a bot's overlay starts by itself once the question is ready
-  function autoReady(ov) {
-    const tick = () => {
-      if (!ov.isConnected) return;
-      const b = document.getElementById("ready");
-      if (b && !b.disabled) botT.push(setTimeout(() => { if (ov.isConnected) b.click(); }, 2500 * BOTF));
-      else setTimeout(tick, 300);
-    };
-    tick();
-  }
-  function autoNext() {
-    const nx = document.getElementById("next");
-    botT.push(setTimeout(() => { if (nx && nx.isConnected) nx.click(); }, 3500 * BOTF));
-  }
-  function botPlay() {
-    const t = actor();
-    if (!t || !t.bot || S.phase !== "play") return;
-    lockBot();
-    const d = S.duel, q = d ? (d.step === 1 ? d.q1 : d.q2) : S.deck[S.idx];
-    const key = S.idx + ":" + (d ? d.step : 0);
-    const still = () => S.phase === "play" && S.idx + ":" + (S.duel ? S.duel.step : 0) === key && !(S.duel ? (S.duel.step === 1 ? S.duel.a1 : S.duel.a2) : S.answered);
-    // accuracy: the bot's level, its theme, and the kind of question
-    let p = t.bot.p + (t.bot.th[THEME_OF[q]] || 0);
-    if (d && d.kind === "rescue") p -= 0.10; // a question it missed before
-    else if (d) p += 0.08; // castagne: a question it already solved
-    else if (isFilon() && S.filonFromMissed) p -= 0.08;
-    p = Math.max(0.05, Math.min(0.98, p));
-    // thinking time: strong bots answer faster
-    const limit = d ? (d.kind === "rescue" ? RTIME : DTIME) : isRaid() ? ETIME : isFilon() ? FTIME : QTIME;
-    let at;
-    if (d && d.kind !== "rescue") at = (DTIME - 4) * 1000 + 300 + Math.random() * (0.6 + (1 - p) * 2.8) * 1000; // castagne: during « 3, 2, 1, Dégaine ! »
-    else at = Math.max(2500, Math.min((limit - 1.5) * 1000, (4 + (1 - p) * 18) * (0.6 + Math.random() * 0.8) * 1000));
-    const fb = document.getElementById("fb");
-    if (fb) fb.innerHTML = `<div class="thinking"><span class="dot" style="--pc:${pc(S.teams.indexOf(t))}"></span>${esc(t.name)} réfléchit…</div>`;
-    // objects: more often on events; the pioche when it feels sure, else the tamis or the lampe
-    const ev = !!d || isChallenge();
-    if ((t.inv || []).length && Math.random() < (ev ? 0.6 : 0.3)) {
-      const has = k => t.inv.findIndex(it => it.t === k);
-      const i = p >= 0.7 && has("pioche") >= 0 ? has("pioche") : has("tamis") >= 0 ? has("tamis") : has("lampe") >= 0 ? has("lampe") : -1;
-      if (i >= 0) botT.push(setTimeout(() => { if (still() && !S.use) { useItem(t, q, i); lockBot(); } }, at * 0.4 * BOTF));
-    }
-    // a weak bot sometimes lets the time run out
-    if (p < 0.5 && Math.random() < 0.06) return;
-    botT.push(setTimeout(() => {
-      if (!still()) return;
-      let pp = p;
-      if (S.use && S.use.t === "lampe") pp += (1 - pp) * 0.35;
-      if (S.use && S.use.t === "tamis") pp += (1 - pp) * 0.5;
-      const right = ANSWER[q], removed = (S.use && S.use.removed) || [];
-      const wrong = ["a", "b", "c", "d"].filter(l => l !== right && !removed.includes(l));
-      const l = Math.random() < pp || !wrong.length ? right : pick(wrong);
-      d ? answerDuel(l) : answer(l);
-    }, at * BOTF));
-  }
 
   /* ---------- Sound ---------- */
   function beep(kind) {
@@ -522,14 +435,8 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
           ${Object.keys(SUBJECTS).map(sb => `<div class="mixrow"><label class="mixchk"><input type="checkbox" id="mx-${sb}" ${S.mixSel && S.mixSel[sb] ? "checked" : ""}> ${SUBJECTS[sb]}</label>
             ${segs("mxl-" + sb, LKEYS.filter(k => LEVELS[k].subject === sb), (S.mixLv || {})[sb], v => LEVELS[v].label)}</div>`).join("")}</div>`
         : `<label class="f">Niveau ${segs("lv", LKEYS.filter(k => LEVELS[k].subject === (LEVELS[S.level] || {}).subject), S.level, v => LEVELS[v].label)}</label>`}
-        <label class="f">Mode ${segs("mode", ["amis", "bots"], S.mode === "bots" ? "bots" : "amis", v => v === "amis" ? "Entre joueurs" : "Solo contre des bots")}</label>
-        ${S.mode === "bots" ? `<label class="f">Ton nom <div class="names"><input id="name0" aria-label="Ton nom" value="${esc(S.names[0])}" maxlength="24" style="--pc:${pc(0)}"></div></label>
-        <label class="f">Nombre de bots ${segs("nb", [1, 2, 3, 4, 5], S.nBots)}</label>
-        <label class="f">Difficulté des bots ${segs("bl", [1, 2, 3, 4], S.botLvl, v => BOT_LV[v].label)}</label>
-        <div class="botinfo"><span>${BOT_LV[S.botLvl].desc}</span>
-          ${botSpecs(S.nBots, S.botLvl).map((b, i) => `<span class="botrow" style="--pc:${pc(i + 1)}"><strong>${esc(botName(i))}</strong> ${stars(b.p)} <span>· vise juste environ ${Math.round(b.p * 100)} % du temps</span></span>`).join("")}</div>`
-        : `<label class="f">Nombre de joueurs ${segs("nt", [1, 2, 3, 4, 5, 6], S.nTeams)}</label>
-        <div class="names">${Array.from({ length: S.nTeams }, (_, i) => `<input id="name${i}" aria-label="Nom du joueur ${i + 1}" value="${esc(S.names[i])}" maxlength="24" style="--pc:${pc(i)}">`).join("")}</div>`}
+        <label class="f">Nombre de joueurs ${segs("nt", [1, 2, 3, 4, 5, 6], S.nTeams)}</label>
+        <div class="names">${Array.from({ length: S.nTeams }, (_, i) => `<input id="name${i}" aria-label="Nom du joueur ${i + 1}" value="${esc(S.names[i])}" maxlength="24" style="--pc:${pc(i)}">`).join("")}</div>
         <label class="f">Nombre de questions ${segs("nq", [10, 20, 40, 60], S.nQ)}</label>
         <div class="f" style="font-weight:700;font-size:15px;display:flex;flex-direction:column;gap:6px">Thèmes
           <div class="checks">${THEMES.map(t => `<label><input type="checkbox" id="th-${t.id}" ${S.themes[t.id] ? "checked" : ""}> ${t.label}</label>`).join("")}</div>
@@ -541,7 +448,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     <footer class="credit"><span class="cl" aria-hidden="true">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</footer>`;
 
     const bindSeg = (id, key, rerender) => app.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { saveNames(); S[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; rerender ? renderSetup() : app.querySelectorAll(`#${id} button`).forEach(x => x.setAttribute("aria-pressed", x === b)); });
-    bindSeg("nt", "nTeams", true); bindSeg("nq", "nQ"); bindSeg("nb", "nBots", true); bindSeg("bl", "botLvl", true); bindSeg("mode", "mode", true);
+    bindSeg("nt", "nTeams", true); bindSeg("nq", "nQ");
     const applyLevel = key => { S.level = key; setLevel(S.level); S.themes = {}; THEMES.forEach(t => { S.themes[t.id] = true; }); renderSetup(); };
     // mixed subjects: one level per ticked subject
     const applyMix = () => {
@@ -591,7 +498,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   function start() {
     S.series = "AB"; // the whole bank (series A and B)
     saveNames();
-    const solo = S.mode === "bots", nP = solo ? 1 + S.nBots : S.nTeams;
     let pool = [];
     const inSeries = n => S.series === "AB" || (S.series === "B" ? isB(n) : !isB(n));
     QS.forEach(([n, th]) => { if (S.themes[th] && inSeries(n)) pool.push(n); });
@@ -603,7 +509,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     S.challenges = []; S.filonPicked = {}; S.filonRolled = {}; S.fallbackTried = {};
     // one theft slot in each block of 5 questions, on a question that is not a filon
     S.raids = [];
-    if (nP > 1) {
+    if (S.nTeams > 1) {
       for (let b = 0; b < S.deck.length; b += 5) {
         const cand = [];
         for (let i = Math.max(b, 2); i <= Math.min(b + 4, S.deck.length - 1); i++) if (!S.challenges.includes(i)) cand.push(i);
@@ -612,7 +518,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     }
     // one castagne slot in each block of 4 questions (never in the first 3, players need solved questions)
     S.duels = [];
-    if (nP > 1) {
+    if (S.nTeams > 1) {
       for (let b = 0; b < S.deck.length; b += 4) {
         const cand = [];
         for (let i = Math.max(b, 3); i <= Math.min(b + 3, S.deck.length - 1); i++)
@@ -622,7 +528,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     }
     // one sauvetage slot in each block of 3 questions, on a question with no other event
     S.rescues = [];
-    if (nP > 1) {
+    if (S.nTeams > 1) {
       for (let b = 0; b < S.deck.length; b += 3) {
         const cand = [];
         for (let i = Math.max(b, 3); i <= Math.min(b + 2, S.deck.length - 1); i++)
@@ -631,8 +537,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       }
     }
     S.duel = null;
-    const specs = solo ? botSpecs(S.nBots, S.botLvl) : [];
-    S.teams = Array.from({ length: nP }, (_, i) => ({ name: solo && i ? botName(i - 1) : S.names[i], bot: solo && i ? makeBot(specs[i - 1]) : null, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [], inv: [newItem()] })); // everybody starts with one item
+    S.teams = Array.from({ length: S.nTeams }, (_, i) => ({ name: S.names[i], score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0, solved: [], inv: [newItem()] })); // everybody starts with one item
     S.use = null;
     if (/[?&]objets=1\b/.test(location.search)) S.teams.forEach(t => { t.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
     S.idx = 0; S.answered = null; S.victim = null; S.phase = "play";
@@ -667,16 +572,15 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     return `<div class="usebar" id="usebar" aria-label="Objets">${t.inv.map((it, i) => `<button class="usebtn" data-i="${i}" title="${ITEM_HELP[it.t]}" ${S.use ? "disabled" : ""}>${icon(it.t)} ${ITEMS[it.t]}</button>`).join("")}</div>`;
   }
   function bindUse(t, q) {
-    app.querySelectorAll(".usebtn").forEach(b => b.onclick = () => useItem(t, q, +b.dataset.i));
+    app.querySelectorAll(".usebtn").forEach(b => b.onclick = () => {
+      if (S.use) return;
+      const it = t.inv[+b.dataset.i]; if (!it) return;
+      S.use = { t: it.t };
+      if (it.t === "tamis") S.use.removed = shuffle(["a", "b", "c", "d"].filter(l => l !== ANSWER[q])).slice(0, 2);
+      it.u--; if (!it.u) t.inv.splice(+b.dataset.i, 1);
+      showUse(q); refreshInv(); beep("tick");
+    });
     showUse(q);
-  }
-  function useItem(t, q, i) {
-    if (S.use) return;
-    const it = t.inv[i]; if (!it) return;
-    S.use = { t: it.t };
-    if (it.t === "tamis") S.use.removed = shuffle(["a", "b", "c", "d"].filter(l => l !== ANSWER[q])).slice(0, 2);
-    it.u--; if (!it.u) t.inv.splice(i, 1);
-    showUse(q); refreshInv(); beep("tick");
   }
   function showUse(q) {
     const fx = document.getElementById("usefx");
@@ -690,13 +594,13 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 
   function teamsStrip() {
     return `<div class="teams">${S.teams.map((t, i) => `<div class="team ${S.phase === "play" && i === S.idx % S.teams.length ? "active" : ""} ${S.phase === "play" && isRaid() && i === S.victim ? "target" : ""}" id="team${i}" style="--pc:${pc(i)}">
-      <span class="name">${esc(t.name)}</span>${t.bot ? `<span class="botb" title="Bot : vise juste environ ${Math.round(t.bot.p * 100)} % du temps">bot ${stars(t.bot.p)}</span>` : ""}
+      <span class="name">${esc(t.name)}</span>
       <span class="score">${NUG}<span>${t.score}</span></span>
       <span class="meta">${t.ok} / ${t.tot} bonnes réponses</span><span class="invs" id="inv${i}">${invHTML(t)}</span></div>`).join("")}</div>`;
   }
 
   function renderPlay(showIntro) {
-    stopTimer(); clearBot();
+    stopTimer();
     if (!S.answered) { S.victim = (S.raids || []).includes(S.idx) ? leaderIdx() : null; S.filonLot = 4; S.filonOn = true; }
     if (!S.answered && !S.duel && (S.duels || []).includes(S.idx) && S.teams.length > 1) S.duel = makeDuel();
     if (!S.answered && !S.duel && (S.rescues || []).includes(S.idx) && S.teams.length > 1) S.duel = makeRescue();
@@ -725,7 +629,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         </div>
         <div class="side">
           <div class="panel">
-            <div class="turn" style="--pc:${pc(S.idx % S.teams.length)}">${t.bot ? "Au tour du bot" : "À toi de creuser"}<strong><span class="dot"></span>${esc(t.name)}</strong></div>
+            <div class="turn" style="--pc:${pc(S.idx % S.teams.length)}">À toi de creuser<strong><span class="dot"></span>${esc(t.name)}</strong></div>
             <div class="progress">Question ${S.idx + 1} sur ${S.deck.length}</div>
             <div class="stake">En jeu : <span class="nugs">${nugs(done && done.k != null ? done.k : stakeOf())}</span> ${done && done.k != null ? done.k : stakeOf()} pépite${(done && done.k != null ? done.k : stakeOf()) > 1 ? "s" : ""}${isRaid() ? ` à chaparder à ${esc(victim().name)}` : ""}</div>
             ${isRaid() ? `<div class="feedback ko" style="font-size:16px">Le shérif veille ! Si tu te trompes, tu paies 1 pépite d'amende à ${esc(victim().name)}.</div><div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${ETIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>` : ch ? `<div class="timer" id="timer"><div class="row"><span>Temps restant · coopération !</span><span class="secs" id="secs">${S.filonLot || 4} pépite${(S.filonLot || 4) > 1 ? "s" : ""}</span></div><div class="bar"><i id="barfill"></i></div></div><div class="feedback ok" style="font-size:16px">Tu as le droit de demander de l'aide !</div>` : done ? "" : `<div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${QTIME} s</span></div><div class="bar"><i id="barfill"></i></div></div>`}
@@ -737,12 +641,11 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       </div>`;
     app.querySelectorAll(".ans").forEach(b => b.onclick = () => answer(b.dataset.l, b));
     if (!done) bindUse(t, q); else showUse(q);
-    lockBot();
     document.getElementById("quit").onclick = () => { stopTimer(); S.phase = "end"; renderEnd(); };
     bindSound();
     if (done) showFeedback(done.choice, false);
     else if (ch) showChallengeIntro();
-    else whenShown(() => { startCountdown(QTIME); botPlay(); });
+    else whenShown(() => startCountdown(QTIME));
   }
   // an event's start button stays disabled until its question is displayed behind the overlay
   const boardShown = () => { const im = document.querySelector(".board img"); return !!(im && im.complete && im.naturalWidth > 1 && /^data:image\/png/.test(im.src)); };
@@ -794,10 +697,9 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     ov.innerHTML = `<div class="box">${body}
       <button class="primary" id="ready">C'est parti !</button></div>`;
     document.body.appendChild(ov);
-    const go = () => { ov.remove(); whenShown(() => { startTimer(); botPlay(); }); };
+    const go = () => { ov.remove(); whenShown(startTimer); };
     document.getElementById("ready").onclick = go;
     gateReady(document.getElementById("ready"));
-    if (curTeam().bot) autoReady(ov);
   }
 
   // filon: no time limit, the jackpot drops from 4 to 1 nugget, one step every 10 s
@@ -915,7 +817,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     refreshInv();
     const nx = document.getElementById("next");
     nx.onclick = next; nx.focus();
-    if (animate && t.bot) autoNext();
     // refresh scores in place
     const ti = S.idx % S.teams.length, card = document.getElementById("team" + ti);
     card.querySelector(".score span").textContent = t.score;
@@ -1010,7 +911,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   }
 
   function renderDuel() {
-    stopTimer(); clearBot();
+    stopTimer();
     const d = S.duel;
     const pIdx = d.step === 1 ? d.me : d.opp;
     const p = S.teams[pIdx], q = d.step === 1 ? d.q1 : d.q2;
@@ -1043,7 +944,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     });
     app.querySelectorAll(".ans").forEach(b => b.onclick = () => answerDuel(b.dataset.l));
     if (!ans) bindUse(p, q); else showUse(q);
-    lockBot();
     document.getElementById("quit").onclick = () => { S.phase = "end"; renderEnd(); };
     bindSound();
     if (ans) duelFeedback(false);
@@ -1063,7 +963,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       document.body.appendChild(ov);
       document.getElementById("ready").onclick = () => { ov.remove(); whenShown(startDraw); };
       gateReady(document.getElementById("ready"));
-      if (p.bot) autoReady(ov);
     }
   }
 
@@ -1077,7 +976,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       if (tb0) tb0.style.visibility = "visible";
       ansBox.querySelectorAll(".ans").forEach(b => { b.disabled = b.classList.contains("gone"); });
       startCountdown(RTIME, () => answerDuel(null));
-      lockBot(); botPlay();
       return;
     }
     if (!box || !ansBox) return;
@@ -1086,7 +984,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     const tb = document.getElementById("timer");
     if (tb) tb.style.visibility = "visible";
     startCountdown(DTIME, () => answerDuel(null), true);
-    botPlay();
     const open = (DTIME - 4) * 1000;
     ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawTimers.push(setTimeout(() => {
       if (!box.isConnected) return;
@@ -1096,7 +993,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       if (i === 0) {
         ansBox.style.visibility = "visible";
         ansBox.querySelectorAll(".ans").forEach(b => { b.disabled = b.classList.contains("gone"); });
-        lockBot();
       }
     }, open + i * 1000)));
   }
@@ -1173,7 +1069,6 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     const nx = document.getElementById("next");
     nx.focus();
     nx.onclick = d.step === 1 ? () => { d.step = 2; S.use = null; renderDuel(); } : next;
-    if (animate && S.teams[d.step === 1 ? d.me : d.opp].bot) autoNext();
     refreshInv();
     if (d.step === 2) {
       [d.me, d.opp].forEach((i, j) => {
@@ -1195,14 +1090,13 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   }
 
   function next() {
-    clearBot();
     if (S.timeUp || S.idx >= S.deck.length - 1) { S.phase = "end"; renderEnd(); return; }
     S.idx++; S.answered = null; S.duel = null; S.use = null;
     renderPlay();
   }
 
   function renderEnd() {
-    stopTimer(); clearBot();
+    stopTimer();
     if (clock) { clearInterval(clock); clock = null; }
     document.querySelectorAll(".overlay").forEach(o => o.remove());
     const ranked = S.teams.map(t => t).sort((a, b) => b.score - a.score || b.ok - a.ok);
@@ -1211,13 +1105,13 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       if (prev === null || t.score !== prev) pos = i + 1;
       prev = t.score;
       return `<div class="rank ${pos === 1 ? "first" : ""}"><span class="pos">${pos}</span>
-        <div style="min-width:0;--pc:${pc(S.teams.indexOf(t))}"><div class="nm">${esc(t.name)}${t.bot ? ` <span class="botb">bot ${stars(t.bot.p)}</span>` : ""}</div><div class="det">${t.ok} bonne${t.ok > 1 ? "s" : ""} réponse${t.ok > 1 ? "s" : ""} sur ${t.tot} · ${t.ch} filon${t.ch > 1 ? "s" : ""} exploité${t.ch > 1 ? "s" : ""} · ${t.vols || 0} chapardage${(t.vols || 0) > 1 ? "s" : ""} réussi${(t.vols || 0) > 1 ? "s" : ""} · ${t.duels || 0} castagne${(t.duels || 0) > 1 ? "s" : ""} gagnée${(t.duels || 0) > 1 ? "s" : ""} · ${t.saves || 0} sauvetage${(t.saves || 0) > 1 ? "s" : ""} réussi${(t.saves || 0) > 1 ? "s" : ""}</div></div>
+        <div style="min-width:0;--pc:${pc(S.teams.indexOf(t))}"><div class="nm">${esc(t.name)}</div><div class="det">${t.ok} bonne${t.ok > 1 ? "s" : ""} réponse${t.ok > 1 ? "s" : ""} sur ${t.tot} · ${t.ch} filon${t.ch > 1 ? "s" : ""} exploité${t.ch > 1 ? "s" : ""} · ${t.vols || 0} chapardage${(t.vols || 0) > 1 ? "s" : ""} réussi${(t.vols || 0) > 1 ? "s" : ""} · ${t.duels || 0} castagne${(t.duels || 0) > 1 ? "s" : ""} gagnée${(t.duels || 0) > 1 ? "s" : ""} · ${t.saves || 0} sauvetage${(t.saves || 0) > 1 ? "s" : ""} réussi${(t.saves || 0) > 1 ? "s" : ""}</div></div>
         <span class="pts">${NUG}${t.score}</span></div>`;
     }).join("");
     const best = ranked[0];
     app.innerHTML = header() + `
       <section class="panel" style="gap:16px">
-        <h2 style="font-family:var(--f-display);font-weight:400;color:var(--gold);margin:0;font-size:clamp(26px,5vw,40px);text-wrap:balance">${S.teams.length > 1 ? (S.teams.some(o => o.bot) && best === S.teams[0] ? `Bravo ${esc(best.name)}, tu bats les bots !` : `${esc(best.name)} remporte la ruée vers l'or !`) : `Tu as récolté ${best.score} pépite${best.score > 1 ? "s" : ""} !`}</h2>
+        <h2 style="font-family:var(--f-display);font-weight:400;color:var(--gold);margin:0;font-size:clamp(26px,5vw,40px);text-wrap:balance">${S.teams.length > 1 ? `${esc(best.name)} remporte la ruée vers l'or !` : `Tu as récolté ${best.score} pépite${best.score > 1 ? "s" : ""} !`}</h2>
         <div class="podium">${rows}</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button class="primary" id="again">Rejouer avec les mêmes joueurs</button>

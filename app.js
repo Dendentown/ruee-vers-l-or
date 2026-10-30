@@ -192,10 +192,12 @@
           <p>Entre le code de la partie pour jouer à ton rythme.</p>
           <button class="primary purple" id="mPlay">Créer une partie et y jouer</button>
           <p>Crée une partie, invite les autres avec ton code et joue avec eux.</p>
+          <button class="primary blue" id="mSolo">Jouer en solo contre des bots</button>
+          <p>Joue seul à ton rythme contre des bots, du plus facile au plus fort.</p>
           <button class="ghost" id="mTest">Tester la connexion de ce réseau</button>
           <div id="nettest" aria-live="polite"></div>
           <a class="primary orange" href="tableau.html" style="text-align:center;text-decoration:none">Jouer sur le même appareil</a>
-          <p>Jouez chacun votre tour sur le même écran, ou seul contre des bots.</p>
+          <p>Jouez chacun votre tour sur le même écran.</p>
           <button class="primary green" id="mOff">Télécharger la version hors ligne</button>
           <p>Télécharge le jeu et ouvre le fichier <strong>jouer.html</strong> pour y jouer sans internet.</p>
           <div id="offst" aria-live="polite"></div>
@@ -204,6 +206,7 @@
     $("#mHost").onclick = () => Host.init();
     $("#mJoin").onclick = () => Student.init("");
     $("#mPlay").onclick = () => Host.initPlay();
+    $("#mSolo").onclick = () => Host.initSolo();
     $("#mOff").onclick = downloadOffline;
     $("#mTest").onclick = testConnection;
   }
@@ -258,7 +261,7 @@
   const Host = (() => {
     const KEY = "ruee-host";
     let H = null, L = null, peer = null, conns = {}, tries = 0, statusText = "", showQR = false, renderT = null;
-    const save = () => store.set(KEY, H);
+    const save = () => { if (H && !H.solo) store.set(KEY, H); };
     const players = () => Object.values(H.players);
     const sorted = () => players().sort((a, b) => b.score - a.score || a.join - b.join);
     const rankOf = p => 1 + players().filter(o => o.score > p.score).length;
@@ -269,7 +272,7 @@
     // "Créer une partie et y jouer": the creator is also a player (no teacher screen once the game starts)
     let selfPlay = false, selfJoined = false;
     function initPlay() {
-      mode = "host";
+      mode = "host"; solo = false;
       const old = store.get(KEY);
       if (old && old.phase !== "end" && old.selfPlay && Object.keys(old.players || {}).length) { selfPlay = true; return init(); }
       app.innerHTML = header("Créer une partie et y jouer") + `<section class="panel joinbox">
@@ -284,8 +287,119 @@
       };
       $("#sgo").onclick = go; $("#sn").onkeydown = e => { if (e.key === "Enter") go(); }; $("#sn").focus();
     }
-    function init() {
+    /* ----- solo: one player against bots, all on this device, no server ----- */
+    let solo = false;
+    function initSolo() {
       mode = "host";
+      app.innerHTML = header("Jouer en solo contre des bots") + `<section class="panel joinbox">
+          <label class="f">Ton nom <input id="sn" maxlength="18" autocomplete="nickname" value="${esc(store.get("ruee-name") || "")}"></label>
+          <button class="primary" id="sgo">Continuer</button>
+          <div class="err" id="serr" aria-live="polite"></div></section>` + credit;
+      const go = () => {
+        const n = $("#sn").value.trim();
+        if (!n) { $("#serr").textContent = "Écris ton nom."; return; }
+        store.set("ruee-name", n); selfPlay = true; solo = true; newGame();
+      };
+      $("#sgo").onclick = go; $("#sn").onkeydown = e => { if (e.key === "Enter") go(); }; $("#sn").focus();
+    }
+    // each difficulty is a band of accuracy; the bots of a game are spread over the band, weakest first
+    const BOT_LV = {
+      1: { label: "Facile", lo: 0.30, hi: 0.48, desc: "Des prospecteurs débutants : ils se trompent souvent et réfléchissent longtemps." },
+      2: { label: "Moyen", lo: 0.48, hi: 0.66, desc: "Des chercheurs réguliers : à peu près une bonne réponse sur deux, parfois plus." },
+      3: { label: "Difficile", lo: 0.66, hi: 0.82, desc: "De vieux briscards : ils trouvent souvent, vite, et savent se servir de leurs objets." },
+      4: { label: "Expert", lo: 0.82, hi: 0.95, desc: "Des légendes de l'Ouest : presque toujours juste, en quelques secondes." },
+    };
+    const BOT_NAMES = ["Doc Holliday", "Belle Starr", "Wyatt Earp", "Jesse James", "Wild Bill", "Annie Oakley"];
+    const stars = p => { const n = Math.max(1, Math.min(5, 1 + Math.floor((p - 0.30) / 0.13))); return "★".repeat(n) + "☆".repeat(5 - n); };
+    const BOTF = params.get("vite") === "1" ? 0.08 : 1; // test switch: fast bots
+    function botSpecs() {
+      const L0 = BOT_LV[H.botLvl] || BOT_LV[2], nb = H.nBots;
+      return Array.from({ length: nb }, (_, i) => nb === 1 ? (L0.lo + L0.hi) / 2 : L0.lo + (L0.hi - L0.lo) * i / (nb - 1));
+    }
+    function rebuildBots() {
+      players().filter(o => o.bot).forEach(o => { delete H.players[o.pid]; delete conns[o.pid]; });
+      const human = (H.selfName || "").toLowerCase(), names = BOT_NAMES.filter(n => n.toLowerCase() !== human);
+      botSpecs().forEach((acc, i) => {
+        H.seq++;
+        const pid = "b" + H.seq + newId();
+        H.players[pid] = { pid, name: names[i], color: PCOL[i + 1], join: H.seq, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0,
+          k: 0, deck: [], solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: [], bot: { p: acc, th: {} } };
+        const c = { cid: null, open: true, _pid: pid, send: m => botRecv(pid, m) };
+        conns[pid] = c;
+      });
+    }
+    // the bots read the same "view" messages as a phone, and answer with the same messages
+    const B = {};
+    function botRecv(pid, m) {
+      if (!m || m.t !== "view") return;
+      const st = B[pid] = B[pid] || { v: null, t: {}, done: {} };
+      st.v = m;
+      clearTimeout(st.t.think); st.t.think = setTimeout(() => botThink(pid), 50);
+    }
+    function botSend(pid, m) { setTimeout(() => { const c = conns[pid]; if (c && H && H.players[pid]) { try { onMsg(c, m); } catch (e) { console.error(e); } } }, 0); }
+    function botAcc(P, q, kind) {
+      let a = P.bot.p + (P.bot.th[L.THEME_OF[q]] || 0);
+      if (kind === "rescue") a -= 0.10; // a question it missed before
+      if (kind === "duel") a += 0.08; // a question it already solved
+      return Math.max(0.05, Math.min(0.98, a));
+    }
+    const thinkMs = (a, limit) => Math.max(2500, Math.min((limit - 1.5) * 1000, (4 + (1 - a) * 18) * (0.6 + Math.random() * 0.8) * 1000)) * BOTF;
+    function botChoice(q, a, used) {
+      if (used && used.t === "lampe") a += (1 - a) * 0.35;
+      if (used && used.t === "tamis") a += (1 - a) * 0.5;
+      const right = L.ANSWER[q], removed = (used && used.removed) || [];
+      const wrong = ["a", "b", "c", "d"].filter(l => l !== right && !removed.includes(l));
+      return Math.random() < a || !wrong.length ? right : pick(wrong);
+    }
+    function botThink(pid) {
+      const st = B[pid], v = st && st.v, P = H && H.players[pid];
+      if (!v || !P || !P.bot || H.phase !== "play" || v.phase !== "play") return;
+      const once = (key, ms, fn) => { if (st.done[key]) return; st.done[key] = true; setTimeout(() => { if (H && H.phase === "play" && H.players[pid]) fn(); }, ms); };
+      // filons of the others: sign up, load, answer
+      (v.filons || []).forEach(f => {
+        if (f.stage === "choose" && f.joined == null) once("fj" + f.id, (1500 + Math.random() * 5000) * BOTF, () => botSend(pid, { t: "fjoin", id: f.id, yes: Math.random() < 0.4 + P.bot.p / 2 }));
+        if (f.joined === true && f.stage !== "choose" && !f.loaded) once("fl" + f.id, 400 * BOTF, () => botSend(pid, { t: "floaded", id: f.id }));
+        if (f.joined === true && f.stage === "play" && f.loaded && !f.tried) {
+          const hf = (H.filons || {})[f.id];
+          if (hf) once("ft" + f.id, thinkMs(botAcc(P, hf.q), FTIME) * 0.7, () => botSend(pid, { t: "ftry", id: f.id, l: botChoice(hf.q, botAcc(P, hf.q), null) }));
+        }
+      });
+      const q = v.q;
+      if (q) {
+        const cur = P.cur;
+        if (!cur || cur.id !== q.id) return;
+        if (q.kind === "filon" && q.fstage !== "play") { if (q.fstage === "load") once("own" + q.id, 400 * BOTF, () => botSend(pid, { t: "floaded", id: q.fid })); return; }
+        const a = botAcc(P, cur.q, q.kind);
+        const ms = thinkMs(a, q.time);
+        // objects: more often on events; the pioche when it feels sure, else the tamis or the lampe
+        const inv = P.inv || [];
+        if (!q.used && inv.length && Math.random() < (q.kind === "normal" ? 0.3 : 0.6)) {
+          const has = k => inv.findIndex(it => it.t === k);
+          const i = a >= 0.7 && has("pioche") >= 0 ? has("pioche") : has("tamis") >= 0 ? has("tamis") : has("lampe") >= 0 ? has("lampe") : -1;
+          if (i >= 0) once("use" + q.id, ms * 0.4, () => botSend(pid, { t: "use", id: q.id, i }));
+        }
+        // a weak bot sometimes lets the time run out
+        const late = a < 0.5 && Math.random() < 0.06;
+        once("ans" + q.id, late ? q.time * 1000 * BOTF : ms, () => {
+          const c2 = H.players[pid].cur;
+          if (!c2 || c2.id !== q.id) return;
+          botSend(pid, { t: "ans", id: q.id, l: late ? null : botChoice(c2.q, a, c2.used) });
+        });
+        return;
+      }
+      if (v.done) return;
+      // a result on screen, or the very start: next question after a short pause
+      const key = "nx" + (v.res ? v.res.qid : "start");
+      once(key, (v.res ? 1500 + Math.random() * 2500 : 500 + Math.random() * 1500) * BOTF, () => botSend(pid, { t: "next" }));
+    }
+    // the player of this device talks to the game directly
+    function connectLocal() {
+      const c = { cid: "local", open: true, _pid: null, send: m => setTimeout(() => Student.recvLocal(m), 0) };
+      fconns.local = c;
+      Student.joinLocal(H.selfName, m => setTimeout(() => { if (H) { try { onMsg(c, m); } catch (e) { console.error(e); } } }, 0));
+    }
+    function init() {
+      mode = "host"; if (!selfPlay) solo = false;
       try { history.replaceState(null, "", location.pathname + (selfPlay ? "?jeu" : "?prof") + extraQS()); } catch (e) {}
       const old = store.get(KEY);
       if (old && old.phase !== "end" && old.code && Object.keys(old.players || {}).length) {
@@ -304,11 +418,12 @@
       detach(true);
       conns = {};
       H = { code: newCode(), level: (H && H.level) || "5e", nQ: (H && H.nQ) || 20, series: (H && H.series) || "A", themes: null, phase: "lobby", players: {}, links: {}, feed: [], seq: 0, cids: {},
-        selfPlay, selfName: selfPlay ? store.get("ruee-name") || "Chercheur" : null };
+        selfPlay, selfName: selfPlay ? store.get("ruee-name") || "Chercheur" : null, solo, nBots: (H && H.nBots) || 3, botLvl: (H && H.botLvl) || 2 };
       selfJoined = false;
       L = level(H.level);
       H.themes = Object.fromEntries(L.themes.map(t => [t.id, true]));
       save();
+      if (H.solo) { Object.keys(B).forEach(k => delete B[k]); rebuildBots(); connectLocal(); render(); return; }
       if (!fbase()) { connect(); return; }
       // old games (more than a day) are removed from the base
       fbase().ref("games").orderByChild("createdAt").endAt(Date.now() - 864e5).once("value")
@@ -425,7 +540,7 @@
           while (taken.has(name.toLowerCase())) name = base + " " + i++;
           H.seq++;
           const pid = "p" + H.seq + newId();
-          p = H.players[pid] = { pid, name, color: PCOL[(H.seq - 1) % PCOL.length], join: H.seq, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0,
+          p = H.players[pid] = { pid, name, color: H.solo ? PCOL[0] : PCOL[(H.seq - 1) % PCOL.length], join: H.seq, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0,
             k: 0, deck: H.phase === "play" ? makeDeck() : [], solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: H.phase === "play" ? [newItem()] : [] };
           if (H.phase === "play") feed(`${name} rejoint la partie.`);
         }
@@ -748,9 +863,12 @@
       const err = $("#herr");
       if (!pool().length) { if (err) err.textContent = "Coche au moins un thème."; return; }
       if (!players().length) { if (err) err.textContent = "Attends qu'au moins un élève ait rejoint la partie."; return; }
+      if (H.solo && !players().some(p => !p.bot)) { if (err) err.textContent = "Un instant, la partie se prépare…"; return; }
       H.phase = "play";
       players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null, inv: [newItem()] })); // everybody starts with one item
       H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false;
+      Object.keys(B).forEach(k => delete B[k]);
+      players().forEach(p => { if (p.bot) p.bot.th = Object.fromEntries(L.themes.map(t => [t.id, (Math.random() * 2 - 1) * 0.08])); }); // every bot has stronger and weaker themes
       if (params.get("objets") === "1") players().forEach(p => { p.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
       feed("La partie commence !");
       save(); pushAll(); render();
@@ -782,15 +900,21 @@
     }
     function drawLobby() {
       const ps = players();
-      app.innerHTML = header(`${H.selfPlay ? "Partie entre joueurs" : "Professeur"} · ${esc(L.sub)}`, statusHTML()) + `
+      app.innerHTML = header(`${H.solo ? "Solo contre des bots" : H.selfPlay ? "Partie entre joueurs" : "Professeur"} · ${esc(L.sub)}`, H.solo ? "" : statusHTML()) + `
         <div class="lobby">
-          <section class="panel joinpanel">
+          ${H.solo ? `<section class="panel joinpanel">
+            <h2>Tes adversaires</h2>
+            <label class="f">Nombre de bots ${segs("nb", [1, 2, 3, 4, 5], H.nBots)}</label>
+            <label class="f">Difficulté des bots ${segs("bl", [1, 2, 3, 4], H.botLvl, v => BOT_LV[v].label)}</label>
+            <div class="botinfo"><span>${BOT_LV[H.botLvl].desc}</span>
+              ${ps.filter(p => p.bot).map(p => `<span class="botrow" style="--pc:${p.color}"><strong>${esc(p.name)}</strong> <span class="stars">${stars(p.bot.p)}</span> <span>· vise juste environ ${Math.round(p.bot.p * 100)} % du temps</span></span>`).join("")}</div>
+          </section>` : `<section class="panel joinpanel">
             <h2>Rejoindre la partie</h2>
             <p>Scanne le QR code avec ton téléphone, ou va sur l'adresse ci-dessous et tape le code.</p>
             <div class="codebig" aria-label="Code de la partie">${esc(H.code)}</div>
             <div class="qr">${qrHTML()}</div>
             <div class="url">${esc(location.origin + location.pathname)}</div>
-          </section>
+          </section>`}
           <section class="panel setup1">
             <h2>Préparer la partie</h2>
             <label class="f">Matière ${segs("mat", [...Object.keys(D.SUBJECTS), "mix"], isMix(H.level) ? "mix" : D.LEVELS[H.level].subject, v => v === "mix" ? "Mélanger" : D.SUBJECTS[v])}</label>
@@ -801,8 +925,8 @@
             <label class="f">Questions par joueur ${segs("nq", [10, 20, 40], H.nQ)}</label>
             <div class="f"><span style="font-weight:700;font-size:15px">Thèmes</span>
               <div class="checks">${L.themes.map(t => `<label><input type="checkbox" data-th="${t.id}" ${H.themes[t.id] ? "checked" : ""}> ${esc(t.label)}</label>`).join("")}</div></div>
-            <div class="f"><span style="font-weight:700;font-size:15px">Joueurs connectés : ${ps.length}</span>
-              <div class="chips">${ps.length ? ps.map(p => `<span class="chip ${p.online ? "" : "off"}" style="--pc:${p.color}">${esc(p.name)}</span>`).join("") : '<span class="muted">En attente des élèves…</span>'}</div></div>
+            ${H.solo ? "" : `<div class="f"><span style="font-weight:700;font-size:15px">Joueurs connectés : ${ps.length}</span>
+              <div class="chips">${ps.length ? ps.map(p => `<span class="chip ${p.online ? "" : "off"}" style="--pc:${p.color}">${esc(p.name)}</span>`).join("") : '<span class="muted">En attente des élèves…</span>'}</div></div>`}
             <button class="primary" id="hgo">Lancer la partie</button>
             <div class="err" id="herr"></div>
           </section>
@@ -827,6 +951,8 @@
       }; });
       Object.keys(D.SUBJECTS).forEach(sb => bindSeg("mxl-" + sb, v => { H.mixLv[sb] = v; H.mixSel[sb] = true; applyMix(); }));
       bindSeg("nq", v => { H.nQ = +v; save(); draw(); });
+      bindSeg("nb", v => { H.nBots = +v; rebuildBots(); draw(); });
+      bindSeg("bl", v => { H.botLvl = +v; rebuildBots(); draw(); });
       app.querySelectorAll("[data-th]").forEach(cb => { cb.onchange = () => { H.themes[cb.dataset.th] = cb.checked; save(); }; });
       $("#hgo").onclick = startGame;
     }
@@ -882,7 +1008,7 @@
         </section>` + credit;
       $("#hnew").onclick = () => { store.del(KEY); newGame(); };
     }
-    return { init, initPlay, _state: () => H };
+    return { init, initPlay, initSolo, _state: () => H };
   })();
 
   /* =====================================================================
@@ -893,6 +1019,12 @@
     const pidKey = () => "ruee-pid-" + code;
 
     let quiet = false; // the creator's own player: no join screen, no lobby screen (the creator sees the settings)
+    let local = null; // solo game: messages go straight to the game on this device
+    function joinLocal(n, toHost) {
+      quiet = true; local = toHost; code = "SOLO"; name = n;
+      send({ t: "hello", name });
+    }
+    function recvLocal(m) { try { onMsg(m); } catch (e) { console.error(e); } }
     function joinQuiet(c, n) {
       quiet = true; code = c; name = n;
       open();
@@ -979,7 +1111,7 @@
       send({ t: "hello", pid: store.get(pidKey()), name });
     }
     function setBanner(t) { banner = t; const el = $("#sbanner"); if (el) { el.textContent = t; el.hidden = !t; } }
-    function send(m) { if (!gameRef) return false; gameRef.child("up").push(Object.assign({ c: cid }, enc(m))).catch(() => {}); return true; }
+    function send(m) { if (local) { local(m); return true; } if (!gameRef) return false; gameRef.child("up").push(Object.assign({ c: cid }, enc(m))).catch(() => {}); return true; }
     function toast(text) {
       const t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = text;
       document.querySelectorAll(".toast").forEach((o, i) => { o.style.top = (10 + (i + 1) * 64) + "px"; });
@@ -1171,7 +1303,9 @@
         app.innerHTML = header(esc(V.sub || "")) + meBar() + `<section class="panel"><h2>Fin de la partie !</h2>
           ${V.me ? `<p style="font-size:20px;color:var(--ore)">Tu termines <strong>${V.me.rank}<sup>${V.me.rank === 1 ? "er" : "e"}</sup></strong> sur ${V.me.n} avec <strong>${V.me.score}</strong> pépite${V.me.score > 1 ? "s" : ""}.</p>` : ""}
           <div class="podium">${r.slice(0, 10).map(o => `<div class="rank ${o.rank === 1 ? "first" : ""}" style="--pc:${o.color}"><span class="pos">${o.rank}</span><span class="nm">${esc(o.name)}</span><span class="pts">${o.score} ${NUG}</span></div>`).join("")}</div>
+          ${local ? `<button class="primary blue" id="again" style="align-self:flex-start">Rejouer contre les bots</button>` : ""}
         </section>` + credit;
+        if (local) $("#again").onclick = () => { local = null; quiet = false; V = null; Host.initSolo(); };
         return;
       }
       // play
@@ -1352,7 +1486,7 @@
       const nx = $("#snext");
       nx.onclick = () => { nx.disabled = true; send({ t: "next" }); };
     }
-    return { init, joinQuiet, _v: () => V };
+    return { init, joinQuiet, joinLocal, recvLocal, _v: () => V };
   })();
 
   /* ---------- boot ---------- */
