@@ -146,11 +146,11 @@
     return `<div class="rules">
       <div class="rule"><span class="big">0</span><span>Mauvaise réponse ou temps écoulé : aucune pépite.</span></div>
       <div class="rule"><span class="big">1 ${NUG}</span><span>Bonne réponse à une question normale.</span></div>
-      <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous !</span></div>
-      <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites, chacun sur son téléphone.</span></div>
-      <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche.</span></div>
+      <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous ! Si les deux trouvent, chacun gagne un objet (si un seul trouve : une chance sur deux pour chacun).</span></div>
+      <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites. Le gagnant vole aussi un objet à l'autre.</span></div>
+      <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche, et l'un de ses objets.</span></div>
       <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : le joueur gagne 4 pépites s'il répond juste. Les autres peuvent tenter la même question : 1 pépite pour ceux qui trouvent, si le joueur du filon trouve aussi.</span></div>
-      <div class="rule item"><span class="big">${icon("lampe")}</span><span><strong>Objets</strong><br>${icon("lampe")} Lampe : donne une astuce pour la question.<br>${icon("pioche")} Pioche : augmente la récompense pour une question.<br>${icon("tamis")} Tamis : retire deux mauvaises réponses.<br>Un sauvetage où les deux trouvent rapporte un objet à chacun (une seule bonne réponse : une chance sur deux). On peut se les faire voler en castagne ou en chapardage !</span></div>
+      <div class="rule item"><span class="big"></span><span><strong>Objets</strong><br>${icon("lampe")} Lampe : donne une astuce pour la question.<br>${icon("pioche")} Pioche : augmente la récompense pour une question.<br>${icon("tamis")} Tamis : retire deux mauvaises réponses.</span></div>
     </div>`;
   }
 
@@ -553,7 +553,8 @@
       let done = false;
       if (n > 1 && k >= 2) {
         const u = Math.random(), pr = f / 4;
-        const want = u < pr ? "raid" : u < pr + 1 / 8 ? "duel" : u < pr + 1 / 8 + 1 / 10 ? "rescue" : null;
+        // same rates as the board game: chapardage 1/4, castagne 1/3, sauvetage 1/4
+        const want = u < pr ? "raid" : u < pr + 1 / 3 ? "duel" : u < pr + 1 / 3 + 1 / 4 ? "rescue" : null;
         // the drawn event first; if it cannot happen (no leader, no partner yet…), one of the others
         const tryEv = ev => {
           if (ev === "raid") {
