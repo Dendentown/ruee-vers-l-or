@@ -429,31 +429,31 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     S.deck = shuffle(pool).slice(0, Math.min(S.nQ, pool.length));
     // filons are drawn turn by turn, see filonChance()
     S.challenges = []; S.filonPicked = {}; S.filonRolled = {};
-    // one theft slot in each block of 6 questions, on a question that is not a filon
+    // one theft slot in each block of 4 questions, on a question that is not a filon
     S.raids = [];
-    if (S.nTeams > 1) {
-      for (let b = 0; b < S.deck.length; b += 6) {
-        const cand = [];
-        for (let i = Math.max(b + 1, 2); i <= Math.min(b + 5, S.deck.length - 1); i++) if (!S.challenges.includes(i)) cand.push(i);
-        if (cand.length) S.raids.push(cand[Math.floor(Math.random() * cand.length)]);
-      }
-    }
-    // one castagne slot in each block of 4 questions (never in the first 3, players need solved questions)
-    S.duels = [];
     if (S.nTeams > 1) {
       for (let b = 0; b < S.deck.length; b += 4) {
         const cand = [];
-        for (let i = Math.max(b + 1, 3); i <= Math.min(b + 3, S.deck.length - 1); i++)
+        for (let i = Math.max(b + 1, 2); i <= Math.min(b + 3, S.deck.length - 1); i++) if (!S.challenges.includes(i)) cand.push(i);
+        if (cand.length) S.raids.push(cand[Math.floor(Math.random() * cand.length)]);
+      }
+    }
+    // one castagne slot in each block of 3 questions (never in the first 3, players need solved questions)
+    S.duels = [];
+    if (S.nTeams > 1) {
+      for (let b = 0; b < S.deck.length; b += 3) {
+        const cand = [];
+        for (let i = Math.max(b + 1, 3); i <= Math.min(b + 2, S.deck.length - 1); i++)
           if (!S.challenges.includes(i) && !S.raids.includes(i)) cand.push(i);
         if (cand.length) S.duels.push(cand[Math.floor(Math.random() * cand.length)]);
       }
     }
-    // one sauvetage slot in each block of 6 questions, on a question with no other event
+    // one sauvetage slot in each block of 4 questions, on a question with no other event
     S.rescues = [];
     if (S.nTeams > 1) {
-      for (let b = 0; b < S.deck.length; b += 6) {
+      for (let b = 0; b < S.deck.length; b += 4) {
         const cand = [];
-        for (let i = Math.max(b + 1, 3); i <= Math.min(b + 5, S.deck.length - 1); i++)
+        for (let i = Math.max(b + 1, 3); i <= Math.min(b + 3, S.deck.length - 1); i++)
           if (!S.challenges.includes(i) && !S.raids.includes(i) && !S.duels.includes(i)) cand.push(i);
         if (cand.length) S.rescues.push(cand[Math.floor(Math.random() * cand.length)]);
       }

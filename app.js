@@ -386,12 +386,12 @@
       const n = players().length, f = Math.min(1, 4 / n); // big classes: thefts and filons stay as frequent as with 4 players
       let done = false;
       if (n > 1 && k >= 2) {
-        const u = Math.random(), pr = f / 6;
+        const u = Math.random(), pr = f / 4;
         if (u < pr) {
           const v = leaderFor(p);
           if (v) { Object.assign(cur, { kind: "raid", time: ETIME, victim: v.pid, victimName: v.name, stake: Math.min(3, v.score) }); done = true; }
-        } else if (k >= 3 && u < pr + 1 / 8) done = makeDuel(p, cur);
-        else if (k >= 3 && u < pr + 1 / 8 + 1 / 12) done = makeRescue(p, cur);
+        } else if (k >= 3 && u < pr + 1 / 6) done = makeDuel(p, cur);
+        else if (k >= 3 && u < pr + 1 / 6 + 1 / 8) done = makeRescue(p, cur);
       }
       if (!done && k >= 2 && (window.__forceFilon || Math.random() < filonChance(p) * (n > 1 ? f : 1))) { window.__forceFilon = false; makeFilon(p, cur); }
       if (cur.kind === "raid") feed(`${p.name} tente un chapardage sur ${cur.victimName}…`, "raid");
