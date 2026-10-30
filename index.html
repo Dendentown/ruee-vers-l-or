@@ -261,7 +261,8 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 .feed li { background: #120d0966; border-radius: 8px; padding: 8px 10px; font-size: 15px; border-left: 4px solid var(--plank-hi); }
 .feed li.duel { border-color: #ff8a3d; } .feed li.rescue { border-color: var(--ok); } .feed li.raid { border-color: var(--bad); } .feed li.filon { border-color: var(--gold); }
 .mebar { display: flex; align-items: center; gap: 12px; background: var(--rock); border: 2px solid var(--pc); border-radius: 12px; padding: 6px 12px; }
-.mebar .nm { font-weight: 800; color: var(--pc); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 18px; }
+.mebar .who { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 8px; }
+.mebar .nm { font-weight: 800; color: var(--pc); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 18px; }
 .mebar .sc { font-family: var(--f-display); color: var(--gold); font-size: 24px; display: flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
 .mebar .rk { color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; }
 .toast { position: fixed; left: 50%; top: 10px; transform: translateX(-50%); z-index: 40; background: #2b211a; border: 2px solid var(--gold); color: var(--ore); border-radius: 12px; padding: 10px 14px; font-weight: 700; width: max-content; max-width: min(92vw, 520px); box-shadow: 0 8px 24px #000a; animation: drop .4s; transition: top .3s; }
@@ -313,10 +314,10 @@ body.hasfbar { padding-bottom: 170px; }
 @media (max-width: 600px) { .mebar .sc { font-size: 20px; } .mebar .nm { font-size: 15px; } .codebig { letter-spacing: 4px; } }
 </style>
 <div class="wrap" id="app"></div>
-<script src="lib/firebase-app-compat.js?v=20261030212756"></script>
-<script src="lib/firebase-database-compat.js?v=20261030212756"></script>
-<script src="lib/qrcode.js?v=20261030212756"></script>
-<script src="data.js?v=20261030212756"></script>
-<script src="app.js?v=20261030212756"></script>
+<script src="lib/firebase-app-compat.js?v=20261030212922"></script>
+<script src="lib/firebase-database-compat.js?v=20261030212922"></script>
+<script src="lib/qrcode.js?v=20261030212922"></script>
+<script src="data.js?v=20261030212922"></script>
+<script src="app.js?v=20261030212922"></script>
 </body>
 </html>

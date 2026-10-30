@@ -1150,8 +1150,8 @@
     function meBar() {
       const me = V.me;
       if (!me) return "";
-      return `<div class="mebar" id="mebar" style="--pc:${me.color}"><span class="nm">${esc(me.name)}</span>
-        <span class="invs">${invHTML(me.inv)}</span><span class="rk">${me.rank}<sup>${me.rank === 1 ? "er" : "e"}</sup> / ${me.n}</span><span class="sc">${me.score} ${NUG}</span></div>`;
+      return `<div class="mebar" id="mebar" style="--pc:${me.color}"><span class="who"><span class="nm">${esc(me.name)}</span><span class="rk">${me.rank}<sup>${me.rank === 1 ? "er" : "e"}</sup> / ${me.n}</span></span>
+        <span class="invs">${invHTML(me.inv)}</span><span class="sc">${me.score} ${NUG}</span></div>`;
     }
     const top = () => header(esc(V.sub || "")) + `<div class="banner" id="sbanner" ${banner ? "" : "hidden"}>${esc(banner)}</div>` + meBar();
     function stopTimers() { if (timer) { clearInterval(timer); timer = null; } cd = null; drawT.forEach(clearTimeout); drawT = []; }
