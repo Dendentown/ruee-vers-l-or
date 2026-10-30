@@ -215,6 +215,9 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     <radialGradient id="g" cx="35%" cy="30%" r="75%">
       <stop offset="0" stop-color="#fff4c4"/><stop offset=".35" stop-color="#f6c443"/><stop offset="1" stop-color="#9a5f0a"/>
     </radialGradient>
+    <symbol id="i-lampe" viewBox="0 0 24 24"><path d="M9 2.5h6l1.2 3.5H7.8z" fill="#8a6a3a" stroke="#4a3524" stroke-width=".8"/><rect x="6.5" y="6" width="11" height="12" rx="2.5" fill="#ffd34d" stroke="#6b420a" stroke-width="1.2"/><circle cx="12" cy="12" r="3" fill="#fff8d6"/><path d="M8.5 21h7" stroke="#6b420a" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pioche" viewBox="0 0 24 24"><path d="M3.5 9.5C7 5 17 5 20.5 9.5" fill="none" stroke="#c9d3da" stroke-width="3" stroke-linecap="round"/><path d="M12 7v14" stroke="#8a5a2b" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-tamis" viewBox="0 0 24 24"><ellipse cx="12" cy="13" rx="9.5" ry="6.5" fill="#c9a36a" stroke="#6b420a" stroke-width="1.2"/><path d="M5 13h14M7 10h10M7 16h10M12 7v12M8.5 8v10M15.5 8v10" stroke="#6b420a" stroke-width=".8"/></symbol>
     <symbol id="nugget" viewBox="0 0 40 40">
       <path d="M8 22c-2-6 3-12 9-13 4-4 11-2 13 2 6 1 8 8 5 13 1 6-5 10-11 9-4 3-11 2-13-2-4-1-5-6-3-9z" fill="url(#g)" stroke="#6b420a" stroke-width="1.5"/>
       <path d="M15 14c2-1 4-1 5 0" stroke="#fffbe6" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8"/>
@@ -279,6 +282,16 @@ body.hasfbar { padding-bottom: 170px; }
 @media (max-width: 600px) { .backbtn { padding: 6px 10px 6px 8px; font-size: 14px; border-radius: 10px; } .backbtn svg { width: 18px; height: 18px; } .ttl { gap: 8px; } }
 .primary.orange { background: linear-gradient(#ffad66, #e8711a); color: #2a1200; box-shadow: 0 4px 0 #7a3410; }
 .primary.orange:active { box-shadow: 0 1px 0 #7a3410; }
+.ico { width: 1.25em; height: 1.25em; vertical-align: -0.28em; }
+.invs { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.inv { display: inline-flex; align-items: center; gap: 1px; font-size: 13px; font-weight: 800; color: var(--ore); }
+.usebar { display: flex; flex-wrap: wrap; gap: 6px; }
+.usebtn { background: #120d09; color: var(--ink); border: 1px solid var(--gold-deep); border-radius: 10px; padding: 6px 10px; font-weight: 700; font-size: 15px; display: inline-flex; gap: 6px; align-items: center; font-family: inherit; cursor: pointer; }
+.usebtn:hover:not(:disabled) { border-color: var(--gold); }
+.usebtn:disabled { opacity: .4; cursor: default; }
+.hint { background: #fff4c41a; border: 1px solid var(--gold); color: var(--ore); border-radius: 10px; padding: 8px 12px; font-size: 16px; line-height: 1.4; }
+.ans.gone { opacity: .12 !important; text-decoration: line-through; }
+.rule.item .big { color: var(--ore); }
 .mixbox { display: flex; flex-direction: column; gap: 8px; }
 .mixrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .mixchk { display: flex; align-items: center; gap: 8px; min-width: 150px; font-weight: 600; font-size: 15px; }
@@ -298,10 +311,10 @@ body.hasfbar { padding-bottom: 170px; }
 @media (max-width: 600px) { .mebar .sc { font-size: 20px; } .mebar .nm { font-size: 15px; } .codebig { letter-spacing: 4px; } }
 </style>
 <div class="wrap" id="app"></div>
-<script src="lib/firebase-app-compat.js?v=20261030204428"></script>
-<script src="lib/firebase-database-compat.js?v=20261030204428"></script>
-<script src="lib/qrcode.js?v=20261030204428"></script>
-<script src="data.js?v=20261030204428"></script>
-<script src="app.js?v=20261030204428"></script>
+<script src="lib/firebase-app-compat.js?v=20261030210302"></script>
+<script src="lib/firebase-database-compat.js?v=20261030210302"></script>
+<script src="lib/qrcode.js?v=20261030210302"></script>
+<script src="data.js?v=20261030210302"></script>
+<script src="app.js?v=20261030210302"></script>
 </body>
 </html>

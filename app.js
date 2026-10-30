@@ -92,16 +92,31 @@
       mixKeys(key).forEach(k => {
         const M = D.LEVELS[k], base = (LKEYS.indexOf(k) + 1) * 10000;
         M.themes.forEach(t => themes.push({ id: k + "_" + t.id, label: tagOf(k) + " · " + t.label }));
-        M.qs.forEach(([n, th, a]) => qs.push([base + n, k + "_" + th, a]));
+        M.qs.forEach(([n, th, a, h]) => qs.push([base + n, k + "_" + th, a, M.hints[h]]));
       });
       L = { subject: "mix", label: "Mélange", sub: "Mélange · " + mixKeys(key).map(tagOf).join(" + "), qs, half: null, img: "mix", themes };
     } else { L = D.LEVELS[key] || D.LEVELS["5e"]; key = D.LEVELS[key] ? key : "5e"; }
-    const ANSWER = {}, THEME_OF = {};
-    L.qs.forEach(([n, th, l]) => { ANSWER[n] = l; THEME_OF[n] = th; });
-    return Object.assign({}, L, { key, ANSWER, THEME_OF,
+    const ANSWER = {}, THEME_OF = {}, HINT_OF = {};
+    L.qs.forEach(([n, th, l, h]) => { ANSWER[n] = l; THEME_OF[n] = th; HINT_OF[n] = typeof h === "string" ? h : (L.hints || [])[h] || ""; });
+    return Object.assign({}, L, { key, ANSWER, THEME_OF, HINT_OF,
       isB: n => n >= 10000 ? n % 10000 > gidLevel(n).half : n > L.half,
       twin: n => n >= 10000 ? Math.floor(n / 10000) * 10000 + twinLocal(gidLevel(n).half, n % 10000) : twinLocal(L.half, n) });
   }
+
+  /* ---------- inventory: lampe (hint), pioche (+50 %), tamis (2 wrong answers removed) ---------- */
+  const ITEMS = { lampe: "Lampe", pioche: "Pioche", tamis: "Tamis" };
+  const ITEM_HELP = { lampe: "donne une astuce", pioche: "+50 % de pépites si c'est juste", tamis: "retire deux mauvaises réponses" };
+  const icon = t => `<svg class="ico" aria-hidden="true"><use href="#i-${t}"/></svg>`;
+  // durability = rarity: 1 use (3 chances out of 6), 2 uses (2 out of 6), 3 uses (1 out of 6)
+  function newItem() { const r = Math.random(); return { t: pick(Object.keys(ITEMS)), u: r < 3 / 6 ? 1 : r < 5 / 6 ? 2 : 3 }; }
+  const boost = k => Math.ceil(k * 1.5);
+  const itemName = it => `${ITEMS[it.t].toLowerCase()} (${it.u} utilisation${it.u > 1 ? "s" : ""})`;
+  // articles: la lampe, la pioche, le tamis
+  const art = (it, f, m) => (it.t === "tamis" ? m : f) + " ";
+  const un = it => art(it, "une", "un") + itemName(it), le = it => art(it, "la", "le") + itemName(it);
+  const son = it => art(it, "sa", "son") + itemName(it), ton = it => art(it, "ta", "ton") + itemName(it);
+  const unN = it => art(it, "une", "un") + ITEMS[it.t].toLowerCase();
+  const invHTML = inv => (inv || []).map(it => `<span class="inv" title="${ITEMS[it.t]} : ${ITEM_HELP[it.t]}">${icon(it.t)}${it.u}</span>`).join("");
 
   const credit = `<div class="credit"><span class="cl">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</div>`;
   // yellow back button on every screen except the menu
@@ -134,6 +149,7 @@
       <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous !</span></div>
       <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites, chacun sur son téléphone.</span></div>
       <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche.</span></div>
+      <div class="rule item"><span class="big">${icon("lampe")}${icon("pioche")}${icon("tamis")}</span><span>Objets : la lampe donne une astuce, la pioche ajoute 50 % de pépites, le tamis retire deux mauvaises réponses. On en trouve en réussissant un sauvetage, et on peut se les faire voler en castagne ou en chapardage !</span></div>
       <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : le joueur gagne 4 pépites s'il répond juste. Les autres peuvent tenter la même question : 1 pépite pour ceux qui trouvent, si le joueur du filon trouve aussi.</span></div>
     </div>`;
   }
@@ -379,7 +395,8 @@
       const v = { t: "view", phase: H.phase, code: H.code, img: L.img, sub: L.sub,
         me: { pid: p.pid, name: p.name, color: p.color, score: p.score, rank: rankOf(p), n: players().length, k: p.k, N: nOf(p) },
         q: null, res: p.res, done: false, started: p.k > 0 || !!p.cur || !!p.res };
-      if (p.cur) v.q = { id: p.cur.id, n: p.cur.q, kind: p.cur.kind, time: p.cur.time, partner: p.cur.partner || null, th: p.cur.thLabel || null, victim: p.cur.victimName || null, num: p.cur.num || null, stake: p.cur.stake };
+      v.me.inv = p.inv || [];
+      if (p.cur) v.q = { id: p.cur.id, n: p.cur.q, kind: p.cur.kind, time: p.cur.time, partner: p.cur.partner || null, th: p.cur.thLabel || null, victim: p.cur.victimName || null, num: p.cur.num || null, stake: p.cur.stake, used: p.cur.used || null };
       v.done = H.phase === "play" && !p.cur && !p.pending && p.k >= nOf(p);
       // filons of the other players: sign up, wait for everybody to load, then answer together
       v.filons = H.phase !== "play" ? [] : Object.values(H.filons || {}).filter(f => f.open && f.a !== p.pid && H.players[f.a])
@@ -410,7 +427,7 @@
           H.seq++;
           const pid = "p" + H.seq + newId();
           p = H.players[pid] = { pid, name, color: PCOL[(H.seq - 1) % PCOL.length], join: H.seq, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0,
-            k: 0, deck: H.phase === "play" ? makeDeck() : [], solved: [], failed: [], cur: null, res: null, pending: null, online: true };
+            k: 0, deck: H.phase === "play" ? makeDeck() : [], solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: [] };
           if (H.phase === "play") feed(`${name} rejoint la partie.`);
         }
         if (conns[p.pid] && conns[p.pid] !== c) { try { conns[p.pid].close(); } catch (e) {} }
@@ -421,6 +438,17 @@
       }
       const p = c._pid && H.players[c._pid];
       if (!p) return;
+      if (m.t === "use") { // one item per question, checked here
+        const c = p.cur, it = (p.inv || [])[m.i];
+        if (c && c.id === m.id && !c.used && it) {
+          c.used = { t: it.t };
+          if (it.t === "lampe") c.used.hint = L.HINT_OF[c.q] || "";
+          if (it.t === "tamis") c.used.removed = shuffle(["a", "b", "c", "d"].filter(x => x !== L.ANSWER[c.q])).slice(0, 2);
+          it.u--; if (!it.u) p.inv.splice(m.i, 1);
+          save(); render();
+        }
+        push(p.pid); return;
+      }
       if (m.t === "fjoin") {
         const f = (H.filons || {})[m.id];
         if (f && f.open && f.stage === "choose" && f.a !== p.pid && f.joins[p.pid] === undefined) {
@@ -555,14 +583,16 @@
       p.tot++;
       if (ok) { p.ok++; p.solved.push(c.q); } else p.failed.push(c.q);
       const R = right.toUpperCase();
+      const pick50 = !!(c.used && c.used.t === "pioche");
       let text, wait = false, good = ok, changed = false;
       if (c.kind === "filon") {
         const winners = closeFilon(c.filon, ok);
         changed = true;
         if (ok) {
-          p.score += 4; p.ch++;
-          feed(`Filon exploité par ${p.name} : +4 pépites${winners.length ? `, et +1 pour ${winners.join(", ")}` : ""} !`, "filon");
-          text = "Filon exploité ! +4 pépites." + (winners.length ? ` ${winners.length} chercheur${winners.length > 1 ? "s ont" : " a"} aussi trouvé : +1 pépite chacun.` : "");
+          const g = pick50 ? boost(4) : 4;
+          p.score += g; p.ch++;
+          feed(`Filon exploité par ${p.name} : +${g} pépites${winners.length ? `, et +1 pour ${winners.join(", ")}` : ""} !`, "filon");
+          text = `Filon exploité ! +${g} pépites${pick50 ? " (pioche)" : ""}.` + (winners.length ? ` ${winners.length} chercheur${winners.length > 1 ? "s ont" : " a"} aussi trouvé : +1 pépite chacun.` : "");
         } else {
           feed(`${p.name} a raté son filon.`, "filon");
           text = (l ? "Raté ! " : "Temps écoulé ! ") + `Le filon t'échappe. La bonne réponse était ${R}.`;
@@ -570,10 +600,12 @@
       } else if (c.kind === "raid") {
         const v = H.players[c.victim];
         if (ok && v) {
-          const k = Math.min(3, v.score); v.score -= k; p.score += k; p.vols++; changed = true;
-          toast(v.pid, `${p.name} t'a chapardé ${k} pépite${k > 1 ? "s" : ""} !`);
-          feed(`${p.name} chaparde ${k} pépite${k > 1 ? "s" : ""} à ${v.name}.`, "raid");
-          text = `Coup réussi ! Tu chapardes ${k} pépite${k > 1 ? "s" : ""} à ${v.name}.`;
+          let k = Math.min(3, v.score); if (pick50) k = Math.min(v.score, boost(k));
+          v.score -= k; p.score += k; p.vols++; changed = true;
+          const st = stealItem(v, p);
+          toast(v.pid, `${p.name} t'a chapardé ${k} pépite${k > 1 ? "s" : ""}${st ? ` et ${ton(st)}` : ""} !`);
+          feed(`${p.name} chaparde ${k} pépite${k > 1 ? "s" : ""}${st ? ` et ${unN(st)}` : ""} à ${v.name}.`, "raid");
+          text = `Coup réussi ! Tu chapardes ${k} pépite${k > 1 ? "s" : ""} à ${v.name}${st ? `, et aussi ${son(st)}` : ""}.`;
         } else if (v && p.score > 0) {
           p.score -= 1; v.score += 1; changed = true;
           toast(v.pid, `${p.name} a raté son chapardage : il te paie 1 pépite d'amende.`);
@@ -583,14 +615,15 @@
       } else if (c.kind === "duel" || c.kind === "rescue") {
         const lk = H.links[c.link];
         if (lk && !lk.done) {
-          if (lk.a === p.pid) lk.ra = { ok }; else lk.rb = { ok };
+          if (lk.a === p.pid) lk.ra = { ok, pioche: pick50 }; else lk.rb = { ok, pioche: pick50 };
           text = (ok ? "Bonne réponse ! " : l ? `Raté ! La bonne réponse était ${R}. ` : `Temps écoulé ! La bonne réponse était ${R}. `) +
             `Le résultat ${c.kind === "duel" ? "de la castagne" : "du sauvetage"} arrive quand ${c.partner} aura répondu.`;
           wait = true;
         } else text = ok ? "Bonne réponse !" : `La bonne réponse était ${R}.`;
       } else {
-        if (ok) { p.score += 1; changed = true; }
-        text = ok ? "Bien joué ! +1 pépite." : l ? `Raté ! La bonne réponse était ${R}.` : `Temps écoulé ! La bonne réponse était ${R}.`;
+        const g = pick50 ? boost(1) : 1;
+        if (ok) { p.score += g; changed = true; }
+        text = ok ? `Bien joué ! +${g} pépite${g > 1 ? "s" : ""}${pick50 ? " (pioche)" : ""}.` : l ? `Raté ! La bonne réponse était ${R}.` : `Temps écoulé ! La bonne réponse était ${R}.`;
       }
       p.res = { qid: c.id, n: c.q, kind: c.kind, choice: l, right, ok: good, text, wait, link: c.link || null };
       const lk = c.link && H.links[c.link];
@@ -670,6 +703,27 @@
         ta = `Sauvetage avec ${B.name} : ${t}`; tb = `Sauvetage avec ${A.name} : ${t}`;
         feed(`Sauvetage ${A.name} – ${B.name} : ${t}`, "rescue");
       }
+      // pickaxe: +50 % on one's own gain; items: found in a successful rescue, stolen by the winner of a castagne
+      const pa = lk.ra && lk.ra.pioche && ga ? boost(ga) - ga : 0, pb = lk.rb && lk.rb.pioche && gb ? boost(gb) - gb : 0;
+      ga += pa; gb += pb;
+      if (pa) ta += ` Pioche : +${pa} de plus.`;
+      if (pb) tb += ` Pioche : +${pb} de plus.`;
+      if (lk.type === "rescue") {
+        [[A, ga, "a"], [B, gb, "b"]].forEach(([P, g, side]) => {
+          if (g > 0 && Math.random() < 0.5) {
+            const it = giveItem(P), t = ` Tu trouves ${un(it)} !`;
+            if (side === "a") ta += t; else tb += t;
+            feed(`${P.name} trouve ${unN(it)}.`, "rescue");
+          }
+        });
+      } else if (a !== b) {
+        const [W, Lo, sw] = a ? [A, B, "a"] : [B, A, "b"], st = stealItem(Lo, W);
+        if (st) {
+          if (sw === "a") { ta += ` Tu lui voles ${son(st)} !`; tb += ` Il te vole ${ton(st)} !`; }
+          else { tb += ` Tu lui voles ${son(st)} !`; ta += ` Il te vole ${ton(st)} !`; }
+          feed(`${W.name} vole ${unN(st)} à ${Lo.name}.`, "duel");
+        }
+      }
       A.score += ga; B.score += gb;
       [[A, ta], [B, tb]].forEach(([P, t]) => {
         if (P.res && P.res.link === lk.id) {
@@ -679,6 +733,12 @@
       });
     }
 
+    function giveItem(P) { const it = newItem(); (P.inv = P.inv || []).push(it); return it; }
+    function stealItem(from, to) {
+      if (!from.inv || !from.inv.length) return null;
+      const it = from.inv.splice(Math.floor(Math.random() * from.inv.length), 1)[0];
+      (to.inv = to.inv || []).push(it); return it;
+    }
     function allDone() { return players().length > 0 && players().every(p => !p.cur && !p.pending && p.k >= nOf(p)); }
     function checkAllDone() {
       if (H.phase === "play" && allDone() && !H.allDoneSaid) { H.allDoneSaid = true; feed("Tous les chercheurs ont fini leurs questions !"); setTimeout(() => { if (H.phase === "play" && allDone()) endGame(); }, 1500); }
@@ -688,8 +748,9 @@
       if (!pool().length) { if (err) err.textContent = "Coche au moins un thème."; return; }
       if (!players().length) { if (err) err.textContent = "Attends qu'au moins un élève ait rejoint la partie."; return; }
       H.phase = "play";
-      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null }));
+      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null, inv: [] }));
       H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false;
+      if (params.get("objets") === "1") players().forEach(p => { p.inv = [{ t: "lampe", u: 3 }, { t: "pioche", u: 3 }, { t: "tamis", u: 3 }]; }); // test switch
       feed("La partie commence !");
       save(); pushAll(); render();
     }
@@ -781,7 +842,7 @@
       const box = $("#lbwrap");
       const rows = ps.map(p => `<li class="lbrow" style="--pc:${p.color}">
           <span class="pos">${rankOf(p)}</span>
-          <span style="min-width:0"><span class="nm">${esc(p.name)}</span>${tagOf(p)}
+          <span style="min-width:0"><span class="nm">${esc(p.name)}</span>${tagOf(p)} <span class="invs">${invHTML(p.inv)}</span>
             <span class="prog" aria-label="${Math.min(p.k, nOf(p))} questions sur ${nOf(p)}"><i style="width:${Math.min(100, p.k / nOf(p) * 100)}%"></i></span></span>
           <span class="pts">${p.score} ${NUG}</span></li>`).join("");
       const feedHTML = H.feed.map(f => `<li class="${f.kind}">${esc(f.text)}</li>`).join("");
@@ -1066,11 +1127,32 @@
         : `Chargement de la question chez tout le monde… ${q.nReady} / ${q.nNeed} prêts.`;
     }
 
+    // items: one per question, the teacher's page checks it and sends back the effect
+    function renderUse() {
+      const bar = $("#usebar"), fx = $("#usefx");
+      if (!bar || !fx || !shown || !V || !V.q || V.q.id !== shown.id) return;
+      const u = V.q.used;
+      if (u) {
+        bar.innerHTML = "";
+        fx.innerHTML = u.t === "lampe" ? `<div class="hint">${icon("lampe")} ${esc(u.hint || "")}</div>`
+          : u.t === "pioche" ? `<div class="hint">${icon("pioche")} Pioche : +50 % de pépites si ta réponse est juste.</div>`
+          : `<div class="hint">${icon("tamis")} Tamis : deux mauvaises réponses sont retirées.</div>`;
+        (u.removed || []).forEach(l => { const b = app.querySelector(`#ans .ans[data-l="${l}"]`); if (b) { b.classList.add("gone"); b.disabled = true; } });
+        return;
+      }
+      const inv = (V.me && V.me.inv) || [];
+      if (shown.answered || !inv.length) { bar.innerHTML = ""; return; }
+      bar.innerHTML = `<div class="usebar" aria-label="Objets">${inv.map((it, i) => `<button class="usebtn" data-i="${i}" title="${ITEM_HELP[it.t]}">${icon(it.t)} ${ITEMS[it.t]} <b>×${it.u}</b></button>`).join("")}</div>`;
+      bar.querySelectorAll(".usebtn").forEach(b => { b.onclick = () => {
+        bar.querySelectorAll(".usebtn").forEach(x => { x.disabled = true; });
+        send({ t: "use", id: shown.id, i: +b.dataset.i });
+      }; });
+    }
     function meBar() {
       const me = V.me;
       if (!me) return "";
       return `<div class="mebar" id="mebar" style="--pc:${me.color}"><span class="nm">${esc(me.name)}</span>
-        <span class="rk">${me.rank}<sup>${me.rank === 1 ? "er" : "e"}</sup> / ${me.n}</span><span class="sc">${me.score} ${NUG}</span></div>`;
+        <span class="invs">${invHTML(me.inv)}</span><span class="rk">${me.rank}<sup>${me.rank === 1 ? "er" : "e"}</sup> / ${me.n}</span><span class="sc">${me.score} ${NUG}</span></div>`;
     }
     const top = () => header(esc(V.sub || "")) + `<div class="banner" id="sbanner" ${banner ? "" : "hidden"}>${esc(banner)}</div>` + meBar();
     function stopTimers() { if (timer) { clearInterval(timer); timer = null; } cd = null; drawT.forEach(clearTimeout); drawT = []; }
@@ -1096,7 +1178,7 @@
       // play
       if (V.q) {
         if (shown && shown.id === V.q.id) {
-          refreshBar();
+          refreshBar(); renderUse();
           if (V.q.fid && V.q.fstage === "load" && shown.ready) shown.ready.then(() => send({ t: "floaded", id: V.q.fid }));
           if (shown.answered && shown.choice !== undefined) send({ t: "ans", id: shown.id, l: shown.choice }); // the answer was lost on the way
           return;
@@ -1146,11 +1228,13 @@
             ${info}
             ${q.kind === "duel" && !res ? '<div class="draw" id="draw" aria-live="assertive"></div>' : ""}
             ${res ? "" : `<div class="timer" id="timer"><div class="row"><span>Temps restant</span><span class="secs" id="secs">${q.time} s</span></div><div class="bar"><i id="barfill"></i></div></div>`}
+            <div id="usebar"></div><div id="usefx"></div>
             <div class="answers" id="ans" ${q.kind === "duel" && !res ? 'style="visibility:hidden"' : ""}>${["a", "b", "c", "d"].map(l => `<button class="ans" data-l="${l}" disabled>${l.toUpperCase()}</button>`).join("")}</div>
             <div id="fb" aria-live="polite"></div>
           </div></div>
         </div>` + credit;
       app.querySelectorAll(".ans").forEach(b => { b.onclick = () => answer(b.dataset.l); });
+      renderUse();
       const im = $("#qimg");
       if (res) { setImg(im, V.img, q.n).catch(() => {}); showResult(res); return; }
       // the timer only starts once the question is fully displayed
@@ -1211,7 +1295,7 @@
     function startQ(q) {
       const ansBox = $("#ans");
       if (!ansBox) return;
-      const enable = () => { ansBox.style.visibility = "visible"; ansBox.querySelectorAll(".ans").forEach(b => { b.disabled = false; }); };
+      const enable = () => { ansBox.style.visibility = "visible"; ansBox.querySelectorAll(".ans").forEach(b => { b.disabled = b.classList.contains("gone"); }); };
       countdown(q.time, () => answer(null));
       if (ftry) pauseCountdown(); // the player is busy on someone else's filon
       if (q.kind !== "duel") { enable(); return; }
@@ -1248,6 +1332,7 @@
       if (!shown || shown.answered) return;
       stopTimers();
       shown.answered = true; shown.choice = l;
+      const ub = $("#usebar"); if (ub) ub.innerHTML = "";
       app.querySelectorAll(".ans").forEach(b => { b.disabled = true; if (b.dataset.l === l) b.classList.add("picked"); });
       const d = $("#draw"); if (d) d.textContent = "";
       $("#fb").innerHTML = '<div class="feedback">Réponse envoyée…</div>';
