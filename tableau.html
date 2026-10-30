@@ -5,6 +5,10 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}.primary:disabled { opacity: .6; cursor: wait; transform: none; box-shadow: 0 4px 0 #6b420a; }
+.mixbox { gap: 8px; }
+.mixrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.mixchk { display: flex; align-items: center; gap: 8px; min-width: 150px; font-weight: 600; }
+.mixchk input { accent-color: var(--gold); width: 18px; height: 18px; }
 .ttl { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .backbtn { flex: none; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(#ffd34d, var(--gold)); color: #2a1a03; border: 0; border-radius: 12px; padding: 9px 14px 9px 10px; font-family: inherit; font-size: 17px; font-weight: 800; box-shadow: 0 4px 0 #6b420a; cursor: pointer; }
 .backbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b420a; }
@@ -256,8 +260,36 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   };
   let QS, THEMES, HALF, IMG, LEVEL_SUB;
   const ANSWER = {}, THEME_OF = {};
+  // mixed subjects: level key "mix:5e,h3"; question n of level number i becomes (i + 1) * 10000 + n
+  const LKEYS = Object.keys(LEVELS);
+  const tagOf = k => (LEVELS[k].subject === "maths" ? "Maths " : "Histoire ") + LEVELS[k].label;
+  function mixLevel(keys) {
+    const qs = [], themes = [];
+    keys.forEach(k => {
+      const L = LEVELS[k], base = (LKEYS.indexOf(k) + 1) * 10000;
+      L.themes.forEach(t => themes.push({ id: k + "_" + t.id, label: tagOf(k) + " · " + t.label }));
+      L.qs.forEach(([n, th, a]) => qs.push([base + n, k + "_" + th, a]));
+    });
+    return { label: "Mélange", sub: "Mélange · " + keys.map(tagOf).join(" + "), qs, half: null, img: "mix", themes };
+  }
+  const isMix = key => String(key).startsWith("mix:");
+  const mixKeys = key => String(key).slice(4).split(",").filter(k => LEVELS[k]);
+  const gidLevel = n => LEVELS[LKEYS[Math.floor(n / 10000) - 1]];
+  const isB = n => n >= 10000 ? n % 10000 > gidLevel(n).half : n > HALF;
+  const twinLocal = (h, n) => n > h ? n - h : n + h;
+  const imgRef = n => n >= 10000 ? [gidLevel(n).img, n % 10000] : [IMG, n];
+  // mixed subjects: the same share of questions for each subject, then shuffled
+  function balancedDeck(pool, N) {
+    const groups = {};
+    pool.forEach(n => { const g = n >= 10000 ? Math.floor(n / 10000) : 0; (groups[g] = groups[g] || []).push(n); });
+    const gs = Object.values(groups).map(g => shuffle(g));
+    if (gs.length < 2) return shuffle(pool).slice(0, N);
+    const out = [];
+    for (let i = 0; out.length < N && gs.some(g => g.length); i++) { const g = gs[i % gs.length]; if (g.length) out.push(g.pop()); }
+    return shuffle(out);
+  }
   function setLevel(key) {
-    const L = LEVELS[key] || LEVELS["5e"];
+    const L = isMix(key) && mixKeys(key).length ? mixLevel(mixKeys(key)) : (LEVELS[key] || LEVELS["5e"]);
     QS = L.qs; THEMES = L.themes; HALF = L.half; IMG = L.img; LEVEL_SUB = L.sub;
     for (const k in ANSWER) delete ANSWER[k];
     for (const k in THEME_OF) delete THEME_OF[k];
@@ -377,8 +409,11 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
       </section>
       <section class="panel">
         <h2>Préparer la partie</h2>
-        <label class="f">Matière ${segs("mat", Object.keys(SUBJECTS), (LEVELS[S.level] || {}).subject, v => SUBJECTS[v])}</label>
-        <label class="f">Niveau ${segs("lv", Object.keys(LEVELS).filter(k => LEVELS[k].subject === (LEVELS[S.level] || {}).subject), S.level, v => LEVELS[v].label)}</label>
+        <label class="f">Matière ${segs("mat", [...Object.keys(SUBJECTS), "mix"], isMix(S.level) ? "mix" : (LEVELS[S.level] || {}).subject, v => v === "mix" ? "Mélanger" : SUBJECTS[v])}</label>
+        ${isMix(S.level) ? `<div class="f mixbox"><span style="font-weight:700;font-size:15px">Matières à mélanger</span>
+          ${Object.keys(SUBJECTS).map(sb => `<div class="mixrow"><label class="mixchk"><input type="checkbox" id="mx-${sb}" ${S.mixSel && S.mixSel[sb] ? "checked" : ""}> ${SUBJECTS[sb]}</label>
+            ${segs("mxl-" + sb, LKEYS.filter(k => LEVELS[k].subject === sb), (S.mixLv || {})[sb], v => LEVELS[v].label)}</div>`).join("")}</div>`
+        : `<label class="f">Niveau ${segs("lv", LKEYS.filter(k => LEVELS[k].subject === (LEVELS[S.level] || {}).subject), S.level, v => LEVELS[v].label)}</label>`}
         <label class="f">Nombre de joueurs ${segs("nt", [1, 2, 3, 4, 5, 6], S.nTeams)}</label>
         <div class="names">${Array.from({ length: S.nTeams }, (_, i) => `<input id="name${i}" aria-label="Nom du joueur ${i + 1}" value="${esc(S.names[i])}" maxlength="24" style="--pc:${pc(i)}">`).join("")}</div>
         <label class="f">Nombre de questions ${segs("nq", [10, 20, 40, 60], S.nQ)}</label>
@@ -394,13 +429,35 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
 
     const bindSeg = (id, key, rerender) => app.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { saveNames(); S[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; rerender ? renderSetup() : app.querySelectorAll(`#${id} button`).forEach(x => x.setAttribute("aria-pressed", x === b)); });
     bindSeg("nt", "nTeams", true); bindSeg("nq", "nQ"); bindSeg("se", "series");
-    // subject: switch to the first level of that subject
+    const applyLevel = key => { S.level = key; setLevel(S.level); S.themes = {}; THEMES.forEach(t => { S.themes[t.id] = true; }); renderSetup(); };
+    // mixed subjects: one level per ticked subject
+    const applyMix = () => {
+      const keys = Object.keys(SUBJECTS).filter(sb => S.mixSel[sb]).map(sb => S.mixLv[sb]);
+      applyLevel("mix:" + keys.join(","));
+    };
+    // subject: switch to the first level of that subject, or to the mix
     app.querySelectorAll("#mat button").forEach(b => b.onclick = () => {
       saveNames();
-      if (b.dataset.v === (LEVELS[S.level] || {}).subject) return;
-      S.level = Object.keys(LEVELS).find(k => LEVELS[k].subject === b.dataset.v); setLevel(S.level);
-      S.themes = {}; THEMES.forEach(t => { S.themes[t.id] = true; });
-      renderSetup();
+      const v = b.dataset.v;
+      if (v === "mix") {
+        if (isMix(S.level)) return;
+        const cur = (LEVELS[S.level] || {}).subject;
+        S.mixSel = {}; S.mixLv = {};
+        Object.keys(SUBJECTS).forEach(sb => { S.mixSel[sb] = true; S.mixLv[sb] = sb === cur ? S.level : LKEYS.find(k => LEVELS[k].subject === sb); });
+        return applyMix();
+      }
+      if (!isMix(S.level) && v === (LEVELS[S.level] || {}).subject) return;
+      applyLevel(LKEYS.find(k => LEVELS[k].subject === v));
+    });
+    Object.keys(SUBJECTS).forEach(sb => {
+      const cb = document.getElementById("mx-" + sb);
+      if (cb) cb.onchange = () => {
+        saveNames();
+        S.mixSel[sb] = cb.checked;
+        if (!Object.values(S.mixSel).some(Boolean)) { S.mixSel[sb] = true; cb.checked = true; return; } // at least one subject
+        applyMix();
+      };
+      app.querySelectorAll(`#mxl-${sb} button`).forEach(b => b.onclick = () => { saveNames(); S.mixLv[sb] = b.dataset.v; S.mixSel[sb] = true; applyMix(); });
     });
     app.querySelectorAll("#lv button").forEach(b => b.onclick = () => {
       saveNames();
@@ -421,12 +478,12 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   function start() {
     saveNames();
     let pool = [];
-    const inSeries = n => S.series === "AB" || (S.series === "B" ? n > HALF : n <= HALF);
+    const inSeries = n => S.series === "AB" || (S.series === "B" ? isB(n) : !isB(n));
     QS.forEach(([n, th]) => { if (S.themes[th] && inSeries(n)) pool.push(n); });
     const err = document.getElementById("err");
     if (!pool.length) { err.textContent = "Coche au moins un thème pour lancer la partie."; err.hidden = false; return; }
     if (![10, 20, 40, 60].includes(S.nQ)) S.nQ = 20;
-    S.deck = shuffle(pool).slice(0, Math.min(S.nQ, pool.length));
+    S.deck = balancedDeck(pool, Math.min(S.nQ, pool.length));
     // filons are drawn turn by turn, see filonChance()
     S.challenges = []; S.filonPicked = {}; S.filonRolled = {}; S.fallbackTried = {};
     // one theft slot in each block of 4 questions, on a question that is not a filon
@@ -584,7 +641,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     if (missed.length) q = twin(pick(missed)); // a question the player missed, with other values
     else {
       const used = new Set(S.deck);
-      const inSeries = n => S.series === "AB" || (S.series === "B" ? n > HALF : n <= HALF);
+      const inSeries = n => S.series === "AB" || (S.series === "B" ? isB(n) : !isB(n));
       const pool = QS.filter(([n, th]) => S.themes[th] && inSeries(n) && !used.has(n)).map(x => x[0]);
       q = pool.length ? pick(pool) : S.deck[S.idx];
     }
@@ -740,7 +797,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   /* ---------- Castagne (duel) ---------- */
   const themeLabel = id => (THEMES.find(t => t.id === id) || {}).label || "";
   // each duelist gets a question they already solved, with other values (its twin in the other series)
-  const twin = n => n > HALF ? n - HALF : n + HALF;
+  const twin = n => n >= 10000 ? Math.floor(n / 10000) * 10000 + twinLocal(gidLevel(n).half, n % 10000) : twinLocal(HALF, n);
   const pick = a => a[Math.floor(Math.random() * a.length)];
   function makeDuel() {
     const me = S.idx % S.teams.length;
@@ -1007,12 +1064,12 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     });
     return packWait[key];
   }
-  const packOf = q => IMG + "_" + Math.floor((q - 1) / 10);
+  const packOf = q => { const [pre, n] = imgRef(q); return pre + "_" + Math.floor((n - 1) / 10); };
   function fillImgs() {
     document.querySelectorAll("img[data-q]:not([src])").forEach(im => {
-      const q = +im.dataset.q, key = packOf(q);
+      const q = +im.dataset.q, key = packOf(q), n = imgRef(q)[1];
       im.setAttribute("src", "data:image/gif;base64,R0lGODlhAQABAAAAACw=");
-      loadPack(key).then(() => { im.src = window.IMGPACK[key][q]; }).catch(() => im.removeAttribute("src"));
+      loadPack(key).then(() => { im.src = window.IMGPACK[key][n]; }).catch(() => im.removeAttribute("src"));
     });
     // fetch ahead the next question of the deck
     try { const nx = S.deck && S.deck[S.idx + 1]; if (nx) loadPack(packOf(nx)).catch(() => {}); } catch (e) {}

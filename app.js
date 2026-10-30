@@ -68,11 +68,39 @@
     }).catch(e => { if (done) return; done = true; clearTimeout(to); fail(e && e.code ? e.code : "accès refusé"); });
   }
 
+  // mixed subjects: level key "mix:5e,h3"; question n of level number i becomes (i + 1) * 10000 + n
+  const LKEYS = Object.keys(D.LEVELS);
+  const tagOf = k => (D.LEVELS[k].subject === "maths" ? "Maths " : "Histoire ") + D.LEVELS[k].label;
+  const isMix = key => String(key).startsWith("mix:");
+  const mixKeys = key => String(key).slice(4).split(",").filter(k => D.LEVELS[k]);
+  const gidLevel = n => D.LEVELS[LKEYS[Math.floor(n / 10000) - 1]];
+  const twinLocal = (h, n) => n > h ? n - h : n + h;
+  // mixed subjects: the same share of questions for each subject, then shuffled
+  function balancedDeck(pool, N) {
+    const groups = {};
+    pool.forEach(n => { const g = n >= 10000 ? Math.floor(n / 10000) : 0; (groups[g] = groups[g] || []).push(n); });
+    const gs = Object.values(groups).map(g => shuffle(g));
+    if (gs.length < 2) return shuffle(pool).slice(0, N);
+    const out = [];
+    for (let i = 0; out.length < N && gs.some(g => g.length); i++) { const g = gs[i % gs.length]; if (g.length) out.push(g.pop()); }
+    return shuffle(out);
+  }
   function level(key) {
-    const L = D.LEVELS[key] || D.LEVELS["5e"];
+    let L;
+    if (isMix(key) && mixKeys(key).length) {
+      const qs = [], themes = [];
+      mixKeys(key).forEach(k => {
+        const M = D.LEVELS[k], base = (LKEYS.indexOf(k) + 1) * 10000;
+        M.themes.forEach(t => themes.push({ id: k + "_" + t.id, label: tagOf(k) + " · " + t.label }));
+        M.qs.forEach(([n, th, a]) => qs.push([base + n, k + "_" + th, a]));
+      });
+      L = { subject: "mix", label: "Mélange", sub: "Mélange · " + mixKeys(key).map(tagOf).join(" + "), qs, half: null, img: "mix", themes };
+    } else { L = D.LEVELS[key] || D.LEVELS["5e"]; key = D.LEVELS[key] ? key : "5e"; }
     const ANSWER = {}, THEME_OF = {};
     L.qs.forEach(([n, th, l]) => { ANSWER[n] = l; THEME_OF[n] = th; });
-    return Object.assign({}, L, { key, ANSWER, THEME_OF, twin: n => n > L.half ? n - L.half : n + L.half });
+    return Object.assign({}, L, { key, ANSWER, THEME_OF,
+      isB: n => n >= 10000 ? n % 10000 > gidLevel(n).half : n > L.half,
+      twin: n => n >= 10000 ? Math.floor(n / 10000) * 10000 + twinLocal(gidLevel(n).half, n % 10000) : twinLocal(L.half, n) });
   }
 
   const credit = `<div class="credit"><span class="cl">©</span> Copyleft Denis Vanmai, avec l'aide de mon ami Claude</div>`;
@@ -123,6 +151,7 @@
     return packWait[key];
   }
   function setImg(im, img, n) {
+    if (n >= 10000) { img = gidLevel(n).img; n = n % 10000; }
     const key = img + "_" + Math.floor((n - 1) / 10);
     return loadPack(key).then(() => {
       im.src = window.IMGPACK[key][n];
@@ -418,10 +447,10 @@
 
     /* ----- questions ----- */
     function pool() {
-      const inS = n => H.series === "AB" || (H.series === "B" ? n > L.half : n <= L.half);
+      const inS = n => H.series === "AB" || (H.series === "B" ? L.isB(n) : !L.isB(n));
       return L.qs.filter(([n, th]) => H.themes[th] && inS(n)).map(x => x[0]);
     }
-    function makeDeck() { return shuffle(pool()).slice(0, H.nQ); }
+    function makeDeck() { return balancedDeck(pool(), H.nQ); }
     const solvedIn = (o, th) => [...new Set(o.solved)].filter(n => L.THEME_OF[n] === th);
     const missedOf = o => { const sv = new Set(o.solved); return [...new Set(o.failed)].filter(n => !sv.has(n) && !sv.has(L.twin(n))); };
     // a partner must still have questions to ask for, so that the pending one is served
@@ -702,8 +731,11 @@
           </section>
           <section class="panel setup1">
             <h2>Préparer la partie</h2>
-            <label class="f">Matière ${segs("mat", Object.keys(D.SUBJECTS), D.LEVELS[H.level].subject, v => D.SUBJECTS[v])}</label>
-            <label class="f">Niveau ${segs("lv", Object.keys(D.LEVELS).filter(k => D.LEVELS[k].subject === D.LEVELS[H.level].subject), H.level, v => D.LEVELS[v].label)}</label>
+            <label class="f">Matière ${segs("mat", [...Object.keys(D.SUBJECTS), "mix"], isMix(H.level) ? "mix" : D.LEVELS[H.level].subject, v => v === "mix" ? "Mélanger" : D.SUBJECTS[v])}</label>
+            ${isMix(H.level) ? `<div class="f mixbox"><span style="font-weight:700;font-size:15px">Matières à mélanger</span>
+              ${Object.keys(D.SUBJECTS).map(sb => `<div class="mixrow"><label class="mixchk"><input type="checkbox" data-mx="${sb}" ${H.mixSel && H.mixSel[sb] ? "checked" : ""}> ${D.SUBJECTS[sb]}</label>
+                ${segs("mxl-" + sb, LKEYS.filter(k => D.LEVELS[k].subject === sb), (H.mixLv || {})[sb], v => D.LEVELS[v].label)}</div>`).join("")}</div>`
+            : `<label class="f">Niveau ${segs("lv", LKEYS.filter(k => D.LEVELS[k].subject === D.LEVELS[H.level].subject), H.level, v => D.LEVELS[v].label)}</label>`}
             <label class="f">Questions par joueur ${segs("nq", [10, 20, 40], H.nQ)}</label>
             <label class="f">Série de questions ${segs("se", ["A", "B", "AB"], H.series, v => v === "AB" ? "A et B" : "Série " + v)}</label>
             <div class="f"><span style="font-weight:700;font-size:15px">Thèmes</span>
@@ -716,7 +748,23 @@
         </div>` + credit;
       const setLv = v => { if (v === H.level) return; H.level = v; L = level(v); H.themes = Object.fromEntries(L.themes.map(t => [t.id, true])); save(); pushAll(); draw(); };
       bindSeg("lv", setLv);
-      bindSeg("mat", v => { if (v !== D.LEVELS[H.level].subject) setLv(Object.keys(D.LEVELS).find(k => D.LEVELS[k].subject === v)); });
+      const applyMix = () => setLv("mix:" + Object.keys(D.SUBJECTS).filter(sb => H.mixSel[sb]).map(sb => H.mixLv[sb]).join(","));
+      bindSeg("mat", v => {
+        if (v === "mix") {
+          if (isMix(H.level)) return;
+          const cur = D.LEVELS[H.level].subject;
+          H.mixSel = {}; H.mixLv = {};
+          Object.keys(D.SUBJECTS).forEach(sb => { H.mixSel[sb] = true; H.mixLv[sb] = sb === cur ? H.level : LKEYS.find(k => D.LEVELS[k].subject === sb); });
+          return applyMix();
+        }
+        if (isMix(H.level) || v !== D.LEVELS[H.level].subject) setLv(LKEYS.find(k => D.LEVELS[k].subject === v));
+      });
+      app.querySelectorAll("[data-mx]").forEach(cb => { cb.onchange = () => {
+        H.mixSel[cb.dataset.mx] = cb.checked;
+        if (!Object.values(H.mixSel).some(Boolean)) { H.mixSel[cb.dataset.mx] = true; cb.checked = true; return; } // at least one subject
+        applyMix();
+      }; });
+      Object.keys(D.SUBJECTS).forEach(sb => bindSeg("mxl-" + sb, v => { H.mixLv[sb] = v; H.mixSel[sb] = true; applyMix(); }));
       bindSeg("nq", v => { H.nQ = +v; save(); draw(); });
       bindSeg("se", v => { H.series = v; save(); draw(); });
       app.querySelectorAll("[data-th]").forEach(cb => { cb.onchange = () => { H.themes[cb.dataset.th] = cb.checked; save(); }; });
