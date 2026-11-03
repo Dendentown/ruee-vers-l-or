@@ -58,10 +58,10 @@ Q57 (Géométrie) : b) $6~\text{cm}$
 Q58 (Géométrie) : d) $7{,}5~\text{cm}$
 Q59 (Géométrie) : d) $36\pi~\text{cm}^3$
 Q60 (Géométrie) : d) $288\pi~\text{cm}^3$
-Q61 (Géométrie) : c) $100\pi~\text{cm}^2$
-Q62 (Géométrie) : b) $36\pi~\text{cm}^2$
-Q63 (Géométrie) : c) $8$
-Q64 (Géométrie) : b) $27$
+Q61 (Géométrie) : c) $5~\text{cm}$
+Q62 (Géométrie) : b) $12~\text{m}$
+Q63 (Géométrie) : c) Oui, par la réciproque de Pythagore
+Q64 (Géométrie) : b) Non, par la contraposée de Pythagore
 Q65 (Statistiques et probabilités) : c) $11$
 Q66 (Statistiques et probabilités) : c) $7$
 Q67 (Statistiques et probabilités) : a) $12{,}5$
@@ -154,10 +154,10 @@ Q57 B (Géométrie) : d) $4~\text{cm}$
 Q58 B (Géométrie) : b) $12~\text{cm}$
 Q59 B (Géométrie) : b) $\dfrac{4}{3}\pi~\text{cm}^3$
 Q60 B (Géométrie) : b) $972\pi~\text{cm}^3$
-Q61 B (Géométrie) : a) $400\pi~\text{cm}^2$
-Q62 B (Géométrie) : b) $4\pi~\text{cm}^2$
-Q63 B (Géométrie) : c) $\dfrac{1}{8}$
-Q64 B (Géométrie) : a) $1\,000$
+Q61 B (Géométrie) : a) $100~\text{cm}$
+Q62 B (Géométrie) : b) $8~\text{cm}$
+Q63 B (Géométrie) : c) Non, par la contraposée de Pythagore
+Q64 B (Géométrie) : a) Oui, par la réciproque de Pythagore
 Q65 B (Statistiques et probabilités) : c) $18$
 Q66 B (Statistiques et probabilités) : a) $7$
 Q67 B (Statistiques et probabilités) : b) $16$
@@ -250,10 +250,10 @@ Q57 C (Géométrie) : d) $3~\text{cm}$
 Q58 C (Géométrie) : b) $6~\text{cm}$
 Q59 C (Géométrie) : b) $\dfrac{32}{3}\pi~\text{cm}^3$
 Q60 C (Géométrie) : c) $\dfrac{9}{2}\pi~\text{cm}^3$
-Q61 C (Géométrie) : c) $196\pi~\text{cm}^2$
-Q62 C (Géométrie) : c) $\pi~\text{cm}^2$
-Q63 C (Géométrie) : a) $64$
-Q64 C (Géométrie) : d) $\dfrac{27}{8}$
+Q61 C (Géométrie) : c) $13~\text{cm}$
+Q62 C (Géométrie) : c) $4~\text{m}$
+Q63 C (Géométrie) : a) Oui, par la réciproque de Pythagore
+Q64 C (Géométrie) : d) Non, par la contraposée de Pythagore
 Q65 C (Statistiques et probabilités) : b) $21$
 Q66 C (Statistiques et probabilités) : c) $5$
 Q67 C (Statistiques et probabilités) : a) $27$
@@ -346,10 +346,10 @@ Q57 D (Géométrie) : b) $7~\text{cm}$
 Q58 D (Géométrie) : b) $15~\text{cm}$
 Q59 D (Géométrie) : d) $2\,304\pi~\text{cm}^3$
 Q60 D (Géométrie) : a) $\dfrac{9}{16}\pi~\text{cm}^3$
-Q61 D (Géométrie) : d) $144\pi~\text{cm}^2$
-Q62 D (Géométrie) : b) $25\pi~\text{cm}^2$
-Q63 D (Géométrie) : c) $\dfrac{1}{27}$
-Q64 D (Géométrie) : c) $125$
+Q61 D (Géométrie) : d) $150~\text{cm}$
+Q62 D (Géométrie) : b) $24~\text{cm}$
+Q63 D (Géométrie) : c) Non, par la contraposée de Pythagore
+Q64 D (Géométrie) : c) Oui, par la réciproque de Pythagore
 Q65 D (Statistiques et probabilités) : a) $40$
 Q66 D (Statistiques et probabilités) : b) $12$
 Q67 D (Statistiques et probabilités) : c) $15{,}25$

@@ -417,19 +417,36 @@ def _(r):
     return (rf"Quel est le volume exact d'une boule de rayon ${nb(r)}$ cm ?", P(F(4, 3) * r ** 3), [P(4 * r * r), P(r ** 3), P(F(4, 3) * r * r), P(F(4, 3) * r ** 3 * 2)])
 
 
-@qtype("geo", "Aire d'une sphère = 4 × π × r².",
-       [5, 3, 10, 1, 7, F(1, 2), 6, F(5, 2)])
-def _(r):
-    r = F(r)
-    P = lambda k: m(rf"{lf(k) if k != 1 else ''}\pi~\text{{cm}}^2")
-    return (rf"Quelle est l'aire exacte d'une sphère de rayon ${nb(r)}$ cm ?", P(4 * r * r), [P(r * r), P(2 * r * r) if 2 * r * r != 4 * r * r else P(8 * r * r), P(F(4, 3) * r ** 3), P(4 * r)])
+@qtype("geo", "Dans un triangle rectangle, le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés.",
+       [("hyp", 3, 4), ("ech", 13, 5), ("ecr", 60, 80), ("cote", 10, 6), ("hyp", 5, 12), ("ech", 5, 3), ("ecr", 90, 120), ("cote", 25, 7)])
+def _(p):
+    c, a, b = p
+    if c in ("hyp", "ecr"):
+        r = round((a * a + b * b) ** .5)
+        dis = [a + b, a * a + b * b, r + 1 if c == "hyp" else r + 10, abs(b - a)]
+    else:
+        r = round((a * a - b * b) ** .5)
+        dis = [a - b, a * a - b * b, a + b, r + 1]
+    un = "cm" if c != "ech" else "m"
+    q = {"hyp": rf"Le triangle $ABC$ est rectangle en $A$, avec $AB={a}$ cm et $AC={b}$ cm. Combien mesure $BC$ ?",
+         "cote": rf"Le triangle $ABC$ est rectangle en $A$, avec $BC={a}$ cm et $AB={b}$ cm. Combien mesure $AC$ ?",
+         "ech": rf"Une échelle de ${a}$ m est appuyée contre un mur vertical. Son pied est à ${b}$ m du mur, sur un sol horizontal. À quelle hauteur l'échelle touche-t-elle le mur ?",
+         "ecr": rf"Un écran rectangulaire mesure ${b}$ cm de large et ${a}$ cm de haut. Combien mesure sa diagonale ?"}[c]
+    return (q, u(nb(r), un), [u(nb(x), un) for x in dis])
 
 
-@qtype("geo", "Si les longueurs sont multipliées par k, les volumes sont multipliés par k³.",
-       [F(2), F(3), F(1, 2), F(10), F(4), F(3, 2), F(1, 3), F(5)])
-def _(k):
-    verb = "agrandi" if k > 1 else "réduit"
-    return (rf"Un solide est {verb} à l'échelle ${lf(k)}$. Par combien son volume est-il multiplié ?", m(lf(k ** 3)), [m(lf(k)), m(lf(k * k)), m(lf(3 * k)), m(lf(k ** 3 * 2))])
+PY_OPTS = ["Oui, par la réciproque de Pythagore", "Non, par la contraposée de Pythagore",
+           "Oui, par le théorème de Pythagore", "Non, par la réciproque de Pythagore"]
+
+
+@qtype("geo", "Compare le carré du plus grand côté à la somme des carrés des deux autres : s'il y a égalité, la réciproque prouve que le triangle est rectangle ; sinon, la contraposée prouve qu'il ne l'est pas.",
+       [(6, 8, 10), (5, 7, 9), (4, 6, 7), (9, 12, 15), (8, 15, 17), (6, 9, 11), (5, 11, 12), (7, 24, 25)])
+def _(p):
+    a, b, c = p
+    ok = a * a + b * b == c * c
+    ans = PY_OPTS[0] if ok else PY_OPTS[1]
+    return (rf"Le triangle $EFG$ est tel que $EF={a}$ cm, $FG={b}$ cm et $EG={c}$ cm. Est-il rectangle ?",
+            ans, [x for x in PY_OPTS if x != ans])
 
 
 # ============================================================ STATISTIQUES ET PROBABILITÉS
