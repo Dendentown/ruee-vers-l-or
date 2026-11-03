@@ -830,7 +830,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     }, 100);
   }
   // normal questions: 30 s, then the answer counts as wrong
-  const QTIME = 40, ETIME = 30, DREAD = 3, DTIME = 40, RTIME = 40, FTIME = 50; // normal questions / chapardage / castagne
+  const QTIME = 40, ETIME = 30, DREAD = 0, DTIME = 40, RTIME = 40, FTIME = 50; // normal questions / chapardage / castagne
   function startCountdown(D, onEnd, quiet) {
     stopTimer();
     const end = performance.now() + D * 1000;
@@ -1078,7 +1078,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     ov.className = "overlay"; ov.style.zIndex = 30;
     ov.innerHTML = `<div class="box"><div class="title" style="color:#ff8a3d">Castagne !</div>
       <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong> sur <strong>la même question</strong>, tirée au hasard en ${esc(themeLabel(d.th).toLowerCase())}. Placez-vous face à face, de part et d'autre de l'écran : chaque moitié est tournée vers son joueur.</p>
-      <p style="font-size:17px;color:var(--muted)">Après « 3, 2, 1, Dégaine ! », les réponses apparaissent et chacun a ${DTIME} secondes pour répondre. Une seule réponse chacun : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong> et vole un objet à l'autre. Les deux faux : vous perdez tous les deux.</p>
+      <p style="font-size:17px;color:var(--muted)">Au signal « Dégaine ! », chacun a ${DTIME} secondes pour répondre. Une seule réponse chacun : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong> et vole un objet à l'autre. Les deux faux : vous perdez tous les deux.</p>
       <button class="primary" id="ready">Commencer le duel</button></div>`;
     document.body.appendChild(ov);
     const rb = ov.querySelector("#ready");
@@ -1094,18 +1094,14 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   function startCastagne() {
     const d = S.duel;
     drawTimers.forEach(clearTimeout); drawTimers = [];
-    // "3, 2, 1, Dégaine !", then the answer buttons and the 40 seconds to answer
-    ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawTimers.push(setTimeout(() => {
-      if (S.duel !== d || d.done) return;
-      document.querySelectorAll(".cg .draw").forEach(b => { b.textContent = txt; b.classList.toggle("go", i === 3); });
-      beep(i === 3 ? "ch" : "tick");
-      if (i === 3) {
-        d.t0 = performance.now();
-        startCountdown(DTIME, timeoutCastagne, true);
-        document.querySelectorAll(".cg .answers").forEach(a => { a.style.visibility = "visible"; });
-        document.querySelectorAll(".cg .ans").forEach(b => { b.disabled = !!d.res[+b.dataset.j]; });
-      }
-    }, i * 1000)));
+    // "Dégaine !" during the first second of the 40 seconds to answer
+    drawTimers.push(setTimeout(() => document.querySelectorAll(".cg .draw").forEach(b => { b.textContent = ""; }), 1000));
+    document.querySelectorAll(".cg .draw").forEach(b => { b.textContent = "Dégaine !"; b.classList.add("go"); });
+    beep("ch");
+    d.t0 = performance.now();
+    startCountdown(DTIME, timeoutCastagne, true);
+    document.querySelectorAll(".cg .answers").forEach(a => { a.style.visibility = "visible"; });
+    document.querySelectorAll(".cg .ans").forEach(b => { b.disabled = !!d.res[+b.dataset.j]; });
   }
   const secsTxt = ms => (ms / 1000).toFixed(1).replace(".", ",") + " s";
   function answerCastagne(j, l) {

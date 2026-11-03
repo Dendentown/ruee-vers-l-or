@@ -13,7 +13,7 @@
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const PCOL = ["#ff5a5a", "#4da3ff", "#4fd27b", "#c084ff", "#ff9f43", "#3fe0d6", "#ff7ad9", "#c9e265", "#ffd166", "#8fa8ff", "#f78c6b", "#7ee8c7"];
   const PREFIX = "ruee-or-dvm-";
-  const QTIME = 40, ETIME = 30, DREAD = 3, DTIME = 40, RTIME = 40, FTIME = 50;
+  const QTIME = 40, ETIME = 30, DREAD = 0, DTIME = 40, RTIME = 40, FTIME = 50;
   const F_CHOOSE = 15000, F_LOAD = 20000; // filon: time to sign up, then the longest wait for everybody's question to load
   const KIND = { normal: "", filon: "Filon", raid: "Chapardage", duel: "Castagne", rescue: "Sauvetage" };
   const params = new URLSearchParams(location.search);
@@ -1430,7 +1430,7 @@
       const ov = document.createElement("div"); ov.className = "overlay";
       const t = q.kind === "filon" ? ["filon", "Tu as trouvé un filon !", `Tu as <strong>${q.time} secondes</strong>. Si tu réussis, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent tenter la même question : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !`]
         : q.kind === "raid" ? ["", "Chapardage !", `Réponds juste en ${q.time} secondes et tu prends jusqu'à <strong>3 pépites</strong> à <strong>${esc(q.victim || "")}</strong>, le plus riche. Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu lui paies 1 pépite d'amende !`]
-        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> : vous avez exactement la même question, tirée au hasard. Après « 3, 2, 1, Dégaine ! », les réponses apparaissent et tu as ${q.time} secondes pour répondre. Ton temps compte à partir de « Dégaine ! » : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong>. Les deux faux : vous perdez tous les deux.`]
+        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> : vous avez exactement la même question, tirée au hasard. Au signal « Dégaine ! », tu as ${q.time} secondes pour répondre. Ton temps compte à partir de « Dégaine ! » : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong>. Les deux faux : vous perdez tous les deux.`]
         : ["", "Sauvetage !", `Tu fais équipe avec <strong>${esc(q.partner || "")}</strong>. Chacun refait une question ratée, avec d'autres valeurs. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. <strong>Vous avez le droit de vous entraider !</strong>`];
       const col = q.kind === "duel" ? "#ff8a3d" : q.kind === "rescue" ? "var(--ok)" : q.kind === "raid" ? "var(--bad)" : "";
       ov.innerHTML = `<div class="box"><div class="title ${t[0]}" ${col ? `style="color:${col}"` : ""}>${t[1]}</div><p>${t[2]}</p><button class="primary" id="ready">C'est parti !</button></div>`;
@@ -1452,13 +1452,11 @@
         if (ftry) pauseCountdown(); // the player is busy on someone else's filon
         enable(); return;
       }
-      // castagne: "3, 2, 1, Dégaine !", then the answer buttons and the 40 seconds to answer
+      // castagne: "Dégaine !" during the first second of the 40 seconds to answer
       const box = $("#draw");
-      ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawT.push(setTimeout(() => {
-        if (!box || !box.isConnected) return;
-        box.textContent = txt; box.classList.toggle("go", i === 3);
-        if (i === 3) { enable(); if (shown) shown.t0 = performance.now(); countdown(q.time, () => answer(null)); }
-      }, i * 1000)));
+      enable(); if (shown) shown.t0 = performance.now(); countdown(q.time, () => answer(null));
+      if (box) { box.textContent = "Dégaine !"; box.classList.add("go"); }
+      drawT.push(setTimeout(() => { if (box && box.isConnected) box.textContent = ""; }, 1000));
     }
     let cd = null; // running countdown {D, end, onEnd} or paused {D, left, onEnd}
     function countdown(D, onEnd, leftMs) {
