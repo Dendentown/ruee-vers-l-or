@@ -1,0 +1,384 @@
+Q1 (Nombres entiers et décimaux) : a) $7$
+Q2 (Nombres entiers et décimaux) : b) $0$
+Q3 (Nombres entiers et décimaux) : d) $3{,}47$
+Q4 (Nombres entiers et décimaux) : d) $5{,}2$
+Q5 (Nombres entiers et décimaux) : d) $3{,}5$
+Q6 (Nombres entiers et décimaux) : c) $12{,}01$
+Q7 (Nombres entiers et décimaux) : d) $12{,}5$
+Q8 (Nombres entiers et décimaux) : d) $7{,}8$
+Q9 (Nombres entiers et décimaux) : c) $345$
+Q10 (Nombres entiers et décimaux) : d) $7{,}2$
+Q11 (Nombres entiers et décimaux) : a) $0{,}52$
+Q12 (Nombres entiers et décimaux) : b) $0{,}75$
+Q13 (Nombres entiers et décimaux) : c) $2\,300\,040$
+Q14 (Nombres entiers et décimaux) : c) $15\,608$
+Q15 (Nombres entiers et décimaux) : d) $2{,}35$
+Q16 (Nombres entiers et décimaux) : c) $7{,}05$
+Q17 (Calculs) : b) $20{,}35$
+Q18 (Calculs) : d) $17{,}67$
+Q19 (Calculs) : d) $13{,}65$
+Q20 (Calculs) : b) $6{,}65$
+Q21 (Calculs) : a) $3$
+Q22 (Calculs) : d) $0{,}12$
+Q23 (Calculs) : b) $q=13\text{ et }r=1$
+Q24 (Calculs) : b) $q=14\text{ et }r=2$
+Q25 (Calculs) : d) $117$
+Q26 (Calculs) : b) $91$
+Q27 (Calculs) : b) $342$
+Q28 (Calculs) : a) $4\,527$
+Q29 (Calculs) : b) $17$
+Q30 (Calculs) : c) $8$
+Q31 (Calculs) : a) $1{,}75$
+Q32 (Calculs) : d) $1{,}125$
+Q33 (Fractions) : a) $15$
+Q34 (Fractions) : b) $14$
+Q35 (Fractions) : d) $8$
+Q36 (Fractions) : d) $15$
+Q37 (Fractions) : d) $0{,}75$
+Q38 (Fractions) : b) $0{,}5$
+Q39 (Fractions) : d) $\dfrac{7}{5}$
+Q40 (Fractions) : a) $\dfrac{9}{8}$
+Q41 (Fractions) : b) $\dfrac{3}{7}$
+Q42 (Fractions) : b) $\dfrac{5}{4}$
+Q43 (Fractions) : c) $\dfrac{5}{7}$
+Q44 (Fractions) : d) $\dfrac{7}{9}$
+Q45 (Fractions) : d) $\dfrac{5}{8}$
+Q46 (Fractions) : c) $\dfrac{5}{6}$
+Q47 (Fractions) : d) $3\text{ et }4$
+Q48 (Fractions) : a) $5\text{ et }6$
+Q49 (Géométrie) : b) obtus
+Q50 (Géométrie) : a) aigu
+Q51 (Géométrie) : b) $55^\circ$
+Q52 (Géométrie) : d) $62^\circ$
+Q53 (Géométrie) : a) $60^\circ$
+Q54 (Géométrie) : d) $115^\circ$
+Q55 (Géométrie) : d) 4
+Q56 (Géométrie) : c) 2
+Q57 (Géométrie) : b) $4{,}5~\text{cm}$
+Q58 (Géométrie) : d) $12~\text{cm}$
+Q59 (Géométrie) : d) parallèles
+Q60 (Géométrie) : d) perpendiculaires
+Q61 (Géométrie) : c) isocèle
+Q62 (Géométrie) : b) équilatéral
+Q63 (Géométrie) : c) un carré
+Q64 (Géométrie) : b) un rectangle
+Q65 (Grandeurs et mesures) : c) $26~\text{cm}$
+Q66 (Grandeurs et mesures) : c) $38~\text{cm}$
+Q67 (Grandeurs et mesures) : a) $40~\text{cm}^2$
+Q68 (Grandeurs et mesures) : c) $84~\text{cm}^2$
+Q69 (Grandeurs et mesures) : a) $12~\text{cm}^2$
+Q70 (Grandeurs et mesures) : b) $35~\text{cm}^2$
+Q71 (Grandeurs et mesures) : a) $350~\text{cm}$
+Q72 (Grandeurs et mesures) : d) $1{,}25~\text{km}$
+Q73 (Grandeurs et mesures) : c) $2\,500~\text{g}$
+Q74 (Grandeurs et mesures) : b) $0{,}75~\text{kg}$
+Q75 (Grandeurs et mesures) : a) $105~\text{min}$
+Q76 (Grandeurs et mesures) : b) $150~\text{min}$
+Q77 (Grandeurs et mesures) : c) $31{,}4~\text{cm}$
+Q78 (Grandeurs et mesures) : c) $12{,}56~\text{cm}$
+Q79 (Grandeurs et mesures) : b) $60~\text{cm}^3$
+Q80 (Grandeurs et mesures) : c) $120~\text{cm}^3$
+Q81 (Proportionnalité et données) : d) $450~\text{g}$
+Q82 (Proportionnalité et données) : a) $100~\text{g}$
+Q83 (Proportionnalité et données) : a) $250~\text{F}$
+Q84 (Proportionnalité et données) : c) $275~\text{F}$
+Q85 (Proportionnalité et données) : d) $42$
+Q86 (Proportionnalité et données) : b) $30$
+Q87 (Proportionnalité et données) : a) $5~\text{m}$
+Q88 (Proportionnalité et données) : c) $30~\text{m}$
+Q89 (Proportionnalité et données) : b) $3$
+Q90 (Proportionnalité et données) : b) $4$
+Q91 (Proportionnalité et données) : a) $25$
+Q92 (Proportionnalité et données) : b) $29$
+Q93 (Proportionnalité et données) : b) oui
+Q94 (Proportionnalité et données) : a) non
+Q95 (Proportionnalité et données) : d) $20~\text{L}$
+Q96 (Proportionnalité et données) : b) $40~\text{L}$
+Q1 B (Nombres entiers et décimaux) : d) $4$
+Q2 B (Nombres entiers et décimaux) : a) $4$
+Q3 B (Nombres entiers et décimaux) : c) $0{,}08$
+Q4 B (Nombres entiers et décimaux) : b) $1{,}205$
+Q5 B (Nombres entiers et décimaux) : a) $0{,}701$
+Q6 B (Nombres entiers et décimaux) : d) $5{,}003$
+Q7 B (Nombres entiers et décimaux) : a) $1$
+Q8 B (Nombres entiers et décimaux) : b) $23{,}1$
+Q9 B (Nombres entiers et décimaux) : d) $5\,300$
+Q10 B (Nombres entiers et décimaux) : d) $6{,}8$
+Q11 B (Nombres entiers et décimaux) : b) $0{,}34$
+Q12 B (Nombres entiers et décimaux) : c) $0{,}06$
+Q13 B (Nombres entiers et décimaux) : a) $304\,200$
+Q14 B (Nombres entiers et décimaux) : c) $7\,020\,005$
+Q15 B (Nombres entiers et décimaux) : d) $0{,}58$
+Q16 B (Nombres entiers et décimaux) : a) $12{,}095$
+Q17 B (Calculs) : c) $3{,}35$
+Q18 B (Calculs) : c) $30{,}05$
+Q19 B (Calculs) : d) $3{,}52$
+Q20 B (Calculs) : d) $54{,}2$
+Q21 B (Calculs) : a) $18$
+Q22 B (Calculs) : a) $2{,}25$
+Q23 B (Calculs) : d) $q=27\text{ et }r=2$
+Q24 B (Calculs) : d) $q=13\text{ et }r=5$
+Q25 B (Calculs) : a) $84$
+Q26 B (Calculs) : d) $96$
+Q27 B (Calculs) : b) $1\,235$
+Q28 B (Calculs) : d) $3\,578$
+Q29 B (Calculs) : a) $24$
+Q30 B (Calculs) : a) $12$
+Q31 B (Calculs) : a) $2{,}5$
+Q32 B (Calculs) : b) $0{,}6$
+Q33 B (Fractions) : d) $35$
+Q34 B (Fractions) : a) $15$
+Q35 B (Fractions) : d) $15$
+Q36 B (Fractions) : c) $3$
+Q37 B (Fractions) : d) $1{,}4$
+Q38 B (Fractions) : c) $0{,}125$
+Q39 B (Fractions) : b) $\dfrac{11}{6}$
+Q40 B (Fractions) : a) $\dfrac{5}{3}$
+Q41 B (Fractions) : d) $\dfrac{2}{9}$
+Q42 B (Fractions) : b) $\dfrac{8}{3}$
+Q43 B (Fractions) : a) $\dfrac{7}{10}$
+Q44 B (Fractions) : c) $\dfrac{7}{11}$
+Q45 B (Fractions) : d) $\dfrac{3}{10}$
+Q46 B (Fractions) : a) $\dfrac{7}{12}$
+Q47 B (Fractions) : a) $4\text{ et }5$
+Q48 B (Fractions) : c) $2\text{ et }3$
+Q49 B (Géométrie) : c) droit
+Q50 B (Géométrie) : b) plat
+Q51 B (Géométrie) : a) $18^\circ$
+Q52 B (Géométrie) : c) $45^\circ$
+Q53 B (Géométrie) : d) $142^\circ$
+Q54 B (Géométrie) : c) $35^\circ$
+Q55 B (Géométrie) : b) 3
+Q56 B (Géométrie) : c) 2
+Q57 B (Géométrie) : d) $7{,}5~\text{cm}$
+Q58 B (Géométrie) : b) $7~\text{cm}$
+Q59 B (Géométrie) : b) parallèles
+Q60 B (Géométrie) : b) perpendiculaires
+Q61 B (Géométrie) : a) rectangle
+Q62 B (Géométrie) : b) quelconque
+Q63 B (Géométrie) : c) un losange
+Q64 B (Géométrie) : a) un carré
+Q65 B (Grandeurs et mesures) : c) $21~\text{cm}$
+Q66 B (Grandeurs et mesures) : a) $48~\text{cm}$
+Q67 B (Grandeurs et mesures) : b) $26~\text{cm}^2$
+Q68 B (Grandeurs et mesures) : a) $135~\text{cm}^2$
+Q69 B (Grandeurs et mesures) : d) $20~\text{cm}^2$
+Q70 B (Grandeurs et mesures) : a) $54~\text{cm}^2$
+Q71 B (Grandeurs et mesures) : d) $4{,}2~\text{cm}$
+Q72 B (Grandeurs et mesures) : d) $800~\text{m}$
+Q73 B (Grandeurs et mesures) : b) $45\,000~\text{mg}$
+Q74 B (Grandeurs et mesures) : a) $3{,}5~\text{kg}$
+Q75 B (Grandeurs et mesures) : a) $195~\text{min}$
+Q76 B (Grandeurs et mesures) : b) $65~\text{min}$
+Q77 B (Grandeurs et mesures) : c) $62{,}8~\text{cm}$
+Q78 B (Grandeurs et mesures) : b) $18{,}84~\text{cm}$
+Q79 B (Grandeurs et mesures) : a) $80~\text{cm}^3$
+Q80 B (Grandeurs et mesures) : c) $84~\text{cm}^3$
+Q81 B (Proportionnalité et données) : b) $540~\text{g}$
+Q82 B (Proportionnalité et données) : b) $300~\text{g}$
+Q83 B (Proportionnalité et données) : a) $150~\text{F}$
+Q84 B (Proportionnalité et données) : c) $140~\text{F}$
+Q85 B (Proportionnalité et données) : d) $35$
+Q86 B (Proportionnalité et données) : c) $9$
+Q87 B (Proportionnalité et données) : c) $8~\text{m}$
+Q88 B (Proportionnalité et données) : c) $4~\text{m}$
+Q89 B (Proportionnalité et données) : a) $6$
+Q90 B (Proportionnalité et données) : d) $2{,}5$
+Q91 B (Proportionnalité et données) : c) $28$
+Q92 B (Proportionnalité et données) : a) $43$
+Q93 B (Proportionnalité et données) : c) oui
+Q94 B (Proportionnalité et données) : a) non
+Q95 B (Proportionnalité et données) : a) $30~\text{L}$
+Q96 B (Proportionnalité et données) : c) $31{,}5~\text{L}$
+Q1 C (Nombres entiers et décimaux) : d) $3$
+Q2 C (Nombres entiers et décimaux) : d) $8$
+Q3 C (Nombres entiers et décimaux) : a) $0{,}063$
+Q4 C (Nombres entiers et décimaux) : a) $0{,}9$
+Q5 C (Nombres entiers et décimaux) : b) $2{,}5$
+Q6 C (Nombres entiers et décimaux) : c) $8{,}099$
+Q7 C (Nombres entiers et décimaux) : a) $5{,}1$
+Q8 C (Nombres entiers et décimaux) : c) $10$
+Q9 C (Nombres entiers et décimaux) : a) $125$
+Q10 C (Nombres entiers et décimaux) : b) $400$
+Q11 C (Nombres entiers et décimaux) : d) $1{,}28$
+Q12 C (Nombres entiers et décimaux) : a) $0{,}905$
+Q13 C (Nombres entiers et décimaux) : d) $90\,301$
+Q14 C (Nombres entiers et décimaux) : c) $600\,070$
+Q15 C (Nombres entiers et décimaux) : b) $3{,}005$
+Q16 C (Nombres entiers et décimaux) : b) $9{,}95$
+Q17 C (Calculs) : b) $18{,}08$
+Q18 C (Calculs) : a) $101{,}25$
+Q19 C (Calculs) : b) $6{,}83$
+Q20 C (Calculs) : c) $37{,}75$
+Q21 C (Calculs) : b) $2$
+Q22 C (Calculs) : a) $2{,}1$
+Q23 C (Calculs) : c) $q=38\text{ et }r=6$
+Q24 C (Calculs) : c) $q=22\text{ et }r=3$
+Q25 C (Calculs) : a) $132$
+Q26 C (Calculs) : d) $236$
+Q27 C (Calculs) : c) $4\,560$
+Q28 C (Calculs) : c) $1\,113$
+Q29 C (Calculs) : b) $20$
+Q30 C (Calculs) : c) $12$
+Q31 C (Calculs) : c) $5{,}25$
+Q32 C (Calculs) : d) $1{,}625$
+Q33 C (Fractions) : c) $18$
+Q34 C (Fractions) : a) $42$
+Q35 C (Fractions) : d) $24$
+Q36 C (Fractions) : a) $9$
+Q37 C (Fractions) : a) $0{,}45$
+Q38 C (Fractions) : d) $0{,}12$
+Q39 C (Fractions) : d) $\dfrac{13}{12}$
+Q40 C (Fractions) : a) $\dfrac{8}{7}$
+Q41 C (Fractions) : c) $\dfrac{1}{6}$
+Q42 C (Fractions) : d) $\dfrac{7}{10}$
+Q43 C (Fractions) : c) $\dfrac{7}{8}$
+Q44 C (Fractions) : b) $\dfrac{11}{13}$
+Q45 C (Fractions) : b) $\dfrac{3}{5}$
+Q46 C (Fractions) : a) $\dfrac{5}{9}$
+Q47 C (Fractions) : d) $7\text{ et }8$
+Q48 C (Fractions) : b) $8\text{ et }9$
+Q49 C (Géométrie) : c) aigu
+Q50 C (Géométrie) : b) obtus
+Q51 C (Géométrie) : b) $29^\circ$
+Q52 C (Géométrie) : a) $77^\circ$
+Q53 C (Géométrie) : c) $80^\circ$
+Q54 C (Géométrie) : d) $103^\circ$
+Q55 C (Géométrie) : c) 1
+Q56 C (Géométrie) : c) 0
+Q57 C (Géométrie) : d) $10~\text{cm}$
+Q58 C (Géométrie) : b) $16~\text{cm}$
+Q59 C (Géométrie) : b) parallèles
+Q60 C (Géométrie) : c) parallèles
+Q61 C (Géométrie) : c) isocèle
+Q62 C (Géométrie) : c) isocèle rectangle
+Q63 C (Géométrie) : a) un rectangle
+Q64 C (Géométrie) : d) un losange
+Q65 C (Grandeurs et mesures) : b) $27~\text{cm}$
+Q66 C (Grandeurs et mesures) : c) $20~\text{cm}$
+Q67 C (Grandeurs et mesures) : a) $27{,}5~\text{cm}^2$
+Q68 C (Grandeurs et mesures) : c) $21~\text{cm}^2$
+Q69 C (Grandeurs et mesures) : a) $7{,}5~\text{cm}^2$
+Q70 C (Grandeurs et mesures) : d) $42~\text{cm}^2$
+Q71 C (Grandeurs et mesures) : c) $0{,}65~\text{m}$
+Q72 C (Grandeurs et mesures) : b) $700~\text{mm}$
+Q73 C (Grandeurs et mesures) : b) $300~\text{g}$
+Q74 C (Grandeurs et mesures) : a) $800~\text{cg}$
+Q75 C (Grandeurs et mesures) : a) $260~\text{min}$
+Q76 C (Grandeurs et mesures) : d) $170~\text{min}$
+Q77 C (Grandeurs et mesures) : a) $25{,}12~\text{cm}$
+Q78 C (Grandeurs et mesures) : d) $47{,}1~\text{cm}$
+Q79 C (Grandeurs et mesures) : c) $100~\text{cm}^3$
+Q80 C (Grandeurs et mesures) : d) $216~\text{cm}^3$
+Q81 C (Proportionnalité et données) : d) $525~\text{g}$
+Q82 C (Proportionnalité et données) : d) $60~\text{g}$
+Q83 C (Proportionnalité et données) : c) $200~\text{F}$
+Q84 C (Proportionnalité et données) : b) $75~\text{F}$
+Q85 C (Proportionnalité et données) : b) $30$
+Q86 C (Proportionnalité et données) : b) $650$
+Q87 C (Proportionnalité et données) : a) $200~\text{m}$
+Q88 C (Proportionnalité et données) : d) $10~\text{m}$
+Q89 C (Proportionnalité et données) : a) $7$
+Q90 C (Proportionnalité et données) : c) $1{,}5$
+Q91 C (Proportionnalité et données) : a) $24$
+Q92 C (Proportionnalité et données) : d) $25$
+Q93 C (Proportionnalité et données) : a) oui
+Q94 C (Proportionnalité et données) : a) non
+Q95 C (Proportionnalité et données) : b) $15~\text{L}$
+Q96 C (Proportionnalité et données) : a) $21~\text{L}$
+Q1 D (Nombres entiers et décimaux) : a) $0$
+Q2 D (Nombres entiers et décimaux) : c) $4$
+Q3 D (Nombres entiers et décimaux) : b) $45{,}07$
+Q4 D (Nombres entiers et décimaux) : c) $0{,}36$
+Q5 D (Nombres entiers et décimaux) : c) $10{,}11$
+Q6 D (Nombres entiers et décimaux) : c) $0{,}0499$
+Q7 D (Nombres entiers et décimaux) : b) $3{,}3$
+Q8 D (Nombres entiers et décimaux) : d) $14{,}8$
+Q9 D (Nombres entiers et décimaux) : a) $709$
+Q10 D (Nombres entiers et décimaux) : b) $15$
+Q11 D (Nombres entiers et décimaux) : a) $0{,}042$
+Q12 D (Nombres entiers et décimaux) : b) $7{,}3$
+Q13 D (Nombres entiers et décimaux) : d) $1\,250\,000$
+Q14 D (Nombres entiers et décimaux) : d) $48\,900$
+Q15 D (Nombres entiers et décimaux) : b) $1{,}42$
+Q16 D (Nombres entiers et décimaux) : c) $0{,}15$
+Q17 D (Calculs) : b) $9{,}98$
+Q18 D (Calculs) : d) $47{,}35$
+Q19 D (Calculs) : c) $3{,}15$
+Q20 D (Calculs) : d) $7{,}16$
+Q21 D (Calculs) : b) $9$
+Q22 D (Calculs) : d) $0{,}042$
+Q23 D (Calculs) : b) $q=52\text{ et }r=1$
+Q24 D (Calculs) : d) $q=41\text{ et }r=16$
+Q25 D (Calculs) : b) $143$
+Q26 D (Calculs) : a) $165$
+Q27 D (Calculs) : b) $819$
+Q28 D (Calculs) : d) $2\,790$
+Q29 D (Calculs) : c) $31$
+Q30 D (Calculs) : c) $3$
+Q31 D (Calculs) : c) $0{,}25$
+Q32 D (Calculs) : d) $6{,}8$
+Q33 D (Fractions) : d) $16$
+Q34 D (Fractions) : c) $27$
+Q35 D (Fractions) : d) $21$
+Q36 D (Fractions) : a) $8$
+Q37 D (Fractions) : c) $2{,}75$
+Q38 D (Fractions) : b) $1{,}3$
+Q39 D (Fractions) : d) $\dfrac{10}{9}$
+Q40 D (Fractions) : a) $\dfrac{15}{4}$
+Q41 D (Fractions) : a) $\dfrac{4}{11}$
+Q42 D (Fractions) : d) $\dfrac{9}{5}$
+Q43 D (Fractions) : a) $\dfrac{12}{15}$
+Q44 D (Fractions) : c) $\dfrac{7}{12}$
+Q45 D (Fractions) : d) $\dfrac{1}{4}$
+Q46 D (Fractions) : a) $\dfrac{5}{7}$
+Q47 D (Fractions) : b) $1\text{ et }2$
+Q48 D (Fractions) : c) $6\text{ et }7$
+Q49 D (Géométrie) : c) obtus
+Q50 D (Géométrie) : d) aigu
+Q51 D (Géométrie) : a) $40^\circ$
+Q52 D (Géométrie) : d) $6^\circ$
+Q53 D (Géométrie) : a) $28^\circ$
+Q54 D (Géométrie) : b) $131^\circ$
+Q55 D (Géométrie) : a) 6
+Q56 D (Géométrie) : b) une infinité
+Q57 D (Géométrie) : b) $3{,}5~\text{cm}$
+Q58 D (Géométrie) : b) $25~\text{cm}$
+Q59 D (Géométrie) : d) perpendiculaires
+Q60 D (Géométrie) : a) perpendiculaires
+Q61 D (Géométrie) : d) équilatéral
+Q62 D (Géométrie) : b) quelconque
+Q63 D (Géométrie) : c) un carré
+Q64 D (Géométrie) : c) un rectangle
+Q65 D (Grandeurs et mesures) : a) $62~\text{cm}$
+Q66 D (Grandeurs et mesures) : b) $31~\text{cm}$
+Q67 D (Grandeurs et mesures) : c) $220~\text{cm}^2$
+Q68 D (Grandeurs et mesures) : b) $57~\text{cm}^2$
+Q69 D (Grandeurs et mesures) : b) $36~\text{cm}^2$
+Q70 D (Grandeurs et mesures) : b) $14~\text{cm}^2$
+Q71 D (Grandeurs et mesures) : c) $2\,300~\text{mm}$
+Q72 D (Grandeurs et mesures) : b) $5~\text{m}$
+Q73 D (Grandeurs et mesures) : c) $0{,}25~\text{g}$
+Q74 D (Grandeurs et mesures) : a) $4\,050~\text{g}$
+Q75 D (Grandeurs et mesures) : a) $300~\text{min}$
+Q76 D (Grandeurs et mesures) : d) $220~\text{min}$
+Q77 D (Grandeurs et mesures) : d) $94{,}2~\text{cm}$
+Q78 D (Grandeurs et mesures) : c) $7{,}85~\text{cm}$
+Q79 D (Grandeurs et mesures) : d) $90~\text{cm}^3$
+Q80 D (Grandeurs et mesures) : c) $54~\text{cm}^3$
+Q81 D (Proportionnalité et données) : d) $300~\text{g}$
+Q82 D (Proportionnalité et données) : d) $300~\text{g}$
+Q83 D (Proportionnalité et données) : c) $350~\text{F}$
+Q84 D (Proportionnalité et données) : a) $120~\text{F}$
+Q85 D (Proportionnalité et données) : a) $12$
+Q86 D (Proportionnalité et données) : c) $7{,}2$
+Q87 D (Proportionnalité et données) : d) $140~\text{m}$
+Q88 D (Proportionnalité et données) : c) $12{,}5~\text{m}$
+Q89 D (Proportionnalité et données) : c) $9$
+Q90 D (Proportionnalité et données) : b) $12$
+Q91 D (Proportionnalité et données) : b) $35$
+Q92 D (Proportionnalité et données) : b) $34$
+Q93 D (Proportionnalité et données) : a) oui
+Q94 D (Proportionnalité et données) : a) non
+Q95 D (Proportionnalité et données) : a) $12~\text{L}$
+Q96 D (Proportionnalité et données) : b) $35~\text{L}$
