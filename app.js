@@ -158,6 +158,7 @@
       <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous ! Si les deux trouvent, chacun gagne un objet (si un seul trouve : une chance sur deux pour chacun).</span></div>
       <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs ont la même question. Celui qui répond juste le plus vite gagne 2 pépites et vole un objet à l'autre.</span></div>
       <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche, et l'un de ses objets.</span></div>
+      <div class="rule"><span class="big">3 ${NUG}</span><span>Bonus d'arrivée : le premier à finir ses questions gagne 3 pépites, le deuxième 2 pépites, le troisième 1 pépite.</span></div>
       <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : le joueur gagne 4 pépites s'il répond juste. Les autres peuvent tenter la même question : 1 pépite pour ceux qui trouvent, si le joueur du filon trouve aussi.</span></div>
       <div class="rule item"><span class="big"></span><span><strong>Objets</strong><br>${icon("lampe")} Lampe : donne une astuce pour la question.<br>${icon("pioche")} Pioche : augmente la récompense pour une question.<br>${icon("tamis")} Tamis : retire deux mauvaises réponses.</span></div>
     </div>`;
@@ -333,7 +334,7 @@
         H.seq++;
         const pid = "b" + H.seq + newId();
         H.players[pid] = { pid, name: names[i], color: PCOL[i + 1], join: H.seq, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0,
-          k: 0, deck: [], solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: [], bot: { p: acc, th: {} } };
+          k: 0, deck: [], arrive: 0, solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: [], bot: { p: acc, th: {} } };
         const c = { cid: null, open: true, _pid: pid, send: m => botRecv(pid, m) };
         conns[pid] = c;
       });
@@ -519,7 +520,7 @@
 
     function viewOf(p) {
       const v = { t: "view", phase: H.phase, code: H.code, img: L.img, sub: L.sub,
-        me: { pid: p.pid, name: p.name, color: p.color, score: p.score, rank: rankOf(p), n: players().length, k: p.k, N: nOf(p) },
+        me: { pid: p.pid, name: p.name, color: p.color, score: p.score, arrive: p.arrive || 0, rank: rankOf(p), n: players().length, k: p.k, N: nOf(p) },
         q: null, res: p.res, done: false, started: p.k > 0 || !!p.cur || !!p.res };
       v.me.inv = p.inv || [];
       if (p.cur) v.q = { id: p.cur.id, n: p.cur.q, kind: p.cur.kind, time: p.cur.time, partner: p.cur.partner || null, th: p.cur.thLabel || null, victim: p.cur.victimName || null, num: p.cur.num || null, stake: p.cur.stake, used: p.cur.used || null };
@@ -553,7 +554,7 @@
           H.seq++;
           const pid = "p" + H.seq + newId();
           p = H.players[pid] = { pid, name, color: H.solo ? PCOL[0] : PCOL[(H.seq - 1) % PCOL.length], join: H.seq, score: 0, ok: 0, tot: 0, ch: 0, vols: 0, duels: 0, saves: 0,
-            k: 0, deck: H.phase === "play" ? makeDeck() : [], solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: H.phase === "play" ? [newItem()] : [] };
+            k: 0, deck: H.phase === "play" ? makeDeck() : [], arrive: 0, solved: [], failed: [], cur: null, res: null, pending: null, online: true, inv: H.phase === "play" ? [newItem()] : [] };
           if (H.phase === "play") feed(`${name} rejoint la partie.`);
         }
         if (conns[p.pid] && conns[p.pid] !== c) { try { conns[p.pid].close(); } catch (e) {} }
@@ -682,7 +683,19 @@
         p.cur = Object.assign(p.pending, { id: newId() }); p.pending = null;
         save(); push(p.pid); render(); return;
       }
-      if (p.k >= nOf(p)) { push(p.pid); render(); checkAllDone(); return; }
+      if (p.k >= nOf(p)) {
+        // arrival bonus: 3 nuggets for the first to finish their questions, 2 for the second, 1 for the third
+        if (!p.arrive) {
+          p.arrive = H.arrivals = (H.arrivals || 0) + 1;
+          const b = [3, 2, 1][p.arrive - 1] || 0;
+          if (b) {
+            p.score += b;
+            feed(`${p.name} finit ${p.arrive === 1 ? "1er" : p.arrive + "e"} : +${b} pépite${b > 1 ? "s" : ""} de bonus d'arrivée.`, "filon");
+            save(); pushAll(); render(); checkAllDone(); return;
+          }
+        }
+        push(p.pid); render(); checkAllDone(); return;
+      }
       const k = p.k++;
       const cur = { id: newId(), q: p.deck[k], kind: "normal", time: QTIME, stake: 1, num: k + 1 };
       const n = players().length, f = Math.min(1, 4 / n); // big classes: thefts and filons stay as frequent as with 4 players
@@ -893,8 +906,8 @@
       if (!players().length) { if (err) err.textContent = "Attends qu'au moins un élève ait rejoint la partie."; return; }
       if (H.solo && !players().some(p => !p.bot)) { if (err) err.textContent = "Un instant, la partie se prépare…"; return; }
       H.phase = "play";
-      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null, inv: [newItem()] })); // everybody starts with one item
-      H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false;
+      players().forEach(p => Object.assign(p, { deck: makeDeck(), k: 0, score: 0, ok: 0, tot: 0, ch: 0, fa: 0, vols: 0, duels: 0, saves: 0, arrive: 0, solved: [], failed: [], cur: null, res: null, pending: null, partnerAt: null, inv: [newItem()] })); // everybody starts with one item
+      H.links = {}; H.filons = {}; H.feed = []; H.allDoneSaid = false; H.arrivals = 0;
       Object.keys(B).forEach(k => delete B[k]);
       players().forEach(p => { if (p.bot) p.bot.th = Object.fromEntries(L.themes.map(t => [t.id, (Math.random() * 2 - 1) * 0.08])); }); // every bot has stronger and weaker themes
       if (params.get("objets") === "1") players().forEach(p => { p.inv = [{ t: "lampe", u: 1 }, { t: "pioche", u: 1 }, { t: "tamis", u: 1 }]; }); // test switch
@@ -1352,7 +1365,9 @@
       }
       stopTimers(); shown = null;
       if (V.done) {
+        const ar = V.me.arrive, ab = [3, 2, 1][ar - 1];
         app.innerHTML = top() + `<section class="panel"><h2>Tu as fini tes questions !</h2>
+          ${ab ? `<p><strong>Tu as fini ${ar === 1 ? "1er" : ar + "e"} : bonus d'arrivée de ${ab} pépite${ab > 1 ? "s" : ""} !</strong></p>` : ""}
           <p>Bravo ! Ton classement évolue encore pendant que les autres terminent : les filons des autres peuvent te rapporter des pépites, un camarade peut encore te chaparder, et on peut encore te lancer une castagne ou un sauvetage.</p></section>` + credit;
         return;
       }
