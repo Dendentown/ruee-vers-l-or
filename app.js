@@ -611,7 +611,15 @@
     const seenOf = o => new Set([...o.deck, ...o.solved, ...o.failed, ...(o.cur ? [o.cur.q] : []), ...(o.pending ? [o.pending.q] : [])]);
     // a partner must still have questions to ask for, so that the pending one is served
     // a partner must not have been picked for one of his last 2 questions (no flood of extra questions)
-    const canPartner = (o, p) => o !== p && !o.pending && o.k < nOf(o) && o.online && (o.partnerAt == null || o.k - o.partnerAt >= 2);
+    // a player who has finished can still be called for a castagne or a sauvetage (at most one every 20 s)
+    const canPartner = (o, p) => o !== p && !o.pending && o.online && (o.k < nOf(o)
+      ? (o.partnerAt == null || o.k - o.partnerAt >= 2)
+      : !o.cur && Date.now() - (o.partnerTs || 0) >= 20000);
+    // a finished player gets the event at once; the others at their next question
+    function servePending(o) {
+      if (o.k >= nOf(o) && !o.cur && !o.res) nextFor(o);
+    }
+    const whenTxt = o => o.k >= nOf(o) ? "Il arrive tout de suite !" : "Il arrive à ta prochaine question.";
     function filonChance(p) {
       const n = players().length;
       if (n === 1) return 1 / 8;
@@ -634,10 +642,11 @@
       const lid = newId(), thLabel = (L.themes.find(t => t.id === th) || {}).label || "";
       H.links[lid] = { id: lid, type: "duel", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
       Object.assign(cur, { q: dq, kind: "duel", time: DTIME, stake: 2, link: lid, partner: o.name, thLabel });
-      o.partnerAt = o.k;
+      o.partnerAt = o.k; o.partnerTs = Date.now();
       o.pending = { q: dq, kind: "duel", time: DTIME, stake: 2, link: lid, partner: p.name, thLabel, extra: true };
       feed(`Castagne : ${p.name} défie ${o.name} (${thLabel}).`, "duel");
-      toast(o.pid, `${p.name} te défie en castagne ! Elle arrive à ta prochaine question.`);
+      toast(o.pid, `${p.name} te défie en castagne ! ${whenTxt(o).replace("Il", "Elle")}`);
+      setTimeout(() => servePending(o), 0);
       return true;
     }
     function makeRescue(p, cur) {
@@ -648,10 +657,11 @@
       const o = pick(partners), lid = newId();
       H.links[lid] = { id: lid, type: "rescue", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
       Object.assign(cur, { q: L.twin(pick(mine), seenOf(p)), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: o.name });
-      o.partnerAt = o.k;
+      o.partnerAt = o.k; o.partnerTs = Date.now();
       o.pending = { q: L.twin(pick(missedOf(o)), seenOf(o)), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: p.name, extra: true };
       feed(`Sauvetage : ${p.name} et ${o.name} font équipe.`, "rescue");
-      toast(o.pid, `Sauvetage avec ${p.name} ! Il arrive à ta prochaine question.`);
+      toast(o.pid, `Sauvetage avec ${p.name} ! ${whenTxt(o)}`);
+      setTimeout(() => servePending(o), 0);
       return true;
     }
     function makeFilon(p, cur) {
@@ -1343,7 +1353,7 @@
       stopTimers(); shown = null;
       if (V.done) {
         app.innerHTML = top() + `<section class="panel"><h2>Tu as fini tes questions !</h2>
-          <p>Bravo ! Ton classement évolue encore pendant que les autres terminent : les filons des autres peuvent te rapporter des pépites, et un camarade peut encore te chaparder.</p></section>` + credit;
+          <p>Bravo ! Ton classement évolue encore pendant que les autres terminent : les filons des autres peuvent te rapporter des pépites, un camarade peut encore te chaparder, et on peut encore te lancer une castagne ou un sauvetage.</p></section>` + credit;
         return;
       }
       app.innerHTML = top() + `<section class="panel"><h2>${V.started ? "Prêt pour la suite ?" : "La partie commence !"}</h2>
