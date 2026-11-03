@@ -350,7 +350,6 @@
     function botAcc(P, q, kind) {
       let a = P.bot.p + (P.bot.th[L.THEME_OF[q]] || 0);
       if (kind === "rescue") a -= 0.10; // a question it missed before
-      if (kind === "duel") a += 0.08; // a question it already solved
       return Math.max(0.05, Math.min(0.98, a));
     }
     const thinkMs = (a, limit) => Math.max(2500, Math.min((limit - 1.5) * 1000, (4 + (1 - a) * 18) * (0.6 + Math.random() * 0.8) * 1000)) * BOTF;
@@ -627,18 +626,13 @@
       return first;
     }
     function makeDuel(p, cur) {
-      const opts = [];
-      players().forEach(o => {
-        if (!canPartner(o, p)) return;
-        L.themes.forEach(({ id }) => { if (solvedIn(p, id).length && solvedIn(o, id).length) opts.push([o, id]); });
-      });
-      if (!opts.length) return false;
-      const [o, th] = pick(opts);
-      const lid = newId(), thLabel = L.themes.find(t => t.id === th).label;
+      // a random question of the game's themes, the same for both, with values neither has seen
+      const opts = players().filter(o => canPartner(o, p)), all = pool();
+      if (!opts.length || !all.length) return false;
+      const o = pick(opts);
+      const dq = L.twin(pick(all), new Set([...seenOf(p), ...seenOf(o)])), th = L.THEME_OF[dq];
+      const lid = newId(), thLabel = (L.themes.find(t => t.id === th) || {}).label || "";
       H.links[lid] = { id: lid, type: "duel", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
-      // the same statement for both: an exercise both solved if possible, with values neither has seen
-      const pb = new Set(solvedIn(p, th).map(L.base)), common = solvedIn(o, th).filter(n => pb.has(L.base(n)));
-      const dq = L.twin(pick(common.length ? common : solvedIn(p, th)), new Set([...seenOf(p), ...seenOf(o)]));
       Object.assign(cur, { q: dq, kind: "duel", time: DTIME, stake: 2, link: lid, partner: o.name, thLabel });
       o.partnerAt = o.k;
       o.pending = { q: dq, kind: "duel", time: DTIME, stake: 2, link: lid, partner: p.name, thLabel, extra: true };
@@ -1436,7 +1430,7 @@
       const ov = document.createElement("div"); ov.className = "overlay";
       const t = q.kind === "filon" ? ["filon", "Tu as trouvé un filon !", `Tu as <strong>${q.time} secondes</strong>. Si tu réussis, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent tenter la même question : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !`]
         : q.kind === "raid" ? ["", "Chapardage !", `Réponds juste en ${q.time} secondes et tu prends jusqu'à <strong>3 pépites</strong> à <strong>${esc(q.victim || "")}</strong>, le plus riche. Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu lui paies 1 pépite d'amende !`]
-        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> : vous avez exactement la même question, déjà réussie, avec d'autres valeurs. Tu as ${DREAD} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! » et tu as ${q.time - DREAD} secondes pour répondre. Ton temps compte à partir de l'apparition des réponses : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong>. Les deux faux : vous perdez tous les deux.`]
+        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> : vous avez exactement la même question, tirée au hasard. Tu as ${DREAD} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! » et tu as ${q.time - DREAD} secondes pour répondre. Ton temps compte à partir de l'apparition des réponses : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong>. Les deux faux : vous perdez tous les deux.`]
         : ["", "Sauvetage !", `Tu fais équipe avec <strong>${esc(q.partner || "")}</strong>. Chacun refait une question ratée, avec d'autres valeurs. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. <strong>Vous avez le droit de vous entraider !</strong>`];
       const col = q.kind === "duel" ? "#ff8a3d" : q.kind === "rescue" ? "var(--ok)" : q.kind === "raid" ? "var(--bad)" : "";
       ov.innerHTML = `<div class="box"><div class="title ${t[0]}" ${col ? `style="color:${col}"` : ""}>${t[1]}</div><p>${t[2]}</p><button class="primary" id="ready">C'est parti !</button></div>`;

@@ -937,19 +937,11 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
   const pick = a => a[Math.floor(Math.random() * a.length)];
   function makeDuel() {
     const me = S.idx % S.teams.length;
-    const solvedIn = (i, th) => [...new Set(S.teams[i].solved || [])].filter(n => THEME_OF[n] === th);
-    const options = [];
-    S.teams.forEach((_, opp) => {
-      if (opp === me) return;
-      THEMES.forEach(({ id }) => {
-        if (solvedIn(me, id).length && solvedIn(opp, id).length) options.push([opp, id]);
-      });
-    });
-    if (!options.length) return null; // nobody can duel yet: normal question instead
-    const [opp, th] = pick(options);
-    // the very same statement for both: an exercise both solved if possible, with values nobody has seen
-    const bm = new Set(solvedIn(me, th).map(baseOf)), common = solvedIn(opp, th).filter(n => bm.has(baseOf(n)));
-    const q = twin(pick(common.length ? common : solvedIn(me, th)), seenAll());
+    const others = S.teams.map((_, i) => i).filter(i => i !== me);
+    // a random question of the game's themes, the very same for both, with values nobody has seen
+    const all = QS.filter(([n, th]) => S.themes[th] && inAB(n)).map(x => x[0]);
+    if (!others.length || !all.length) return null;
+    const opp = pick(others), q = twin(pick(all), seenAll()), th = THEME_OF[q];
     return { me, opp, q, th, res: [null, null], intro: false, done: false };
   }
 
@@ -1063,7 +1055,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     const ov = document.createElement("div");
     ov.className = "overlay"; ov.style.zIndex = 30;
     ov.innerHTML = `<div class="box"><div class="title" style="color:#ff8a3d">Castagne !</div>
-      <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong> sur <strong>la même question</strong> de ${esc(themeLabel(d.th).toLowerCase())}, déjà réussie, avec d'autres valeurs. Placez-vous face à face : l'un en bas de l'écran, l'autre en haut.</p>
+      <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong> sur <strong>la même question</strong>, tirée au hasard en ${esc(themeLabel(d.th).toLowerCase())}. Placez-vous face à face : l'un en bas de l'écran, l'autre en haut.</p>
       <p style="font-size:17px;color:var(--muted)">${DREAD} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! » et chacun a ${DTIME - DREAD} secondes pour répondre. Une seule réponse chacun : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong> et vole un objet à l'autre. Les deux faux : vous perdez tous les deux.</p>
       <button class="primary" id="ready">Commencer le duel</button></div>`;
     document.body.appendChild(ov);
