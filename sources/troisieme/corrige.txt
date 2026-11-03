@@ -1,0 +1,384 @@
+Q1 (Arithmétique et puissances) : a) $79$
+Q2 (Arithmétique et puissances) : b) $59$
+Q3 (Arithmétique et puissances) : d) $2^{3}\times3\times5$
+Q4 (Arithmétique et puissances) : d) $2\times7^{2}$
+Q5 (Arithmétique et puissances) : d) $\dfrac{7}{10}$
+Q6 (Arithmétique et puissances) : c) $\dfrac{5}{14}$
+Q7 (Arithmétique et puissances) : d) $42$
+Q8 (Arithmétique et puissances) : d) $30$
+Q9 (Arithmétique et puissances) : c) $12$
+Q10 (Arithmétique et puissances) : d) $24$
+Q11 (Arithmétique et puissances) : a) $24~\text{s}$
+Q12 (Arithmétique et puissances) : b) $20~\text{s}$
+Q13 (Arithmétique et puissances) : c) $6\times10^{2}$
+Q14 (Arithmétique et puissances) : c) $8\times10^{4}$
+Q15 (Arithmétique et puissances) : d) $0{,}04$
+Q16 (Arithmétique et puissances) : c) $0{,}125$
+Q17 (Calcul littéral et équations) : b) $2x^2-5x-12$
+Q18 (Calcul littéral et équations) : d) $6x^2+13x-5$
+Q19 (Calcul littéral et équations) : d) $(x-6)(x+6)$
+Q20 (Calcul littéral et équations) : b) $(3x-2)(3x+2)$
+Q21 (Calcul littéral et équations) : a) $\{-\dfrac{5}{2}\,;\,3\}$
+Q22 (Calcul littéral et équations) : d) $\{-4\,;\,1\}$
+Q23 (Calcul littéral et équations) : b) $(x+1)(3x+2)$
+Q24 (Calcul littéral et équations) : b) $(x-2)(4x+5)$
+Q25 (Calcul littéral et équations) : d) $x>4$
+Q26 (Calcul littéral et équations) : b) $x>-3$
+Q27 (Calcul littéral et équations) : b) $\{-4\,;\,4\}$
+Q28 (Calcul littéral et équations) : a) $\{-6\,;\,6\}$
+Q29 (Calcul littéral et équations) : b) oui
+Q30 (Calcul littéral et équations) : c) oui
+Q31 (Calcul littéral et équations) : a) $19$
+Q32 (Calcul littéral et équations) : d) $-9$
+Q33 (Fonctions) : a) $7$
+Q34 (Fonctions) : b) $1$
+Q35 (Fonctions) : d) $4$
+Q36 (Fonctions) : d) $4$
+Q37 (Fonctions) : d) $3$
+Q38 (Fonctions) : b) $-3$
+Q39 (Fonctions) : d) $3$
+Q40 (Fonctions) : a) $-2$
+Q41 (Fonctions) : b) $5$
+Q42 (Fonctions) : b) $7$
+Q43 (Fonctions) : c) $1{,}2$
+Q44 (Fonctions) : d) $0{,}85$
+Q45 (Fonctions) : d) $4$
+Q46 (Fonctions) : c) $1$
+Q47 (Fonctions) : d) linéaire
+Q48 (Fonctions) : a) affine non linéaire
+Q49 (Géométrie) : b) $8~\text{cm}$
+Q50 (Géométrie) : a) $7{,}5~\text{cm}$
+Q51 (Géométrie) : b) oui
+Q52 (Géométrie) : d) non
+Q53 (Géométrie) : a) $6~\text{cm}$
+Q54 (Géométrie) : d) $4~\text{cm}$
+Q55 (Géométrie) : d) $\dfrac{3}{4}$
+Q56 (Géométrie) : c) $\dfrac{12}{5}$
+Q57 (Géométrie) : b) $6~\text{cm}$
+Q58 (Géométrie) : d) $7{,}5~\text{cm}$
+Q59 (Géométrie) : d) $36\pi~\text{cm}^3$
+Q60 (Géométrie) : d) $288\pi~\text{cm}^3$
+Q61 (Géométrie) : c) $100\pi~\text{cm}^2$
+Q62 (Géométrie) : b) $36\pi~\text{cm}^2$
+Q63 (Géométrie) : c) $8$
+Q64 (Géométrie) : b) $27$
+Q65 (Statistiques et probabilités) : c) $11$
+Q66 (Statistiques et probabilités) : c) $7$
+Q67 (Statistiques et probabilités) : a) $12{,}5$
+Q68 (Statistiques et probabilités) : c) $10$
+Q69 (Statistiques et probabilités) : a) $7$
+Q70 (Statistiques et probabilités) : b) $10$
+Q71 (Statistiques et probabilités) : a) $\dfrac{3}{10}$
+Q72 (Statistiques et probabilités) : d) $\dfrac{1}{6}$
+Q73 (Statistiques et probabilités) : c) $\dfrac{1}{12}$
+Q74 (Statistiques et probabilités) : b) $\dfrac{1}{4}$
+Q75 (Statistiques et probabilités) : a) $32\,\%$
+Q76 (Statistiques et probabilités) : b) $30\,\%$
+Q77 (Statistiques et probabilités) : c) $\dfrac{2}{3}$
+Q78 (Statistiques et probabilités) : c) $\dfrac{7}{12}$
+Q79 (Statistiques et probabilités) : b) $\dfrac{4}{7}$
+Q80 (Statistiques et probabilités) : c) $0{,}85$
+Q81 (Grandeurs et proportionnalité) : d) $36~\text{km/h}$
+Q82 (Grandeurs et proportionnalité) : a) $90~\text{km/h}$
+Q83 (Grandeurs et proportionnalité) : a) $90~\text{km/h}$
+Q84 (Grandeurs et proportionnalité) : c) $90~\text{km/h}$
+Q85 (Grandeurs et proportionnalité) : d) $69~\text{F}$
+Q86 (Grandeurs et proportionnalité) : b) $180~\text{F}$
+Q87 (Grandeurs et proportionnalité) : a) $+25\,\%$
+Q88 (Grandeurs et proportionnalité) : c) $-20\,\%$
+Q89 (Grandeurs et proportionnalité) : b) $24~\text{L/min}$
+Q90 (Grandeurs et proportionnalité) : b) $15~\text{L/min}$
+Q91 (Grandeurs et proportionnalité) : a) $40~\text{m}$
+Q92 (Grandeurs et proportionnalité) : b) $30~\text{m}$
+Q93 (Grandeurs et proportionnalité) : b) $24\text{ et }36$
+Q94 (Grandeurs et proportionnalité) : a) $36\text{ et }48$
+Q95 (Grandeurs et proportionnalité) : d) $2\,500~\text{L}$
+Q96 (Grandeurs et proportionnalité) : b) $750~\text{cm}^3$
+Q1 B (Arithmétique et puissances) : d) $83$
+Q2 B (Arithmétique et puissances) : a) $71$
+Q3 B (Arithmétique et puissances) : c) $2\times3^{2}\times7$
+Q4 B (Arithmétique et puissances) : b) $2^{3}\times3\times5^{2}$
+Q5 B (Arithmétique et puissances) : a) $\dfrac{2}{5}$
+Q6 B (Arithmétique et puissances) : d) $\dfrac{3}{7}$
+Q7 B (Arithmétique et puissances) : a) $24$
+Q8 B (Arithmétique et puissances) : b) $15$
+Q9 B (Arithmétique et puissances) : d) $18$
+Q10 B (Arithmétique et puissances) : d) $15$
+Q11 B (Arithmétique et puissances) : b) $36~\text{s}$
+Q12 B (Arithmétique et puissances) : c) $60~\text{s}$
+Q13 B (Arithmétique et puissances) : a) $1{,}5\times10^{8}$
+Q14 B (Arithmétique et puissances) : c) $6\times10^{5}$
+Q15 B (Arithmétique et puissances) : d) $0{,}001$
+Q16 B (Arithmétique et puissances) : a) $0{,}0625$
+Q17 B (Calcul littéral et équations) : c) $4x^2+22x-12$
+Q18 B (Calcul littéral et équations) : c) $5x^2-17x+6$
+Q19 B (Calcul littéral et équations) : d) $(x-10)(x+10)$
+Q20 B (Calcul littéral et équations) : d) $(2x-7)(2x+7)$
+Q21 B (Calcul littéral et équations) : a) $\{-2\,;\,2\}$
+Q22 B (Calcul littéral et équations) : a) $\{-\dfrac{1}{2}\,;\,5\}$
+Q23 B (Calcul littéral et équations) : d) $(2x+1)(2x+4)$
+Q24 B (Calcul littéral et équations) : d) $(x+3)(6x+1)$
+Q25 B (Calcul littéral et équations) : a) $x>-2$
+Q26 B (Calcul littéral et équations) : d) $x<-3$
+Q27 B (Calcul littéral et équations) : b) aucune solution
+Q28 B (Calcul littéral et équations) : d) $\{-9\,;\,9\}$
+Q29 B (Calcul littéral et équations) : a) non
+Q30 B (Calcul littéral et équations) : a) oui
+Q31 B (Calcul littéral et équations) : a) $16$
+Q32 B (Calcul littéral et équations) : b) $41$
+Q33 B (Fonctions) : d) $-9$
+Q34 B (Fonctions) : a) $1$
+Q35 B (Fonctions) : d) $5$
+Q36 B (Fonctions) : c) $-2$
+Q37 B (Fonctions) : d) $-\dfrac{7}{2}$
+Q38 B (Fonctions) : c) $\dfrac{1}{3}$
+Q39 B (Fonctions) : b) $2$
+Q40 B (Fonctions) : a) $-2$
+Q41 B (Fonctions) : d) $3$
+Q42 B (Fonctions) : b) $-3$
+Q43 B (Fonctions) : a) $1{,}08$
+Q44 B (Fonctions) : c) $0{,}65$
+Q45 B (Fonctions) : d) $6$
+Q46 B (Fonctions) : a) $-6$
+Q47 B (Fonctions) : a) ni affine ni linéaire
+Q48 B (Fonctions) : c) constante
+Q49 B (Géométrie) : c) $17{,}5~\text{cm}$
+Q50 B (Géométrie) : b) $4{,}8~\text{cm}$
+Q51 B (Géométrie) : a) oui
+Q52 B (Géométrie) : c) non
+Q53 B (Géométrie) : d) $9~\text{cm}$
+Q54 B (Géométrie) : c) $9~\text{cm}$
+Q55 B (Géométrie) : b) $\dfrac{3}{4}$
+Q56 B (Géométrie) : c) $1$
+Q57 B (Géométrie) : d) $4~\text{cm}$
+Q58 B (Géométrie) : b) $12~\text{cm}$
+Q59 B (Géométrie) : b) $\dfrac{4}{3}\pi~\text{cm}^3$
+Q60 B (Géométrie) : b) $972\pi~\text{cm}^3$
+Q61 B (Géométrie) : a) $400\pi~\text{cm}^2$
+Q62 B (Géométrie) : b) $4\pi~\text{cm}^2$
+Q63 B (Géométrie) : c) $\dfrac{1}{8}$
+Q64 B (Géométrie) : a) $1\,000$
+Q65 B (Statistiques et probabilités) : c) $18$
+Q66 B (Statistiques et probabilités) : a) $7$
+Q67 B (Statistiques et probabilités) : b) $16$
+Q68 B (Statistiques et probabilités) : a) $8$
+Q69 B (Statistiques et probabilités) : d) $15$
+Q70 B (Statistiques et probabilités) : a) $9$
+Q71 B (Statistiques et probabilités) : d) $\dfrac{2}{5}$
+Q72 B (Statistiques et probabilités) : d) $\dfrac{1}{10}$
+Q73 B (Statistiques et probabilités) : b) $\dfrac{1}{6}$
+Q74 B (Statistiques et probabilités) : a) $\dfrac{1}{36}$
+Q75 B (Statistiques et probabilités) : a) $45\,\%$
+Q76 B (Statistiques et probabilités) : b) $25\,\%$
+Q77 B (Statistiques et probabilités) : c) $\dfrac{7}{8}$
+Q78 B (Statistiques et probabilités) : b) $\dfrac{8}{15}$
+Q79 B (Statistiques et probabilités) : a) $\dfrac{4}{9}$
+Q80 B (Statistiques et probabilités) : c) $0{,}28$
+Q81 B (Grandeurs et proportionnalité) : b) $18~\text{km/h}$
+Q82 B (Grandeurs et proportionnalité) : b) $54~\text{km/h}$
+Q83 B (Grandeurs et proportionnalité) : a) $80~\text{km/h}$
+Q84 B (Grandeurs et proportionnalité) : c) $120~\text{km/h}$
+Q85 B (Grandeurs et proportionnalité) : d) $1\,680~\text{F}$
+Q86 B (Grandeurs et proportionnalité) : c) $68~\text{F}$
+Q87 B (Grandeurs et proportionnalité) : c) $+15\,\%$
+Q88 B (Grandeurs et proportionnalité) : c) $-25\,\%$
+Q89 B (Grandeurs et proportionnalité) : a) $25~\text{L/min}$
+Q90 B (Grandeurs et proportionnalité) : d) $9~\text{L/min}$
+Q91 B (Grandeurs et proportionnalité) : c) $500~\text{m}$
+Q92 B (Grandeurs et proportionnalité) : a) $30~\text{m}$
+Q93 B (Grandeurs et proportionnalité) : c) $15\text{ et }30$
+Q94 B (Grandeurs et proportionnalité) : a) $45\text{ et }75$
+Q95 B (Grandeurs et proportionnalité) : a) $300~\text{dm}^3$
+Q96 B (Grandeurs et proportionnalité) : c) $4{,}5~\text{m}^3$
+Q1 C (Arithmétique et puissances) : d) $103$
+Q2 C (Arithmétique et puissances) : d) $47$
+Q3 C (Arithmétique et puissances) : a) $2^{2}\times3^{2}\times5$
+Q4 C (Arithmétique et puissances) : a) $2^{2}\times3\times11$
+Q5 C (Arithmétique et puissances) : b) $\dfrac{7}{11}$
+Q6 C (Arithmétique et puissances) : c) $\dfrac{3}{5}$
+Q7 C (Arithmétique et puissances) : a) $12$
+Q8 C (Arithmétique et puissances) : c) $48$
+Q9 C (Arithmétique et puissances) : a) $32$
+Q10 C (Arithmétique et puissances) : b) $27$
+Q11 C (Arithmétique et puissances) : d) $56~\text{s}$
+Q12 C (Arithmétique et puissances) : a) $36~\text{s}$
+Q13 C (Arithmétique et puissances) : d) $3\times10^{-6}$
+Q14 C (Arithmétique et puissances) : c) $1\times10^{8}$
+Q15 C (Arithmétique et puissances) : b) $0{,}03125$
+Q16 C (Arithmétique et puissances) : b) $0{,}05$
+Q17 C (Calcul littéral et équations) : b) $-6x^2-5x+4$
+Q18 C (Calcul littéral et équations) : a) $8x^2+6x-5$
+Q19 C (Calcul littéral et équations) : b) $(5x-3)(5x+3)$
+Q20 C (Calcul littéral et équations) : c) $(4x-1)(4x+1)$
+Q21 C (Calcul littéral et équations) : b) $\{-7\,;\,\dfrac{2}{3}\}$
+Q22 C (Calcul littéral et équations) : a) $\{-3\,;\,\dfrac{1}{4}\}$
+Q23 C (Calcul littéral et équations) : c) $(3x-1)(2x+7)$
+Q24 C (Calcul littéral et équations) : c) $(x+5)(x+8)$
+Q25 C (Calcul littéral et équations) : a) $x<-3$
+Q26 C (Calcul littéral et équations) : d) $x>4$
+Q27 C (Calcul littéral et équations) : c) $\{-\sqrt{7}\,;\,\sqrt{7}\}$
+Q28 C (Calcul littéral et équations) : c) $\{0\}$
+Q29 C (Calcul littéral et équations) : b) non
+Q30 C (Calcul littéral et équations) : c) oui
+Q31 C (Calcul littéral et équations) : c) $-2$
+Q32 C (Calcul littéral et équations) : d) $26$
+Q33 C (Fonctions) : c) $3$
+Q34 C (Fonctions) : a) $3$
+Q35 C (Fonctions) : d) $-5$
+Q36 C (Fonctions) : a) $4$
+Q37 C (Fonctions) : a) $\dfrac{3}{4}$
+Q38 C (Fonctions) : d) $4$
+Q39 C (Fonctions) : d) $\dfrac{1}{2}$
+Q40 C (Fonctions) : a) $3$
+Q41 C (Fonctions) : c) $6$
+Q42 C (Fonctions) : d) $8$
+Q43 C (Fonctions) : c) $2{,}5$
+Q44 C (Fonctions) : b) $0{,}95$
+Q45 C (Fonctions) : b) $8$
+Q46 C (Fonctions) : a) $7$
+Q47 C (Fonctions) : d) linéaire
+Q48 C (Fonctions) : b) affine non linéaire
+Q49 C (Géométrie) : c) $6~\text{cm}$
+Q50 C (Géométrie) : b) $17{,}5~\text{cm}$
+Q51 C (Géométrie) : b) oui
+Q52 C (Géométrie) : a) non
+Q53 C (Géométrie) : c) $3~\text{cm}$
+Q54 C (Géométrie) : d) $4~\text{cm}$
+Q55 C (Géométrie) : c) $\dfrac{2}{5}$
+Q56 C (Géométrie) : c) $3$
+Q57 C (Géométrie) : d) $3~\text{cm}$
+Q58 C (Géométrie) : b) $6~\text{cm}$
+Q59 C (Géométrie) : b) $\dfrac{32}{3}\pi~\text{cm}^3$
+Q60 C (Géométrie) : c) $\dfrac{9}{2}\pi~\text{cm}^3$
+Q61 C (Géométrie) : c) $196\pi~\text{cm}^2$
+Q62 C (Géométrie) : c) $\pi~\text{cm}^2$
+Q63 C (Géométrie) : a) $64$
+Q64 C (Géométrie) : d) $\dfrac{27}{8}$
+Q65 C (Statistiques et probabilités) : b) $21$
+Q66 C (Statistiques et probabilités) : c) $5$
+Q67 C (Statistiques et probabilités) : a) $27$
+Q68 C (Statistiques et probabilités) : c) $7$
+Q69 C (Statistiques et probabilités) : a) $17$
+Q70 C (Statistiques et probabilités) : d) $8$
+Q71 C (Statistiques et probabilités) : c) $\dfrac{1}{7}$
+Q72 C (Statistiques et probabilités) : b) $\dfrac{5}{14}$
+Q73 C (Statistiques et probabilités) : b) $\dfrac{1}{6}$
+Q74 C (Statistiques et probabilités) : a) $\dfrac{1}{12}$
+Q75 C (Statistiques et probabilités) : a) $25\,\%$
+Q76 C (Statistiques et probabilités) : d) $70\,\%$
+Q77 C (Statistiques et probabilités) : a) $\dfrac{3}{5}$
+Q78 C (Statistiques et probabilités) : d) $\dfrac{4}{5}$
+Q79 C (Statistiques et probabilités) : c) $\dfrac{7}{8}$
+Q80 C (Statistiques et probabilités) : d) $0{,}6$
+Q81 C (Grandeurs et proportionnalité) : d) $72~\text{km/h}$
+Q82 C (Grandeurs et proportionnalité) : d) $108~\text{km/h}$
+Q83 C (Grandeurs et proportionnalité) : c) $100~\text{km/h}$
+Q84 C (Grandeurs et proportionnalité) : b) $110~\text{km/h}$
+Q85 C (Grandeurs et proportionnalité) : b) $540~\text{F}$
+Q86 C (Grandeurs et proportionnalité) : b) $1\,870~\text{F}$
+Q87 C (Grandeurs et proportionnalité) : a) $+15\,\%$
+Q88 C (Grandeurs et proportionnalité) : d) $-15\,\%$
+Q89 C (Grandeurs et proportionnalité) : a) $25~\text{L/min}$
+Q90 C (Grandeurs et proportionnalité) : c) $22{,}5~\text{L/min}$
+Q91 C (Grandeurs et proportionnalité) : a) $3\,000~\text{m}$
+Q92 C (Grandeurs et proportionnalité) : d) $6~\text{m}$
+Q93 C (Grandeurs et proportionnalité) : a) $40\text{ et }50$
+Q94 C (Grandeurs et proportionnalité) : a) $40\text{ et }16$
+Q95 C (Grandeurs et proportionnalité) : b) $2\,000~\text{cm}^3$
+Q96 C (Grandeurs et proportionnalité) : a) $0{,}125~\text{dm}^3$
+Q1 D (Arithmétique et puissances) : a) $109$
+Q2 D (Arithmétique et puissances) : c) $43$
+Q3 D (Arithmétique et puissances) : b) $3^{2}\times5^{2}$
+Q4 D (Arithmétique et puissances) : c) $2^{3}\times5\times7$
+Q5 D (Arithmétique et puissances) : c) $\dfrac{4}{15}$
+Q6 D (Arithmétique et puissances) : c) $\dfrac{11}{15}$
+Q7 D (Arithmétique et puissances) : b) $22$
+Q8 D (Arithmétique et puissances) : d) $75$
+Q9 D (Arithmétique et puissances) : a) $30$
+Q10 D (Arithmétique et puissances) : b) $12$
+Q11 D (Arithmétique et puissances) : a) $50~\text{s}$
+Q12 D (Arithmétique et puissances) : b) $42~\text{s}$
+Q13 D (Arithmétique et puissances) : d) $2{,}4\times10^{-4}$
+Q14 D (Arithmétique et puissances) : d) $1{,}4\times10^{9}$
+Q15 D (Arithmétique et puissances) : b) $0{,}125$
+Q16 D (Arithmétique et puissances) : c) $0{,}008$
+Q17 D (Calcul littéral et équations) : b) $3x^2-19x-14$
+Q18 D (Calcul littéral et équations) : d) $3x^2-17x+10$
+Q19 D (Calcul littéral et équations) : c) $(x-9)(x+9)$
+Q20 D (Calcul littéral et équations) : d) $(6x-5)(6x+5)$
+Q21 D (Calcul littéral et équations) : b) $\{-2\,;\,\dfrac{3}{2}\}$
+Q22 D (Calcul littéral et équations) : d) $\{-8\,;\,8\}$
+Q23 D (Calcul littéral et équations) : b) $(2x-3)(4x-2)$
+Q24 D (Calcul littéral et équations) : d) $(x-6)(7x-2)$
+Q25 D (Calcul littéral et équations) : b) $x>3$
+Q26 D (Calcul littéral et équations) : a) $x<3$
+Q27 D (Calcul littéral et équations) : b) $\{-10\,;\,10\}$
+Q28 D (Calcul littéral et équations) : d) aucune solution
+Q29 D (Calcul littéral et équations) : c) oui
+Q30 D (Calcul littéral et équations) : c) non
+Q31 D (Calcul littéral et équations) : c) $27$
+Q32 D (Calcul littéral et équations) : d) $4$
+Q33 D (Fonctions) : d) $-16$
+Q34 D (Fonctions) : c) $-4$
+Q35 D (Fonctions) : d) $3$
+Q36 D (Fonctions) : a) $7$
+Q37 D (Fonctions) : c) $\dfrac{2}{5}$
+Q38 D (Fonctions) : b) $-\dfrac{3}{2}$
+Q39 D (Fonctions) : d) $3$
+Q40 D (Fonctions) : a) $-\dfrac{1}{2}$
+Q41 D (Fonctions) : a) $4$
+Q42 D (Fonctions) : d) $-5$
+Q43 D (Fonctions) : a) $1{,}02$
+Q44 D (Fonctions) : c) $0{,}4$
+Q45 D (Fonctions) : d) $2$
+Q46 D (Fonctions) : a) $31$
+Q47 D (Fonctions) : b) ni affine ni linéaire
+Q48 D (Fonctions) : c) affine non linéaire
+Q49 D (Géométrie) : c) $7{,}5~\text{cm}$
+Q50 D (Géométrie) : d) $12~\text{cm}$
+Q51 D (Géométrie) : a) oui
+Q52 D (Géométrie) : d) non
+Q53 D (Géométrie) : a) $14~\text{cm}$
+Q54 D (Géométrie) : b) $4~\text{cm}$
+Q55 D (Géométrie) : a) $\dfrac{4}{3}$
+Q56 D (Géométrie) : b) $\dfrac{1}{3}$
+Q57 D (Géométrie) : b) $7~\text{cm}$
+Q58 D (Géométrie) : b) $15~\text{cm}$
+Q59 D (Géométrie) : d) $2\,304\pi~\text{cm}^3$
+Q60 D (Géométrie) : a) $\dfrac{9}{16}\pi~\text{cm}^3$
+Q61 D (Géométrie) : d) $144\pi~\text{cm}^2$
+Q62 D (Géométrie) : b) $25\pi~\text{cm}^2$
+Q63 D (Géométrie) : c) $\dfrac{1}{27}$
+Q64 D (Géométrie) : c) $125$
+Q65 D (Statistiques et probabilités) : a) $40$
+Q66 D (Statistiques et probabilités) : b) $12$
+Q67 D (Statistiques et probabilités) : c) $15{,}25$
+Q68 D (Statistiques et probabilités) : b) $5$
+Q69 D (Statistiques et probabilités) : b) $7$
+Q70 D (Statistiques et probabilités) : b) $9$
+Q71 D (Statistiques et probabilités) : c) $\dfrac{1}{15}$
+Q72 D (Statistiques et probabilités) : b) $\dfrac{2}{15}$
+Q73 D (Statistiques et probabilités) : c) $\dfrac{1}{6}$
+Q74 D (Statistiques et probabilités) : a) $\dfrac{1}{12}$
+Q75 D (Statistiques et probabilités) : a) $20\,\%$
+Q76 D (Statistiques et probabilités) : d) $55\,\%$
+Q77 D (Statistiques et probabilités) : d) $\dfrac{3}{8}$
+Q78 D (Statistiques et probabilités) : c) $\dfrac{11}{12}$
+Q79 D (Statistiques et probabilités) : d) $\dfrac{1}{12}$
+Q80 D (Statistiques et probabilités) : c) $0{,}94$
+Q81 D (Grandeurs et proportionnalité) : d) $9~\text{km/h}$
+Q82 D (Grandeurs et proportionnalité) : d) $144~\text{km/h}$
+Q83 D (Grandeurs et proportionnalité) : c) $110~\text{km/h}$
+Q84 D (Grandeurs et proportionnalité) : a) $56~\text{km/h}$
+Q85 D (Grandeurs et proportionnalité) : a) $105~\text{F}$
+Q86 D (Grandeurs et proportionnalité) : c) $1\,140~\text{F}$
+Q87 D (Grandeurs et proportionnalité) : d) $+30\,\%$
+Q88 D (Grandeurs et proportionnalité) : c) $-15\,\%$
+Q89 D (Grandeurs et proportionnalité) : c) $12~\text{L/min}$
+Q90 D (Grandeurs et proportionnalité) : b) $7{,}5~\text{L/min}$
+Q91 D (Grandeurs et proportionnalité) : b) $50~\text{m}$
+Q92 D (Grandeurs et proportionnalité) : b) $700~\text{m}$
+Q93 D (Grandeurs et proportionnalité) : a) $105\text{ et }45$
+Q94 D (Grandeurs et proportionnalité) : a) $12\text{ et }60$
+Q95 D (Grandeurs et proportionnalité) : a) $1\,500~\text{cm}^3$
+Q96 D (Grandeurs et proportionnalité) : b) $8~\text{m}^3$
