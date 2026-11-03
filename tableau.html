@@ -808,7 +808,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     }, 100);
   }
   // normal questions: 30 s, then the answer counts as wrong
-  const QTIME = 40, ETIME = 30, DTIME = 10, RTIME = 40, FTIME = 50; // normal questions / chapardage / castagne
+  const QTIME = 40, ETIME = 30, DREAD = 6, DTIME = DREAD + 40, RTIME = 40, FTIME = 50; // normal questions / chapardage / castagne
   function startCountdown(D, onEnd, quiet) {
     stopTimer();
     const end = performance.now() + D * 1000;
@@ -1022,7 +1022,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <p style="font-size:17px;color:var(--muted)">Chacun a ${RTIME} secondes. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. Aucune : pas de pépite.</p>
         <button class="primary" id="ready">Commencer le sauvetage</button></div>` : `<div class="box"><div class="title" style="color:#ff8a3d">Castagne !</div>
         <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong>. Chacun reçoit une question de ${esc(themeLabel(d.th).toLowerCase())} qu'il a déjà réussie, mais avec d'autres valeurs.</p>
-        <p style="font-size:17px;color:var(--muted)">Chacun a ${DTIME} secondes : ${DTIME - 4} secondes pour lire, puis les boutons de réponse apparaissent pendant « 3, 2, 1, Dégaine ! » : prépare ta réponse ! Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
+        <p style="font-size:17px;color:var(--muted)">Chacun a ${DREAD} secondes pour lire, puis les boutons de réponse apparaissent pendant « 3, 2, 1, Dégaine ! » : prépare ta réponse ! Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
         <button class="primary" id="ready">Commencer le duel</button></div>`;
       document.body.appendChild(ov);
       document.getElementById("ready").onclick = () => { ov.remove(); whenShown(startDraw); };
@@ -1064,7 +1064,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     ov.className = "overlay"; ov.style.zIndex = 30;
     ov.innerHTML = `<div class="box"><div class="title" style="color:#ff8a3d">Castagne !</div>
       <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong> sur <strong>la même question</strong> de ${esc(themeLabel(d.th).toLowerCase())}, déjà réussie, avec d'autres valeurs. Placez-vous face à face : l'un en bas de l'écran, l'autre en haut.</p>
-      <p style="font-size:17px;color:var(--muted)">${DTIME - 4} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! ». Une seule réponse chacun : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong> et vole un objet à l'autre. Les deux faux : vous perdez tous les deux.</p>
+      <p style="font-size:17px;color:var(--muted)">${DREAD} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! » et chacun a ${DTIME - DREAD} secondes pour répondre. Une seule réponse chacun : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong> et vole un objet à l'autre. Les deux faux : vous perdez tous les deux.</p>
       <button class="primary" id="ready">Commencer le duel</button></div>`;
     document.body.appendChild(ov);
     const rb = ov.querySelector("#ready");
@@ -1081,7 +1081,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     const d = S.duel;
     drawTimers.forEach(clearTimeout); drawTimers = [];
     startCountdown(DTIME, timeoutCastagne, true);
-    const open = (DTIME - 4) * 1000;
+    const open = DREAD * 1000;
     ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawTimers.push(setTimeout(() => {
       if (S.duel !== d || d.done) return;
       document.querySelectorAll(".cg .draw").forEach(b => { b.textContent = txt; b.classList.toggle("go", i === 3); });
@@ -1170,7 +1170,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     const tb = document.getElementById("timer");
     if (tb) tb.style.visibility = "visible";
     startCountdown(DTIME, () => answerDuel(null), true);
-    const open = (DTIME - 4) * 1000;
+    const open = DREAD * 1000;
     ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawTimers.push(setTimeout(() => {
       if (!box.isConnected) return;
       box.textContent = txt;
