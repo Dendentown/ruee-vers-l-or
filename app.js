@@ -612,10 +612,8 @@
     const seenOf = o => new Set([...o.deck, ...o.solved, ...o.failed, ...(o.cur ? [o.cur.q] : []), ...(o.pending ? [o.pending.q] : [])]);
     // a partner must still have questions to ask for, so that the pending one is served
     // a partner must not have been picked for one of his last 2 questions (no flood of extra questions)
-    // a player who has finished can still be called for a castagne or a sauvetage (at most one every 20 s)
-    const canPartner = (o, p) => o !== p && !o.pending && o.online && (o.k < nOf(o)
-      ? (o.partnerAt == null || o.k - o.partnerAt >= 2)
-      : !o.cur && Date.now() - (o.partnerTs || 0) >= 20000);
+    // a player who has finished can still be called for every castagne or sauvetage (one waits while another is played)
+    const canPartner = (o, p) => o !== p && !o.pending && o.online && (o.k >= nOf(o) || o.partnerAt == null || o.k - o.partnerAt >= 2);
     // a finished player gets the event at once; the others at their next question
     function servePending(o) {
       if (o.k >= nOf(o) && !o.cur && !o.res) nextFor(o);
