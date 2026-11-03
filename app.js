@@ -156,7 +156,7 @@
       <div class="rule"><span class="big">0</span><span>Mauvaise réponse ou temps écoulé : aucune pépite.</span></div>
       <div class="rule"><span class="big">1 ${NUG}</span><span>Bonne réponse à une question normale.</span></div>
       <div class="rule rescue"><span class="big">2 ${NUG}</span><span>Sauvetage : deux joueurs refont chacun une question ratée, jusqu'à 2 pépites chacun. Entraidez-vous ! Si les deux trouvent, chacun gagne un objet (si un seul trouve : une chance sur deux pour chacun).</span></div>
-      <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs s'affrontent pour 2 pépites. Le gagnant vole aussi un objet à l'autre.</span></div>
+      <div class="rule duel"><span class="big">2 ${NUG}</span><span>Castagne : deux joueurs ont la même question. Celui qui répond juste le plus vite gagne 2 pépites et vole un objet à l'autre.</span></div>
       <div class="rule raid"><span class="big">3 ${NUG}</span><span>Chapardage : tu prends 3 pépites au joueur le plus riche, et l'un de ses objets.</span></div>
       <div class="rule ch"><span class="big">4 ${NUG}</span><span>Filon : le joueur gagne 4 pépites s'il répond juste. Les autres peuvent tenter la même question : 1 pépite pour ceux qui trouvent, si le joueur du filon trouve aussi.</span></div>
       <div class="rule item"><span class="big"></span><span><strong>Objets</strong><br>${icon("lampe")} Lampe : donne une astuce pour la question.<br>${icon("pioche")} Pioche : augmente la récompense pour une question.<br>${icon("tamis")} Tamis : retire deux mauvaises réponses.</span></div>
@@ -390,10 +390,13 @@
         }
         // a weak bot sometimes lets the time run out
         const late = a < 0.5 && Math.random() < 0.06;
-        once("ans" + q.id, late ? q.time * 1000 * BOTF : ms, () => {
+        // castagne: a reaction time after the answers appear, shorter for a strong bot
+        const react = q.kind === "duel" ? Math.min(3800, (700 + (1 - a) * 2600) * (0.7 + Math.random() * 0.6)) : 0;
+        const at = late ? q.time * 1000 * BOTF : q.kind === "duel" ? ((q.time - 4) * 1000 + react) * BOTF : ms;
+        once("ans" + q.id, at, () => {
           const c2 = H.players[pid].cur;
           if (!c2 || c2.id !== q.id) return;
-          botSend(pid, { t: "ans", id: q.id, l: late ? null : botChoice(c2.q, a, c2.used) });
+          botSend(pid, { t: "ans", id: q.id, l: late ? null : botChoice(c2.q, a, c2.used), ms: q.kind === "duel" && !late ? Math.round(react) : null });
         });
         return;
       }
@@ -594,7 +597,7 @@
         push(p.pid); render();
       }
       else if (m.t === "next") nextFor(p);
-      else if (m.t === "ans") answerFor(p, m.id, m.l);
+      else if (m.t === "ans") answerFor(p, m.id, m.l, m.ms);
     }
 
     /* ----- questions ----- */
@@ -633,9 +636,12 @@
       const [o, th] = pick(opts);
       const lid = newId(), thLabel = L.themes.find(t => t.id === th).label;
       H.links[lid] = { id: lid, type: "duel", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
-      Object.assign(cur, { q: L.twin(pick(solvedIn(p, th)), seenOf(p)), kind: "duel", time: DTIME, stake: 2, link: lid, partner: o.name, thLabel });
+      // the same statement for both: an exercise both solved if possible, with values neither has seen
+      const pb = new Set(solvedIn(p, th).map(L.base)), common = solvedIn(o, th).filter(n => pb.has(L.base(n)));
+      const dq = L.twin(pick(common.length ? common : solvedIn(p, th)), new Set([...seenOf(p), ...seenOf(o)]));
+      Object.assign(cur, { q: dq, kind: "duel", time: DTIME, stake: 2, link: lid, partner: o.name, thLabel });
       o.partnerAt = o.k;
-      o.pending = { q: L.twin(pick(solvedIn(o, th)), seenOf(o)), kind: "duel", time: DTIME, stake: 2, link: lid, partner: p.name, thLabel, extra: true };
+      o.pending = { q: dq, kind: "duel", time: DTIME, stake: 2, link: lid, partner: p.name, thLabel, extra: true };
       feed(`Castagne : ${p.name} défie ${o.name} (${thLabel}).`, "duel");
       toast(o.pid, `${p.name} te défie en castagne ! Elle arrive à ta prochaine question.`);
       return true;
@@ -700,7 +706,7 @@
       save(); if (cur.kind === "filon") pushAll(); else push(p.pid); render();
     }
 
-    function answerFor(p, id, l) {
+    function answerFor(p, id, l, ms) {
       const c = p.cur;
       if (!c || c.id !== id) { push(p.pid); return; }
       if (c.kind === "filon" && H.filons && H.filons[c.filon] && H.filons[c.filon].stage !== "play") { push(p.pid); return; }
@@ -742,8 +748,10 @@
       } else if (c.kind === "duel" || c.kind === "rescue") {
         const lk = H.links[c.link];
         if (lk && !lk.done) {
-          if (lk.a === p.pid) lk.ra = { ok, pioche: pick50 }; else lk.rb = { ok, pioche: pick50 };
-          text = (ok ? "Bonne réponse ! " : l ? `Raté ! La bonne réponse était ${R}. ` : `Temps écoulé ! La bonne réponse était ${R}. `) +
+          // castagne: the answer time counts from the moment the answer buttons appear
+          const t = c.kind === "duel" && l && Number.isFinite(+ms) ? Math.max(0, Math.min(DTIME * 1000, +ms)) : DTIME * 1000;
+          if (lk.a === p.pid) lk.ra = { ok, pioche: pick50, ms: t }; else lk.rb = { ok, pioche: pick50, ms: t };
+          text = (ok ? (c.kind === "duel" ? `Bonne réponse en ${secs(t)} ! ` : "Bonne réponse ! ") : l ? `Raté ! La bonne réponse était ${R}. ` : `Temps écoulé ! La bonne réponse était ${R}. `) +
             `Le résultat ${c.kind === "duel" ? "de la castagne" : "du sauvetage"} arrive quand ${c.partner} aura répondu.`;
           wait = true;
         } else text = ok ? "Bonne réponse !" : `La bonne réponse était ${R}.`;
@@ -808,6 +816,7 @@
       return winners;
     }
 
+    const secs = ms => (ms / 1000).toFixed(1).replace(".", ",") + " s";
     function resolveLink(lk) {
       lk.done = true;
       const A = H.players[lk.a], B = H.players[lk.b];
@@ -815,13 +824,16 @@
       const a = !!(lk.ra && lk.ra.ok), b = !!(lk.rb && lk.rb.ok);
       let ga, gb, ta, tb;
       if (lk.type === "duel") {
-        if (a && b) ga = gb = 1; else if (a) { ga = 2; gb = 0; } else if (b) { ga = 0; gb = 2; } else ga = gb = 0;
+        // the fastest right answer wins; both wrong: both lose
+        const ma = lk.ra.ms, mb = lk.rb.ms;
+        if (a && b) { if (ma < mb) { ga = 2; gb = 0; } else if (mb < ma) { ga = 0; gb = 2; } else ga = gb = 1; }
+        else if (a) { ga = 2; gb = 0; } else if (b) { ga = 0; gb = 2; } else ga = gb = 0;
         if (ga > gb) A.duels++; if (gb > ga) B.duels++;
-        const msg = (g, og, other) => g > og ? `Castagne gagnée contre ${other} : +${g} pépites !`
-          : g === og ? (g ? `Castagne : ${other} et toi avez juste, +1 pépite chacun.` : `Castagne contre ${other} : personne n'a juste, pas de pépite.`)
-          : `Castagne perdue contre ${other}.`;
-        ta = msg(ga, gb, B.name); tb = msg(gb, ga, A.name);
-        feed(ga > gb ? `${A.name} gagne la castagne contre ${B.name}.` : gb > ga ? `${B.name} gagne la castagne contre ${A.name}.` : ga ? `Castagne ${A.name} – ${B.name} : égalité, +1 chacun.` : `Castagne ${A.name} – ${B.name} : personne n'a juste.`, "duel");
+        const msg = (g, og, other, me, ot) => g > og ? `Castagne gagnée contre ${other} : +${g} pépites !${a && b ? ` Tu as été le plus rapide (${secs(me)} contre ${secs(ot)}).` : ""}`
+          : g === og ? (g ? `Castagne contre ${other} : exactement le même temps, +1 pépite chacun.` : `Castagne contre ${other} : vous avez faux tous les deux, vous perdez tous les deux.`)
+          : a && b ? `Castagne perdue : ${other} a répondu juste plus vite que toi (${secs(ot)} contre ${secs(me)}).` : `Castagne perdue contre ${other}.`;
+        ta = msg(ga, gb, B.name, ma, mb); tb = msg(gb, ga, A.name, mb, ma);
+        feed(ga > gb ? `${A.name} gagne la castagne contre ${B.name}.` : gb > ga ? `${B.name} gagne la castagne contre ${A.name}.` : ga ? `Castagne ${A.name} – ${B.name} : même temps, +1 chacun.` : `Castagne ${A.name} – ${B.name} : les deux ont faux.`, "duel");
       } else {
         const nOk = (a ? 1 : 0) + (b ? 1 : 0);
         ga = gb = nOk;
@@ -843,8 +855,8 @@
             feed(`${P.name} trouve ${unN(it)}.`, "rescue");
           }
         });
-      } else if (a !== b) {
-        const [W, Lo, sw] = a ? [A, B, "a"] : [B, A, "b"], st = stealItem(Lo, W);
+      } else if (ga !== gb) {
+        const [W, Lo, sw] = ga > gb ? [A, B, "a"] : [B, A, "b"], st = stealItem(Lo, W);
         if (st) {
           if (sw === "a") { ta += ` Tu lui voles ${son(st)} !`; tb += ` Il te vole ${ton(st)} !`; }
           else { tb += ` Tu lui voles ${son(st)} !`; ta += ` Il te vole ${ton(st)} !`; }
@@ -1424,7 +1436,7 @@
       const ov = document.createElement("div"); ov.className = "overlay";
       const t = q.kind === "filon" ? ["filon", "Tu as trouvé un filon !", `Tu as <strong>${q.time} secondes</strong>. Si tu réussis, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent tenter la même question : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !`]
         : q.kind === "raid" ? ["", "Chapardage !", `Réponds juste en ${q.time} secondes et tu prends jusqu'à <strong>3 pépites</strong> à <strong>${esc(q.victim || "")}</strong>, le plus riche. Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu lui paies 1 pépite d'amende !`]
-        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> sur une question que tu as déjà réussie, avec d'autres valeurs. Tu as ${q.time} secondes : ${q.time - 4} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! ». Juste et l'autre faux : 2 pépites. Les deux justes : 1 pépite chacun.`]
+        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> : vous avez exactement la même question, déjà réussie, avec d'autres valeurs. Tu as ${q.time} secondes : ${q.time - 4} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! ». Ton temps compte à partir de l'apparition des réponses : <strong>celui qui répond juste le plus vite gagne 2 pépites</strong>. Les deux faux : vous perdez tous les deux.`]
         : ["", "Sauvetage !", `Tu fais équipe avec <strong>${esc(q.partner || "")}</strong>. Chacun refait une question ratée, avec d'autres valeurs. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. <strong>Vous avez le droit de vous entraider !</strong>`];
       const col = q.kind === "duel" ? "#ff8a3d" : q.kind === "rescue" ? "var(--ok)" : q.kind === "raid" ? "var(--bad)" : "";
       ov.innerHTML = `<div class="box"><div class="title ${t[0]}" ${col ? `style="color:${col}"` : ""}>${t[1]}</div><p>${t[2]}</p><button class="primary" id="ready">C'est parti !</button></div>`;
@@ -1449,7 +1461,7 @@
       ["3", "2", "1", "Dégaine !"].forEach((txt, i) => drawT.push(setTimeout(() => {
         if (!box || !box.isConnected) return;
         box.textContent = txt; box.classList.toggle("go", i === 3);
-        if (i === 0) enable();
+        if (i === 0) { enable(); if (shown) shown.t0 = performance.now(); }
       }, open + i * 1000)));
     }
     let cd = null; // running countdown {D, end, onEnd} or paused {D, left, onEnd}
@@ -1481,7 +1493,7 @@
       app.querySelectorAll(".ans").forEach(b => { b.disabled = true; if (b.dataset.l === l) b.classList.add("picked"); });
       const d = $("#draw"); if (d) d.textContent = "";
       $("#fb").innerHTML = '<div class="feedback">Réponse envoyée…</div>';
-      send({ t: "ans", id: shown.id, l });
+      send({ t: "ans", id: shown.id, l, ms: shown.t0 ? Math.round(performance.now() - shown.t0) : null });
     }
     function showResult(res) {
       const ansBox = $("#ans"); if (!ansBox) return;
