@@ -1,0 +1,384 @@
+Q1 (Suites) : a) $23$
+Q2 (Suites) : b) $-19$
+Q3 (Suites) : d) $48$
+Q4 (Suites) : d) $135$
+Q5 (Suites) : d) $15$
+Q6 (Suites) : c) $10$
+Q7 (Suites) : d) $55$
+Q8 (Suites) : d) $210$
+Q9 (Suites) : c) $3$
+Q10 (Suites) : d) $-3$
+Q11 (Suites) : a) $127$
+Q12 (Suites) : b) $121$
+Q13 (Suites) : c) décroissante
+Q14 (Suites) : c) croissante
+Q15 (Suites) : d) $12$
+Q16 (Suites) : c) $17$
+Q17 (Second degré) : b) $1$
+Q18 (Second degré) : d) $25$
+Q19 (Second degré) : d) $0$
+Q20 (Second degré) : b) $1$
+Q21 (Second degré) : a) $\{2\,;\,3\}$
+Q22 (Second degré) : d) $\{-1\,;\,4\}$
+Q23 (Second degré) : b) $(x+3)^2-4$
+Q24 (Second degré) : b) $(x-2)^2-3$
+Q25 (Second degré) : d) $(2\,;\,-3)$
+Q26 (Second degré) : b) $(-2\,;\,-5)$
+Q27 (Second degré) : b) $]-2\,;\,2[$
+Q28 (Second degré) : a) $]-\infty\,;\,1[\cup]5\,;\,+\infty[$
+Q29 (Second degré) : b) $7$
+Q30 (Second degré) : c) $\dfrac{3}{2}$
+Q31 (Second degré) : a) $2(x+2)(x-3)$
+Q32 (Second degré) : d) $(x-1)(x-4)$
+Q33 (Dérivation) : a) $7$
+Q34 (Dérivation) : b) $1$
+Q35 (Dérivation) : d) $y=2$
+Q36 (Dérivation) : d) $y=-3x-2$
+Q37 (Dérivation) : d) $13$
+Q38 (Dérivation) : b) $-1$
+Q39 (Dérivation) : d) $-3$
+Q40 (Dérivation) : a) $-2$
+Q41 (Dérivation) : b) $\dfrac{1}{4}$
+Q42 (Dérivation) : b) $\dfrac{1}{6}$
+Q43 (Dérivation) : c) $5$
+Q44 (Dérivation) : d) $-3$
+Q45 (Dérivation) : d) $]-\infty\,;\,3]$
+Q46 (Dérivation) : c) $[2\,;\,+\infty[$
+Q47 (Dérivation) : d) $-3$
+Q48 (Dérivation) : a) $4$
+Q49 (Trigonométrie et exponentielle) : b) $\dfrac{\pi}{3}$
+Q50 (Trigonométrie et exponentielle) : a) $\dfrac{\pi}{4}$
+Q51 (Trigonométrie et exponentielle) : b) $36^\circ$
+Q52 (Trigonométrie et exponentielle) : d) $120^\circ$
+Q53 (Trigonométrie et exponentielle) : a) $\dfrac12$
+Q54 (Trigonométrie et exponentielle) : d) $\dfrac{\sqrt2}{2}$
+Q55 (Trigonométrie et exponentielle) : d) $\dfrac12$
+Q56 (Trigonométrie et exponentielle) : c) $\dfrac{\sqrt2}{2}$
+Q57 (Trigonométrie et exponentielle) : b) $-0{,}6$
+Q58 (Trigonométrie et exponentielle) : d) $0{,}8$
+Q59 (Trigonométrie et exponentielle) : d) $\dfrac{5\pi}{6}$
+Q60 (Trigonométrie et exponentielle) : d) $\dfrac{\pi}{3}$
+Q61 (Trigonométrie et exponentielle) : c) $\dfrac{4}{5}$
+Q62 (Trigonométrie et exponentielle) : b) $\dfrac{3}{5}$
+Q63 (Trigonométrie et exponentielle) : c) $e^{5}$
+Q64 (Trigonométrie et exponentielle) : b) $e^{2}$
+Q65 (Produit scalaire et géométrie repérée) : c) $5$
+Q66 (Produit scalaire et géométrie repérée) : c) $7$
+Q67 (Produit scalaire et géométrie repérée) : a) $6$
+Q68 (Produit scalaire et géométrie repérée) : c) $-5$
+Q69 (Produit scalaire et géométrie repérée) : a) $m=1$
+Q70 (Produit scalaire et géométrie repérée) : b) $m=-2$
+Q71 (Produit scalaire et géométrie repérée) : a) $\sqrt{19}$
+Q72 (Produit scalaire et géométrie repérée) : d) $2\sqrt{7}$
+Q73 (Produit scalaire et géométrie repérée) : c) $\begin{pmatrix}2\\-3\end{pmatrix}$
+Q74 (Produit scalaire et géométrie repérée) : b) $\begin{pmatrix}1\\4\end{pmatrix}$
+Q75 (Produit scalaire et géométrie repérée) : a) $2x-y+1=0$
+Q76 (Produit scalaire et géométrie repérée) : b) $3x+4y-5=0$
+Q77 (Produit scalaire et géométrie repérée) : c) $\Omega(2\,;\,-1)\text{, rayon }3$
+Q78 (Produit scalaire et géométrie repérée) : c) $\Omega(-3\,;\,4)\text{, rayon }5$
+Q79 (Produit scalaire et géométrie repérée) : b) $29$
+Q80 (Produit scalaire et géométrie repérée) : c) $23$
+Q81 (Probabilités conditionnelles et variables aléatoires) : d) $0{,}4$
+Q82 (Probabilités conditionnelles et variables aléatoires) : a) $0{,}25$
+Q83 (Probabilités conditionnelles et variables aléatoires) : a) $0{,}3$
+Q84 (Probabilités conditionnelles et variables aléatoires) : c) $0{,}12$
+Q85 (Probabilités conditionnelles et variables aléatoires) : d) $0{,}29$
+Q86 (Probabilités conditionnelles et variables aléatoires) : b) $0{,}28$
+Q87 (Probabilités conditionnelles et variables aléatoires) : a) oui
+Q88 (Probabilités conditionnelles et variables aléatoires) : c) non
+Q89 (Probabilités conditionnelles et variables aléatoires) : b) $0{,}9$
+Q90 (Probabilités conditionnelles et variables aléatoires) : b) $2$
+Q91 (Probabilités conditionnelles et variables aléatoires) : a) $1$
+Q92 (Probabilités conditionnelles et variables aléatoires) : b) $3$
+Q93 (Probabilités conditionnelles et variables aléatoires) : b) $\dfrac{3}{5}$
+Q94 (Probabilités conditionnelles et variables aléatoires) : a) $\dfrac{9}{20}$
+Q95 (Probabilités conditionnelles et variables aléatoires) : d) $0{,}7$
+Q96 (Probabilités conditionnelles et variables aléatoires) : b) $0{,}4$
+Q1 B (Suites) : d) $56$
+Q2 B (Suites) : a) $67$
+Q3 B (Suites) : c) $-64$
+Q4 B (Suites) : b) $256$
+Q5 B (Suites) : a) $9$
+Q6 B (Suites) : d) $5$
+Q7 B (Suites) : a) $1\,275$
+Q8 B (Suites) : b) $5\,050$
+Q9 B (Suites) : d) $\dfrac{5}{2}$
+Q10 B (Suites) : d) $4$
+Q11 B (Suites) : b) $1\,023$
+Q12 B (Suites) : c) $156$
+Q13 B (Suites) : a) croissante
+Q14 B (Suites) : c) décroissante
+Q15 B (Suites) : d) $8$
+Q16 B (Suites) : a) $9$
+Q17 B (Second degré) : c) $0$
+Q18 B (Second degré) : c) $-56$
+Q19 B (Second degré) : d) $2$
+Q20 B (Second degré) : d) $2$
+Q21 B (Second degré) : a) $\{-3\,;\,1\}$
+Q22 B (Second degré) : a) $\{-5\,;\,-2\}$
+Q23 B (Second degré) : d) $(x+1)^2-4$
+Q24 B (Second degré) : d) $(x-5)^2+5$
+Q25 B (Second degré) : a) $(3\,;\,4)$
+Q26 B (Second degré) : d) $(-1\,;\,-9)$
+Q27 B (Second degré) : b) $]0\,;\,3[$
+Q28 B (Second degré) : d) $[-3\,;\,1]$
+Q29 B (Second degré) : a) $-4$
+Q30 B (Second degré) : a) $\dfrac{2}{3}$
+Q31 B (Second degré) : a) $3(x+1)(x-2)$
+Q32 B (Second degré) : b) $-x(x-5)$
+Q33 B (Dérivation) : d) $-9$
+Q34 B (Dérivation) : a) $2$
+Q35 B (Dérivation) : d) $y=4x-8$
+Q36 B (Dérivation) : c) $y=2x+2$
+Q37 B (Dérivation) : d) $-9$
+Q38 B (Dérivation) : c) $0$
+Q39 B (Dérivation) : b) $-\dfrac{5}{4}$
+Q40 B (Dérivation) : a) $1$
+Q41 B (Dérivation) : d) $\dfrac{1}{8}$
+Q42 B (Dérivation) : b) $\dfrac{1}{2}$
+Q43 B (Dérivation) : a) $-2$
+Q44 B (Dérivation) : c) $4$
+Q45 B (Dérivation) : d) $]-\infty\,;\,-2]$
+Q46 B (Dérivation) : a) $[-5\,;\,+\infty[$
+Q47 B (Dérivation) : a) $-5$
+Q48 B (Dérivation) : c) $3$
+Q49 B (Trigonométrie et exponentielle) : c) $\dfrac{\pi}{6}$
+Q50 B (Trigonométrie et exponentielle) : b) $\dfrac{2\pi}{3}$
+Q51 B (Trigonométrie et exponentielle) : a) $270^\circ$
+Q52 B (Trigonométrie et exponentielle) : c) $15^\circ$
+Q53 B (Trigonométrie et exponentielle) : d) $\dfrac{\sqrt3}{2}$
+Q54 B (Trigonométrie et exponentielle) : c) $-\dfrac12$
+Q55 B (Trigonométrie et exponentielle) : b) $\dfrac{\sqrt3}{2}$
+Q56 B (Trigonométrie et exponentielle) : c) $1$
+Q57 B (Trigonométrie et exponentielle) : d) $-0{,}3$
+Q58 B (Trigonométrie et exponentielle) : b) $0{,}4$
+Q59 B (Trigonométrie et exponentielle) : b) $\dfrac{3\pi}{4}$
+Q60 B (Trigonométrie et exponentielle) : b) $\dfrac{\pi}{2}$
+Q61 B (Trigonométrie et exponentielle) : a) $\dfrac{12}{13}$
+Q62 B (Trigonométrie et exponentielle) : b) $\dfrac{15}{17}$
+Q63 B (Trigonométrie et exponentielle) : c) $e^{-1}$
+Q64 B (Trigonométrie et exponentielle) : a) $1$
+Q65 B (Produit scalaire et géométrie repérée) : c) $0$
+Q66 B (Produit scalaire et géométrie repérée) : a) $-1$
+Q67 B (Produit scalaire et géométrie repérée) : b) $0$
+Q68 B (Produit scalaire et géométrie repérée) : a) $16$
+Q69 B (Produit scalaire et géométrie repérée) : d) $m=2$
+Q70 B (Produit scalaire et géométrie repérée) : a) $m=\dfrac{5}{2}$
+Q71 B (Produit scalaire et géométrie repérée) : d) $\sqrt{61}$
+Q72 B (Produit scalaire et géométrie repérée) : d) $7$
+Q73 B (Produit scalaire et géométrie repérée) : b) $\begin{pmatrix}-5\\1\end{pmatrix}$
+Q74 B (Produit scalaire et géométrie repérée) : a) $\begin{pmatrix}3\\3\end{pmatrix}$
+Q75 B (Produit scalaire et géométrie repérée) : a) $x+y+3=0$
+Q76 B (Produit scalaire et géométrie repérée) : b) $-2x+5y-5=0$
+Q77 B (Produit scalaire et géométrie repérée) : c) $\Omega(0\,;\,5)\text{, rayon }4$
+Q78 B (Produit scalaire et géométrie repérée) : b) $\Omega(1\,;\,1)\text{, rayon }\sqrt{2}$
+Q79 B (Produit scalaire et géométrie repérée) : a) $2$
+Q80 B (Produit scalaire et géométrie repérée) : c) $30$
+Q81 B (Probabilités conditionnelles et variables aléatoires) : b) $0{,}75$
+Q82 B (Probabilités conditionnelles et variables aléatoires) : b) $0{,}2$
+Q83 B (Probabilités conditionnelles et variables aléatoires) : a) $0{,}2$
+Q84 B (Probabilités conditionnelles et variables aléatoires) : c) $0{,}09$
+Q85 B (Probabilités conditionnelles et variables aléatoires) : d) $0{,}6$
+Q86 B (Probabilités conditionnelles et variables aléatoires) : c) $0{,}42$
+Q87 B (Probabilités conditionnelles et variables aléatoires) : c) oui
+Q88 B (Probabilités conditionnelles et variables aléatoires) : c) non
+Q89 B (Probabilités conditionnelles et variables aléatoires) : a) $1{,}4$
+Q90 B (Probabilités conditionnelles et variables aléatoires) : d) $2{,}3$
+Q91 B (Probabilités conditionnelles et variables aléatoires) : c) $4$
+Q92 B (Probabilités conditionnelles et variables aléatoires) : a) $24$
+Q93 B (Probabilités conditionnelles et variables aléatoires) : c) $\dfrac{3}{10}$
+Q94 B (Probabilités conditionnelles et variables aléatoires) : a) $\dfrac{1}{4}$
+Q95 B (Probabilités conditionnelles et variables aléatoires) : a) $0{,}95$
+Q96 B (Probabilités conditionnelles et variables aléatoires) : c) $0{,}5$
+Q1 C (Suites) : d) $-34$
+Q2 C (Suites) : d) $27$
+Q3 C (Suites) : a) $8$
+Q4 C (Suites) : a) $-96$
+Q5 C (Suites) : b) $7$
+Q6 C (Suites) : c) $11$
+Q7 C (Suites) : a) $120$
+Q8 C (Suites) : c) $465$
+Q9 C (Suites) : a) $-2$
+Q10 C (Suites) : b) $3$
+Q11 C (Suites) : d) $341$
+Q12 C (Suites) : a) $364$
+Q13 C (Suites) : d) décroissante
+Q14 C (Suites) : c) croissante
+Q15 C (Suites) : b) $26$
+Q16 C (Suites) : b) $15$
+Q17 C (Second degré) : b) $0$
+Q18 C (Second degré) : a) $25$
+Q19 C (Second degré) : b) $1$
+Q20 C (Second degré) : c) $0$
+Q21 C (Second degré) : b) $\{2\,;\,6\}$
+Q22 C (Second degré) : a) $\{1\,;\,2\}$
+Q23 C (Second degré) : c) $(x+4)^2-6$
+Q24 C (Second degré) : c) $(x-3)^2-7$
+Q25 C (Second degré) : a) $(2\,;\,-5)$
+Q26 C (Second degré) : d) $(1\,;\,3)$
+Q27 C (Second degré) : c) $]-\infty\,;\,-1]\cup[4\,;\,+\infty[$
+Q28 C (Second degré) : c) $]-\infty\,;\,-5[\cup]-1\,;\,+\infty[$
+Q29 C (Second degré) : b) $-12$
+Q30 C (Second degré) : c) $-\dfrac{5}{2}$
+Q31 C (Second degré) : c) $(x+3)(x+6)$
+Q32 C (Second degré) : d) $2(x-1)(x-3)$
+Q33 C (Dérivation) : c) $2$
+Q34 C (Dérivation) : a) $0$
+Q35 C (Dérivation) : d) $y=6x-10$
+Q36 C (Dérivation) : a) $y=3x-1$
+Q37 C (Dérivation) : a) $11$
+Q38 C (Dérivation) : d) $4$
+Q39 C (Dérivation) : d) $-\dfrac{2}{3}$
+Q40 C (Dérivation) : a) $-4$
+Q41 C (Dérivation) : c) $\dfrac{1}{10}$
+Q42 C (Dérivation) : d) $\dfrac{1}{12}$
+Q43 C (Dérivation) : c) $2$
+Q44 C (Dérivation) : b) $3$
+Q45 C (Dérivation) : b) $]-\infty\,;\,2]$
+Q46 C (Dérivation) : a) $[0{,}5\,;\,+\infty[$
+Q47 C (Dérivation) : d) $-9$
+Q48 C (Dérivation) : b) $7$
+Q49 C (Trigonométrie et exponentielle) : c) $\dfrac{3\pi}{4}$
+Q50 C (Trigonométrie et exponentielle) : b) $\dfrac{5\pi}{6}$
+Q51 C (Trigonométrie et exponentielle) : b) $225^\circ$
+Q52 C (Trigonométrie et exponentielle) : a) $210^\circ$
+Q53 C (Trigonométrie et exponentielle) : c) $-1$
+Q54 C (Trigonométrie et exponentielle) : d) $-\dfrac{\sqrt2}{2}$
+Q55 C (Trigonométrie et exponentielle) : c) $-\dfrac{\sqrt3}{2}$
+Q56 C (Trigonométrie et exponentielle) : c) $0$
+Q57 C (Trigonométrie et exponentielle) : d) $0{,}25$
+Q58 C (Trigonométrie et exponentielle) : b) $-0{,}7$
+Q59 C (Trigonométrie et exponentielle) : b) $-\dfrac{3\pi}{4}$
+Q60 C (Trigonométrie et exponentielle) : c) $\dfrac{\pi}{6}$
+Q61 C (Trigonométrie et exponentielle) : c) $\dfrac{\sqrt{3}}{2}$
+Q62 C (Trigonométrie et exponentielle) : c) $\dfrac{24}{25}$
+Q63 C (Trigonométrie et exponentielle) : a) $e^{-2}$
+Q64 C (Trigonométrie et exponentielle) : d) $e^{7}$
+Q65 C (Produit scalaire et géométrie repérée) : b) $-2$
+Q66 C (Produit scalaire et géométrie repérée) : c) $11$
+Q67 C (Produit scalaire et géométrie repérée) : a) $-6$
+Q68 C (Produit scalaire et géométrie repérée) : c) $5$
+Q69 C (Produit scalaire et géométrie repérée) : a) $m=\dfrac{1}{2}$
+Q70 C (Produit scalaire et géométrie repérée) : d) $m=2$
+Q71 C (Produit scalaire et géométrie repérée) : c) $3\sqrt{3}$
+Q72 C (Produit scalaire et géométrie repérée) : b) $14$
+Q73 C (Produit scalaire et géométrie repérée) : b) $\begin{pmatrix}4\\-1\end{pmatrix}$
+Q74 C (Produit scalaire et géométrie repérée) : a) $\begin{pmatrix}1\\-2\end{pmatrix}$
+Q75 C (Produit scalaire et géométrie repérée) : a) $4x-3y-3=0$
+Q76 C (Produit scalaire et géométrie repérée) : d) $x-2y+2=0$
+Q77 C (Produit scalaire et géométrie repérée) : a) $\Omega(-2\,;\,-6)\text{, rayon }7$
+Q78 C (Produit scalaire et géométrie repérée) : d) $\Omega(4\,;\,0)\text{, rayon }2\sqrt{3}$
+Q79 C (Produit scalaire et géométrie repérée) : c) $37$
+Q80 C (Produit scalaire et géométrie repérée) : d) $34$
+Q81 C (Probabilités conditionnelles et variables aléatoires) : d) $0{,}5$
+Q82 C (Probabilités conditionnelles et variables aléatoires) : d) $0{,}7$
+Q83 C (Probabilités conditionnelles et variables aléatoires) : c) $0{,}63$
+Q84 C (Probabilités conditionnelles et variables aléatoires) : b) $0{,}15$
+Q85 C (Probabilités conditionnelles et variables aléatoires) : b) $0{,}4$
+Q86 C (Probabilités conditionnelles et variables aléatoires) : b) $0{,}48$
+Q87 C (Probabilités conditionnelles et variables aléatoires) : a) oui
+Q88 C (Probabilités conditionnelles et variables aléatoires) : d) non
+Q89 C (Probabilités conditionnelles et variables aléatoires) : a) $2{,}5$
+Q90 C (Probabilités conditionnelles et variables aléatoires) : c) $4$
+Q91 C (Probabilités conditionnelles et variables aléatoires) : a) $0{,}5$
+Q92 C (Probabilités conditionnelles et variables aléatoires) : d) $9$
+Q93 C (Probabilités conditionnelles et variables aléatoires) : a) $\dfrac{3}{4}$
+Q94 C (Probabilités conditionnelles et variables aléatoires) : a) $\dfrac{2}{5}$
+Q95 C (Probabilités conditionnelles et variables aléatoires) : b) $0{,}8$
+Q96 C (Probabilités conditionnelles et variables aléatoires) : a) $0{,}1$
+Q1 D (Suites) : a) $-4$
+Q2 D (Suites) : c) $82$
+Q3 D (Suites) : b) $1$
+Q4 D (Suites) : c) $-48$
+Q5 D (Suites) : c) $8$
+Q6 D (Suites) : c) $3$
+Q7 D (Suites) : b) $820$
+Q8 D (Suites) : d) $78$
+Q9 D (Suites) : a) $\dfrac{3}{2}$
+Q10 D (Suites) : b) $-3$
+Q11 D (Suites) : a) $11\,111$
+Q12 D (Suites) : b) $31$
+Q13 D (Suites) : d) décroissante
+Q14 D (Suites) : d) constante
+Q15 D (Suites) : b) $-2$
+Q16 D (Suites) : c) $11$
+Q17 D (Second degré) : b) $-3$
+Q18 D (Second degré) : d) $64$
+Q19 D (Second degré) : c) $2$
+Q20 D (Second degré) : d) $1$
+Q21 D (Second degré) : b) $\{-4\,;\,4\}$
+Q22 D (Second degré) : d) $\{0\,;\,7\}$
+Q23 D (Second degré) : b) $(x+2)^2+5$
+Q24 D (Second degré) : d) $(x-1)^2-9$
+Q25 D (Second degré) : b) $(3\,;\,1)$
+Q26 D (Second degré) : a) $(-1\,;\,-5)$
+Q27 D (Second degré) : b) $]2\,;\,6[$
+Q28 D (Second degré) : d) $[-4\,;\,4]$
+Q29 D (Second degré) : c) $9$
+Q30 D (Second degré) : c) $4$
+Q31 D (Second degré) : c) $-2(x+4)(x-1)$
+Q32 D (Second degré) : d) $(x+7)(x-7)$
+Q33 D (Dérivation) : d) $-15$
+Q34 D (Dérivation) : c) $24$
+Q35 D (Dérivation) : d) $y=-4x+7$
+Q36 D (Dérivation) : a) $y=3x-10$
+Q37 D (Dérivation) : c) $22$
+Q38 D (Dérivation) : b) $7$
+Q39 D (Dérivation) : d) $-\dfrac{1}{2}$
+Q40 D (Dérivation) : a) $2$
+Q41 D (Dérivation) : a) $\dfrac{1}{16}$
+Q42 D (Dérivation) : d) $\dfrac{1}{20}$
+Q43 D (Dérivation) : a) $2$
+Q44 D (Dérivation) : c) $7$
+Q45 D (Dérivation) : d) $]-\infty\,;\,-3]$
+Q46 D (Dérivation) : a) $[-3\,;\,+\infty[$
+Q47 D (Dérivation) : b) $2$
+Q48 D (Dérivation) : c) $-5$
+Q49 D (Trigonométrie et exponentielle) : c) $\dfrac{\pi}{2}$
+Q50 D (Trigonométrie et exponentielle) : d) $\dfrac{3\pi}{2}$
+Q51 D (Trigonométrie et exponentielle) : a) $20^\circ$
+Q52 D (Trigonométrie et exponentielle) : d) $240^\circ$
+Q53 D (Trigonométrie et exponentielle) : a) $0$
+Q54 D (Trigonométrie et exponentielle) : b) $-\dfrac{\sqrt3}{2}$
+Q55 D (Trigonométrie et exponentielle) : a) $-1$
+Q56 D (Trigonométrie et exponentielle) : b) $\dfrac12$
+Q57 D (Trigonométrie et exponentielle) : b) $-0{,}5$
+Q58 D (Trigonométrie et exponentielle) : b) $0{,}9$
+Q59 D (Trigonométrie et exponentielle) : d) $\dfrac{2\pi}{3}$
+Q60 D (Trigonométrie et exponentielle) : a) $-\dfrac{\pi}{4}$
+Q61 D (Trigonométrie et exponentielle) : d) $\dfrac{5}{13}$
+Q62 D (Trigonométrie et exponentielle) : b) $\dfrac{21}{29}$
+Q63 D (Trigonométrie et exponentielle) : c) $e^{6}$
+Q64 D (Trigonométrie et exponentielle) : c) $e^{4}$
+Q65 D (Produit scalaire et géométrie repérée) : a) $-8$
+Q66 D (Produit scalaire et géométrie repérée) : b) $8$
+Q67 D (Produit scalaire et géométrie repérée) : c) $-9$
+Q68 D (Produit scalaire et géométrie repérée) : b) $7$
+Q69 D (Produit scalaire et géométrie repérée) : b) $m=5$
+Q70 D (Produit scalaire et géométrie repérée) : b) $m=-1$
+Q71 D (Produit scalaire et géométrie repérée) : c) $1$
+Q72 D (Produit scalaire et géométrie repérée) : b) $\sqrt{37}$
+Q73 D (Produit scalaire et géométrie repérée) : c) $\begin{pmatrix}-2\\-5\end{pmatrix}$
+Q74 D (Produit scalaire et géométrie repérée) : a) $\begin{pmatrix}6\\1\end{pmatrix}$
+Q75 D (Produit scalaire et géométrie repérée) : a) $5x+2y-5=0$
+Q76 D (Produit scalaire et géométrie repérée) : d) $-x+3y-4=0$
+Q77 D (Produit scalaire et géométrie repérée) : d) $\Omega(-1\,;\,3)\text{, rayon }1$
+Q78 D (Produit scalaire et géométrie repérée) : c) $\Omega(5\,;\,-5)\text{, rayon }6$
+Q79 D (Produit scalaire et géométrie repérée) : d) $55$
+Q80 D (Produit scalaire et géométrie repérée) : c) $10$
+Q81 D (Probabilités conditionnelles et variables aléatoires) : d) $0{,}8$
+Q82 D (Probabilités conditionnelles et variables aléatoires) : d) $0{,}9$
+Q83 D (Probabilités conditionnelles et variables aléatoires) : c) $0{,}25$
+Q84 D (Probabilités conditionnelles et variables aléatoires) : a) $0{,}27$
+Q85 D (Probabilités conditionnelles et variables aléatoires) : a) $0{,}14$
+Q86 D (Probabilités conditionnelles et variables aléatoires) : c) $0{,}7$
+Q87 D (Probabilités conditionnelles et variables aléatoires) : d) oui
+Q88 D (Probabilités conditionnelles et variables aléatoires) : c) non
+Q89 D (Probabilités conditionnelles et variables aléatoires) : c) $0$
+Q90 D (Probabilités conditionnelles et variables aléatoires) : b) $2{,}2$
+Q91 D (Probabilités conditionnelles et variables aléatoires) : b) $4$
+Q92 D (Probabilités conditionnelles et variables aléatoires) : b) $9$
+Q93 D (Probabilités conditionnelles et variables aléatoires) : a) $\dfrac{1}{4}$
+Q94 D (Probabilités conditionnelles et variables aléatoires) : a) $\dfrac{1}{2}$
+Q95 D (Probabilités conditionnelles et variables aléatoires) : a) $0{,}6$
+Q96 D (Probabilités conditionnelles et variables aléatoires) : b) $0{,}7$
