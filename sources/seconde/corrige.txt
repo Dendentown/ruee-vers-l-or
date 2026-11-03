@@ -1,0 +1,384 @@
+Q1 (Nombres et calculs) : a) $5\sqrt{2}$
+Q2 (Nombres et calculs) : b) $2\sqrt{3}$
+Q3 (Nombres et calculs) : d) $5\sqrt{3}$
+Q4 (Nombres et calculs) : d) $5\sqrt{2}$
+Q5 (Nombres et calculs) : d) $x^2+6x+9$
+Q6 (Nombres et calculs) : c) $x^2-10x+25$
+Q7 (Nombres et calculs) : d) $(x-3)(x+3)$
+Q8 (Nombres et calculs) : d) $(x-5)(x+5)$
+Q9 (Nombres et calculs) : c) $(x+3)^2$
+Q10 (Nombres et calculs) : d) $(x-4)^2$
+Q11 (Nombres et calculs) : a) $-2\leqslantx<5$
+Q12 (Nombres et calculs) : b) $x>3$
+Q13 (Nombres et calculs) : c) $x\in[1\,;\,5]$
+Q14 (Nombres et calculs) : c) $x\in[-5\,;\,3]$
+Q15 (Nombres et calculs) : d) $2^{-2}$
+Q16 (Nombres et calculs) : c) $3^{-1}$
+Q17 (Évolutions et statistiques) : b) $1{,}2$
+Q18 (Évolutions et statistiques) : d) $0{,}85$
+Q19 (Évolutions et statistiques) : d) $100~\text{€}$
+Q20 (Évolutions et statistiques) : b) $200~\text{€}$
+Q21 (Évolutions et statistiques) : a) $+30\,\%$
+Q22 (Évolutions et statistiques) : d) $-25\,\%$
+Q23 (Évolutions et statistiques) : b) $-4\,\%$
+Q24 (Évolutions et statistiques) : b) $+21\,\%$
+Q25 (Évolutions et statistiques) : d) une hausse de $25\,\%$
+Q26 (Évolutions et statistiques) : b) une hausse de $100\,\%$
+Q27 (Évolutions et statistiques) : b) $10\,\%$
+Q28 (Évolutions et statistiques) : a) $30\,\%$
+Q29 (Évolutions et statistiques) : b) $12{,}1$
+Q30 (Évolutions et statistiques) : c) $13{,}2$
+Q31 (Évolutions et statistiques) : a) $5$
+Q32 (Évolutions et statistiques) : d) $4$
+Q33 (Fonctions) : a) $15$
+Q34 (Fonctions) : b) $16$
+Q35 (Fonctions) : d) $4$
+Q36 (Fonctions) : d) $2$
+Q37 (Fonctions) : d) $3$
+Q38 (Fonctions) : b) $-2$
+Q39 (Fonctions) : d) $y=2x+3$
+Q40 (Fonctions) : a) $y=-3x+7$
+Q41 (Fonctions) : b) $x>3$
+Q42 (Fonctions) : b) $x<4$
+Q43 (Fonctions) : c) $\{-3\,;\,3\}$
+Q44 (Fonctions) : d) $\{-5\,;\,5\}$
+Q45 (Fonctions) : d) décroissante sur $\mathbb{R}$
+Q46 (Fonctions) : c) croissante sur $\mathbb{R}$
+Q47 (Fonctions) : d) $x\leqslant4$
+Q48 (Fonctions) : a) $x\geqslant3$
+Q49 (Vecteurs et repérage) : b) $(3\,;\,-5)$
+Q50 (Vecteurs et repérage) : a) $(5\,;\,-4)$
+Q51 (Vecteurs et repérage) : b) $(3\,;\,-1)$
+Q52 (Vecteurs et repérage) : d) $(1\,;\,3)$
+Q53 (Vecteurs et repérage) : a) $5$
+Q54 (Vecteurs et repérage) : d) $13$
+Q55 (Vecteurs et repérage) : d) $k=6$
+Q56 (Vecteurs et repérage) : c) $k=-10$
+Q57 (Vecteurs et repérage) : b) $(5\,;\,3)$
+Q58 (Vecteurs et repérage) : d) $(2\,;\,-7)$
+Q59 (Vecteurs et repérage) : d) $-10$
+Q60 (Vecteurs et repérage) : d) $-7$
+Q61 (Vecteurs et repérage) : c) $(2\,;\,4)$
+Q62 (Vecteurs et repérage) : b) $(-3\,;\,3)$
+Q63 (Vecteurs et repérage) : c) $(3\,;\,1)$
+Q64 (Vecteurs et repérage) : b) $(2\,;\,-1)$
+Q65 (Arithmétique et ensembles de nombres) : c) $97$
+Q66 (Arithmétique et ensembles de nombres) : c) $53$
+Q67 (Arithmétique et ensembles de nombres) : a) $2^{3}\times3^{2}\times5$
+Q68 (Arithmétique et ensembles de nombres) : c) $2^{2}\times3\times7$
+Q69 (Arithmétique et ensembles de nombres) : a) $\mathbb{Z}$
+Q70 (Arithmétique et ensembles de nombres) : b) $\mathbb{D}$
+Q71 (Arithmétique et ensembles de nombres) : a) $\dfrac{2}{3}$
+Q72 (Arithmétique et ensembles de nombres) : d) $\dfrac{3}{5}$
+Q73 (Arithmétique et ensembles de nombres) : c) il est toujours pair
+Q74 (Arithmétique et ensembles de nombres) : b) il est toujours impair
+Q75 (Arithmétique et ensembles de nombres) : a) $14$
+Q76 (Arithmétique et ensembles de nombres) : b) $22$
+Q77 (Arithmétique et ensembles de nombres) : c) $9$
+Q78 (Arithmétique et ensembles de nombres) : c) $8$
+Q79 (Arithmétique et ensembles de nombres) : b) $[1\,;\,5]$
+Q80 (Arithmétique et ensembles de nombres) : c) $[2\,;\,4[$
+Q81 (Probabilités) : d) $0{,}7$
+Q82 (Probabilités) : a) $0{,}6$
+Q83 (Probabilités) : a) $0{,}2$
+Q84 (Probabilités) : c) $0{,}1$
+Q85 (Probabilités) : d) $\dfrac{5}{8}$
+Q86 (Probabilités) : b) $\dfrac{7}{9}$
+Q87 (Probabilités) : a) $\dfrac{2}{3}$
+Q88 (Probabilités) : c) $\dfrac{1}{6}$
+Q89 (Probabilités) : b) $\dfrac{1}{4}$
+Q90 (Probabilités) : b) $\dfrac{1}{8}$
+Q91 (Probabilités) : a) $0{,}35$
+Q92 (Probabilités) : b) $0{,}2$
+Q93 (Probabilités) : b) $\dfrac{9}{25}$
+Q94 (Probabilités) : a) $\dfrac{1}{9}$
+Q95 (Probabilités) : d) $0{,}75$
+Q96 (Probabilités) : b) $\dfrac{7}{12}$
+Q1 B (Nombres et calculs) : d) $6\sqrt{2}$
+Q2 B (Nombres et calculs) : a) $3\sqrt{2}$
+Q3 B (Nombres et calculs) : c) $5\sqrt{5}$
+Q4 B (Nombres et calculs) : b) $9\sqrt{2}$
+Q5 B (Nombres et calculs) : a) $4x^2+4x+1$
+Q6 B (Nombres et calculs) : d) $9x^2-12x+4$
+Q7 B (Nombres et calculs) : a) $(2x-1)(2x+1)$
+Q8 B (Nombres et calculs) : b) $(3x-4)(3x+4)$
+Q9 B (Nombres et calculs) : d) $(3x-2)^2$
+Q10 B (Nombres et calculs) : d) $(2x+5)^2$
+Q11 B (Nombres et calculs) : b) $x\leqslant4$
+Q12 B (Nombres et calculs) : c) $0\leqslantx\leqslant1$
+Q13 B (Nombres et calculs) : a) $x\in[-5\,;\,5]$
+Q14 B (Nombres et calculs) : c) $x\in[-5\,;\,9]$
+Q15 B (Nombres et calculs) : d) $5^{3}$
+Q16 B (Nombres et calculs) : a) $10^{2}$
+Q17 B (Évolutions et statistiques) : c) $1{,}05$
+Q18 B (Évolutions et statistiques) : c) $0{,}7$
+Q19 B (Évolutions et statistiques) : d) $1\,380~\text{€}$
+Q20 B (Évolutions et statistiques) : d) $40{,}5~\text{€}$
+Q21 B (Évolutions et statistiques) : a) $+15\,\%$
+Q22 B (Évolutions et statistiques) : a) $+25\,\%$
+Q23 B (Évolutions et statistiques) : d) $-25\,\%$
+Q24 B (Évolutions et statistiques) : d) $+17\,\%$
+Q25 B (Évolutions et statistiques) : a) une baisse de $20\,\%$
+Q26 B (Évolutions et statistiques) : d) une hausse de $150\,\%$
+Q27 B (Évolutions et statistiques) : b) $6\,\%$
+Q28 B (Évolutions et statistiques) : d) $12\,\%$
+Q29 B (Évolutions et statistiques) : a) $11$
+Q30 B (Évolutions et statistiques) : a) $1{,}1$
+Q31 B (Évolutions et statistiques) : a) $13$
+Q32 B (Évolutions et statistiques) : b) $1$
+Q33 B (Fonctions) : d) $-9$
+Q34 B (Fonctions) : a) $5$
+Q35 B (Fonctions) : d) $3$
+Q36 B (Fonctions) : c) $-2$
+Q37 B (Fonctions) : d) $\dfrac{1}{2}$
+Q38 B (Fonctions) : c) $\dfrac{5}{2}$
+Q39 B (Fonctions) : b) $y=\dfrac{1}{2}x-2$
+Q40 B (Fonctions) : a) $y=4x+2$
+Q41 B (Fonctions) : d) $x>-2$
+Q42 B (Fonctions) : b) $x<-2$
+Q43 B (Fonctions) : a) aucune solution
+Q44 B (Fonctions) : c) $\{0\}$
+Q45 B (Fonctions) : d) constante sur $\mathbb{R}$
+Q46 B (Fonctions) : a) décroissante sur $\mathbb{R}$
+Q47 B (Fonctions) : a) $x\geqslant4$
+Q48 B (Fonctions) : c) $x\leqslant3$
+Q49 B (Vecteurs et repérage) : c) $(-3\,;\,6)$
+Q50 B (Vecteurs et repérage) : b) $(-4\,;\,6)$
+Q51 B (Vecteurs et repérage) : a) $(-3\,;\,2)$
+Q52 B (Vecteurs et repérage) : c) $(5{,}5\,;\,1)$
+Q53 B (Vecteurs et repérage) : d) $\sqrt{13}$
+Q54 B (Vecteurs et repérage) : c) $10$
+Q55 B (Vecteurs et repérage) : b) $k=-2$
+Q56 B (Vecteurs et repérage) : c) $k=-2$
+Q57 B (Vecteurs et repérage) : d) $(-6\,;\,18)$
+Q58 B (Vecteurs et repérage) : b) $(-4\,;\,6)$
+Q59 B (Vecteurs et repérage) : b) $0$
+Q60 B (Vecteurs et repérage) : b) $22$
+Q61 B (Vecteurs et repérage) : a) $(1\,;\,3)$
+Q62 B (Vecteurs et repérage) : b) $(1\,;\,0)$
+Q63 B (Vecteurs et repérage) : c) $(-1\,;\,2)$
+Q64 B (Vecteurs et repérage) : a) $(4\,;\,-3)$
+Q65 B (Arithmétique et ensembles de nombres) : c) $89$
+Q66 B (Arithmétique et ensembles de nombres) : a) $61$
+Q67 B (Arithmétique et ensembles de nombres) : b) $2\times3\times5^{2}$
+Q68 B (Arithmétique et ensembles de nombres) : a) $2^{3}\times5^{3}$
+Q69 B (Arithmétique et ensembles de nombres) : d) $\mathbb{Q}$
+Q70 B (Arithmétique et ensembles de nombres) : a) $\mathbb{R}$
+Q71 B (Arithmétique et ensembles de nombres) : d) $\dfrac{5}{12}$
+Q72 B (Arithmétique et ensembles de nombres) : d) $\dfrac{7}{5}$
+Q73 B (Arithmétique et ensembles de nombres) : b) il est toujours pair
+Q74 B (Arithmétique et ensembles de nombres) : a) il est toujours impair
+Q75 B (Arithmétique et ensembles de nombres) : a) $12$
+Q76 B (Arithmétique et ensembles de nombres) : b) $14$
+Q77 B (Arithmétique et ensembles de nombres) : c) $3$
+Q78 B (Arithmétique et ensembles de nombres) : b) $12$
+Q79 B (Arithmétique et ensembles de nombres) : a) $[-1\,;\,3]$
+Q80 B (Arithmétique et ensembles de nombres) : c) $]0\,;\,2]$
+Q81 B (Probabilités) : b) $0{,}65$
+Q82 B (Probabilités) : b) $0{,}44$
+Q83 B (Probabilités) : a) $0{,}15$
+Q84 B (Probabilités) : c) $0{,}3$
+Q85 B (Probabilités) : d) $\dfrac{5}{12}$
+Q86 B (Probabilités) : c) $\dfrac{5}{6}$
+Q87 B (Probabilités) : c) $\dfrac{1}{2}$
+Q88 B (Probabilités) : c) $\dfrac{2}{3}$
+Q89 B (Probabilités) : a) $\dfrac{3}{4}$
+Q90 B (Probabilités) : d) $\dfrac{7}{8}$
+Q91 B (Probabilités) : c) $0{,}28$
+Q92 B (Probabilités) : a) $0{,}2$
+Q93 B (Probabilités) : c) $\dfrac{4}{25}$
+Q94 B (Probabilités) : a) $\dfrac{1}{16}$
+Q95 B (Probabilités) : a) $0{,}75$
+Q96 B (Probabilités) : c) $\dfrac{17}{30}$
+Q1 C (Nombres et calculs) : d) $3\sqrt{5}$
+Q2 C (Nombres et calculs) : d) $7\sqrt{2}$
+Q3 C (Nombres et calculs) : a) $8\sqrt{3}$
+Q4 C (Nombres et calculs) : a) $9\sqrt{2}$
+Q5 C (Nombres et calculs) : b) $x^2+14x+49$
+Q6 C (Nombres et calculs) : c) $4x^2-20x+25$
+Q7 C (Nombres et calculs) : a) $(x-7)(x+7)$
+Q8 C (Nombres et calculs) : c) $(5x-2)(5x+2)$
+Q9 C (Nombres et calculs) : a) $(5x-1)^2$
+Q10 C (Nombres et calculs) : b) $(4x+3)^2$
+Q11 C (Nombres et calculs) : d) $-1<x\leqslant7$
+Q12 C (Nombres et calculs) : a) $x\geqslant-6$
+Q13 C (Nombres et calculs) : d) $x\in[-5\,;\,-3]$
+Q14 C (Nombres et calculs) : c) $x\in[3\,;\,9]$
+Q15 C (Nombres et calculs) : b) $7^{-2}$
+Q16 C (Nombres et calculs) : b) $2^{3}$
+Q17 C (Évolutions et statistiques) : b) $2{,}5$
+Q18 C (Évolutions et statistiques) : a) $0{,}98$
+Q19 C (Évolutions et statistiques) : b) $648~\text{€}$
+Q20 C (Évolutions et statistiques) : c) $2\,275~\text{€}$
+Q21 C (Évolutions et statistiques) : b) $-20\,\%$
+Q22 C (Évolutions et statistiques) : a) $+12\,\%$
+Q23 C (Évolutions et statistiques) : c) $-36\,\%$
+Q24 C (Évolutions et statistiques) : c) $0\,\%$
+Q25 C (Évolutions et statistiques) : a) une baisse de $50\,\%$
+Q26 C (Évolutions et statistiques) : d) une hausse de $60\,\%$
+Q27 C (Évolutions et statistiques) : c) $15\,\%$
+Q28 C (Évolutions et statistiques) : c) $9\,\%$
+Q29 C (Évolutions et statistiques) : b) $13$
+Q30 C (Évolutions et statistiques) : c) $2{,}1$
+Q31 C (Évolutions et statistiques) : c) $10$
+Q32 C (Évolutions et statistiques) : d) $6$
+Q33 C (Fonctions) : c) $1$
+Q34 C (Fonctions) : a) $4$
+Q35 C (Fonctions) : d) $-3$
+Q36 C (Fonctions) : a) $0$
+Q37 C (Fonctions) : a) $2$
+Q38 C (Fonctions) : d) $-\dfrac{3}{2}$
+Q39 C (Fonctions) : d) $y=-x+6$
+Q40 C (Fonctions) : a) $y=5x-4$
+Q41 C (Fonctions) : c) $x>7$
+Q42 C (Fonctions) : d) $x<\dfrac{5}{2}$
+Q43 C (Fonctions) : c) $\{-\sqrt{2}\,;\,\sqrt{2}\}$
+Q44 C (Fonctions) : b) $\{-7\,;\,7\}$
+Q45 C (Fonctions) : b) croissante sur $\mathbb{R}$
+Q46 C (Fonctions) : a) croissante sur $\mathbb{R}$
+Q47 C (Fonctions) : d) $x\geqslant3$
+Q48 C (Fonctions) : b) $x\leqslant-3$
+Q49 C (Vecteurs et repérage) : c) $(6\,;\,-4)$
+Q50 C (Vecteurs et repérage) : b) $(-4\,;\,5)$
+Q51 C (Vecteurs et repérage) : b) $(-2\,;\,2)$
+Q52 C (Vecteurs et repérage) : a) $(-1\,;\,5)$
+Q53 C (Vecteurs et repérage) : c) $2\sqrt{5}$
+Q54 C (Vecteurs et repérage) : d) $10$
+Q55 C (Vecteurs et repérage) : c) $k=15$
+Q56 C (Vecteurs et repérage) : c) $k=-\dfrac{15}{2}$
+Q57 C (Vecteurs et repérage) : d) $(0\,;\,-17)$
+Q58 C (Vecteurs et repérage) : b) $(15\,;\,-2)$
+Q59 C (Vecteurs et repérage) : b) $-6$
+Q60 C (Vecteurs et repérage) : c) $13$
+Q61 C (Vecteurs et repérage) : c) $(-1\,;\,3)$
+Q62 C (Vecteurs et repérage) : c) $(5\,;\,5)$
+Q63 C (Vecteurs et repérage) : a) $(5\,;\,2)$
+Q64 C (Vecteurs et repérage) : d) $(1\,;\,3)$
+Q65 C (Arithmétique et ensembles de nombres) : b) $101$
+Q66 C (Arithmétique et ensembles de nombres) : c) $73$
+Q67 C (Arithmétique et ensembles de nombres) : a) $2^{2}\times3^{2}\times7$
+Q68 C (Arithmétique et ensembles de nombres) : c) $2\times3^{2}\times5$
+Q69 C (Arithmétique et ensembles de nombres) : a) $\mathbb{N}$
+Q70 C (Arithmétique et ensembles de nombres) : d) $\mathbb{D}$
+Q71 C (Arithmétique et ensembles de nombres) : c) $\dfrac{3}{10}$
+Q72 C (Arithmétique et ensembles de nombres) : b) $\dfrac{5}{7}$
+Q73 C (Arithmétique et ensembles de nombres) : b) il est toujours pair
+Q74 C (Arithmétique et ensembles de nombres) : a) il est toujours impair
+Q75 C (Arithmétique et ensembles de nombres) : a) $45$
+Q76 C (Arithmétique et ensembles de nombres) : d) $24$
+Q77 C (Arithmétique et ensembles de nombres) : a) $2$
+Q78 C (Arithmétique et ensembles de nombres) : d) $7$
+Q79 C (Arithmétique et ensembles de nombres) : c) $[3\,;\,4]$
+Q80 C (Arithmétique et ensembles de nombres) : d) $]-2\,;\,1]$
+Q81 C (Probabilités) : d) $0{,}8$
+Q82 C (Probabilités) : d) $0{,}75$
+Q83 C (Probabilités) : c) $0{,}05$
+Q84 C (Probabilités) : b) $0{,}35$
+Q85 C (Probabilités) : b) $\dfrac{11}{15}$
+Q86 C (Probabilités) : b) $\dfrac{6}{11}$
+Q87 C (Probabilités) : a) $\dfrac{5}{6}$
+Q88 C (Probabilités) : d) $\dfrac{1}{3}$
+Q89 C (Probabilités) : a) $\dfrac{1}{16}$
+Q90 C (Probabilités) : c) $\dfrac{15}{16}$
+Q91 C (Probabilités) : a) $0{,}25$
+Q92 C (Probabilités) : d) $0{,}3$
+Q93 C (Probabilités) : a) $\dfrac{25}{64}$
+Q94 C (Probabilités) : a) $\dfrac{9}{100}$
+Q95 C (Probabilités) : b) $0{,}58$
+Q96 C (Probabilités) : a) $\dfrac{7}{8}$
+Q1 D (Nombres et calculs) : a) $10\sqrt{2}$
+Q2 D (Nombres et calculs) : c) $5\sqrt{3}$
+Q3 D (Nombres et calculs) : b) $5\sqrt{7}$
+Q4 D (Nombres et calculs) : c) $6\sqrt{3}$
+Q5 D (Nombres et calculs) : c) $16x^2+8x+1$
+Q6 D (Nombres et calculs) : c) $9x^2+24x+16$
+Q7 D (Nombres et calculs) : b) $(4x-3)(4x+3)$
+Q8 D (Nombres et calculs) : d) $(x-8)(x+8)$
+Q9 D (Nombres et calculs) : a) $(x-6)^2$
+Q10 D (Nombres et calculs) : b) $(3x+5)^2$
+Q11 D (Nombres et calculs) : a) $x<-3$
+Q12 D (Nombres et calculs) : b) $2<x<9$
+Q13 D (Nombres et calculs) : d) $x\in[-4\,;\,0]$
+Q14 D (Nombres et calculs) : d) $x\in[-5\,;\,7]$
+Q15 D (Nombres et calculs) : b) $3^{1}$
+Q16 D (Nombres et calculs) : c) $10^{3}$
+Q17 D (Évolutions et statistiques) : b) $1{,}005$
+Q18 D (Évolutions et statistiques) : d) $0{,}55$
+Q19 D (Évolutions et statistiques) : c) $135~\text{€}$
+Q20 D (Évolutions et statistiques) : d) $7{,}5~\text{€}$
+Q21 D (Évolutions et statistiques) : b) $+10\,\%$
+Q22 D (Évolutions et statistiques) : d) $-24\,\%$
+Q23 D (Évolutions et statistiques) : b) $+80\,\%$
+Q24 D (Évolutions et statistiques) : d) $+8\,\%$
+Q25 D (Évolutions et statistiques) : b) une baisse de $75\,\%$
+Q26 D (Évolutions et statistiques) : a) une hausse de $400\,\%$
+Q27 D (Évolutions et statistiques) : b) $21\,\%$
+Q28 D (Évolutions et statistiques) : d) $22\,\%$
+Q29 D (Évolutions et statistiques) : c) $13$
+Q30 D (Évolutions et statistiques) : c) $10{,}2$
+Q31 D (Évolutions et statistiques) : c) $25$
+Q32 D (Évolutions et statistiques) : d) $9$
+Q33 D (Fonctions) : d) $1$
+Q34 D (Fonctions) : c) $9$
+Q35 D (Fonctions) : d) $\dfrac{1}{2}$
+Q36 D (Fonctions) : a) $-2$
+Q37 D (Fonctions) : c) $3$
+Q38 D (Fonctions) : b) $0$
+Q39 D (Fonctions) : d) $y=-2x-3$
+Q40 D (Fonctions) : a) $y=3x-7$
+Q41 D (Fonctions) : a) $x>-\dfrac{1}{3}$
+Q42 D (Fonctions) : d) $x<-3$
+Q43 D (Fonctions) : a) aucune solution
+Q44 D (Fonctions) : c) $\{-2\sqrt{3}\,;\,2\sqrt{3}\}$
+Q45 D (Fonctions) : d) décroissante sur $\mathbb{R}$
+Q46 D (Fonctions) : a) constante sur $\mathbb{R}$
+Q47 D (Fonctions) : b) $x\geqslant2$
+Q48 D (Fonctions) : c) $x\leqslant2$
+Q49 D (Vecteurs et repérage) : c) $(5\,;\,5)$
+Q50 D (Vecteurs et repérage) : d) $(4\,;\,5)$
+Q51 D (Vecteurs et repérage) : a) $(5\,;\,1)$
+Q52 D (Vecteurs et repérage) : d) $(2{,}5\,;\,2{,}5)$
+Q53 D (Vecteurs et repérage) : a) $\sqrt{5}$
+Q54 D (Vecteurs et repérage) : b) $13$
+Q55 D (Vecteurs et repérage) : a) $k=3$
+Q56 D (Vecteurs et repérage) : b) $k=21$
+Q57 D (Vecteurs et repérage) : b) $(8\,;\,0)$
+Q58 D (Vecteurs et repérage) : b) $(3\,;\,-6)$
+Q59 D (Vecteurs et repérage) : d) $0$
+Q60 D (Vecteurs et repérage) : a) $-20$
+Q61 D (Vecteurs et repérage) : d) $(0\,;\,-2)$
+Q62 D (Vecteurs et repérage) : b) $(2\,;\,4)$
+Q63 D (Vecteurs et repérage) : c) $(-2\,;\,1)$
+Q64 D (Vecteurs et repérage) : c) $(3\,;\,1)$
+Q65 D (Arithmétique et ensembles de nombres) : a) $113$
+Q66 D (Arithmétique et ensembles de nombres) : b) $67$
+Q67 D (Arithmétique et ensembles de nombres) : c) $2^{2}\times7^{2}$
+Q68 D (Arithmétique et ensembles de nombres) : b) $2\times3\times5\times11$
+Q69 D (Arithmétique et ensembles de nombres) : b) $\mathbb{Q}$
+Q70 D (Arithmétique et ensembles de nombres) : b) $\mathbb{R}$
+Q71 D (Arithmétique et ensembles de nombres) : c) $\dfrac{2}{9}$
+Q72 D (Arithmétique et ensembles de nombres) : b) $\dfrac{4}{3}$
+Q73 D (Arithmétique et ensembles de nombres) : c) il est toujours pair
+Q74 D (Arithmétique et ensembles de nombres) : a) il est toujours impair
+Q75 D (Arithmétique et ensembles de nombres) : a) $23$
+Q76 D (Arithmétique et ensembles de nombres) : d) $166$
+Q77 D (Arithmétique et ensembles de nombres) : d) $6$
+Q78 D (Arithmétique et ensembles de nombres) : c) $9$
+Q79 D (Arithmétique et ensembles de nombres) : d) $]5\,;\,10]$
+Q80 D (Arithmétique et ensembles de nombres) : c) $[2\,;\,5[$
+Q81 D (Probabilités) : d) $0{,}55$
+Q82 D (Probabilités) : d) $0{,}65$
+Q83 D (Probabilités) : c) $0{,}15$
+Q84 D (Probabilités) : a) $0{,}1$
+Q85 D (Probabilités) : a) $\dfrac{11}{20}$
+Q86 D (Probabilités) : c) $\dfrac{3}{16}$
+Q87 D (Probabilités) : d) $\dfrac{1}{3}$
+Q88 D (Probabilités) : c) $\dfrac{1}{2}$
+Q89 D (Probabilités) : c) $\dfrac{1}{32}$
+Q90 D (Probabilités) : b) $\dfrac{31}{32}$
+Q91 D (Probabilités) : b) $0{,}1$
+Q92 D (Probabilités) : b) $0{,}2$
+Q93 D (Probabilités) : a) $\dfrac{4}{9}$
+Q94 D (Probabilités) : a) $\dfrac{49}{100}$
+Q95 D (Probabilités) : a) $0{,}52$
+Q96 D (Probabilités) : b) $\dfrac{5}{9}$

@@ -627,7 +627,7 @@ for n in sorted(Q):
     num = n if n <= HALF else f"{(n - 1) % HALF + 1} {'ABCD'[(n - 1) // HALF]}"
     shown = [o.replace("%", r"\%").replace(r"\\%", r"\%") for o in shown]
     ob = lambda i: (rf"\begin{{tcolorbox}}[enhanced,nobeforeafter,width=7.1cm,height=2.1cm,valign=center,colback=c{th}!6,colframe=c{th},arc=2.5mm,boxrule=0.9pt,left=3mm]"
-                    rf"{{\Large\bfseries\color{{c{th}}}{'abcd'[i]})}}\quad\begin{{minipage}}[c]{{5.6cm}}\raggedright{'\\Large' if len(shown[i]) < 26 else '\\large'} {shown[i]}\end{{minipage}}\end{{tcolorbox}}")
+                    rf"{{\Large\bfseries\color{{c{th}}}{'abcd'[i]})}}\quad\begin{{minipage}}[c]{{5.3cm}}\raggedright{'\\Large' if len(shown[i]) < 26 else '\\large'} {shown[i]}\end{{minipage}}\end{{tcolorbox}}")
     tex.append(rf"""\begin{{tcolorbox}}[enhanced,width=16cm,height=14cm,colback=white,colframe=c{th},boxrule=2pt,arc=0mm,
 left=6mm,right=6mm,top=0mm,bottom=4mm,sharp corners,
 overlay={{\fill[c{th}] (frame.north west) rectangle ([yshift=-1.25cm]frame.north east);
