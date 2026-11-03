@@ -98,9 +98,19 @@
     } else { L = D.LEVELS[key] || D.LEVELS["5e"]; key = D.LEVELS[key] ? key : "5e"; }
     const ANSWER = {}, THEME_OF = {}, HINT_OF = {};
     L.qs.forEach(([n, th, l, h]) => { ANSWER[n] = l; THEME_OF[n] = th; HINT_OF[n] = typeof h === "string" ? h : (L.hints || [])[h] || ""; });
-    return Object.assign({}, L, { key, ANSWER, THEME_OF, HINT_OF,
-      isB: n => n >= 10000 ? n % 10000 > gidLevel(n).half : n > L.half,
-      twin: n => n >= 10000 ? Math.floor(n / 10000) * 10000 + twinLocal(gidLevel(n).half, n % 10000) : twinLocal(L.half, n) });
+    // 4 series A, B, C, D of the same exercises: question n, n + half, n + 2 half, n + 3 half
+    const halfOf = n => n >= 10000 ? gidLevel(n).half : L.half;
+    const loc = n => n >= 10000 ? n % 10000 : n, off = n => n - loc(n);
+    const serieOf = n => Math.floor((loc(n) - 1) / halfOf(n));
+    const base = n => off(n) + (loc(n) - 1) % halfOf(n) + 1;
+    const variants = n => [0, 1, 2, 3].map(s => base(n) + s * halfOf(n)).filter(v => ANSWER[v] !== undefined);
+    // the same exercise with other values: a variant not seen yet if possible (C and D are used for the events)
+    const twin = (n, seen) => {
+      const o = variants(n).filter(v => v !== n), fresh = o.filter(v => !(seen && seen.has(v)));
+      return fresh.length ? pick(fresh) : o.length ? pick(o) : n;
+    };
+    return Object.assign({}, L, { key, ANSWER, THEME_OF, HINT_OF, base, variants, twin,
+      isB: n => serieOf(n) === 1, inAB: n => serieOf(n) <= 1 });
   }
 
   /* ---------- inventory: lampe (hint), pioche (+50 %), tamis (2 wrong answers removed) ---------- */
@@ -589,12 +599,14 @@
 
     /* ----- questions ----- */
     function pool() {
-      const inS = n => H.series === "AB" || (H.series === "B" ? L.isB(n) : !L.isB(n));
+      const inS = n => L.inAB(n) && (H.series === "AB" || (H.series === "B" ? L.isB(n) : !L.isB(n))); // normal questions: series A and B
       return L.qs.filter(([n, th]) => H.themes[th] && inS(n)).map(x => x[0]);
     }
     function makeDeck() { return balancedDeck(pool(), H.nQ); }
     const solvedIn = (o, th) => [...new Set(o.solved)].filter(n => L.THEME_OF[n] === th);
-    const missedOf = o => { const sv = new Set(o.solved); return [...new Set(o.failed)].filter(n => !sv.has(n) && !sv.has(L.twin(n))); };
+    // missed questions whose exercise was never solved since, in any series
+    const missedOf = o => { const sv = new Set(o.solved.map(L.base)); return [...new Set(o.failed)].filter(n => !sv.has(L.base(n))); };
+    const seenOf = o => new Set([...o.deck, ...o.solved, ...o.failed, ...(o.cur ? [o.cur.q] : []), ...(o.pending ? [o.pending.q] : [])]);
     // a partner must still have questions to ask for, so that the pending one is served
     // a partner must not have been picked for one of his last 2 questions (no flood of extra questions)
     const canPartner = (o, p) => o !== p && !o.pending && o.k < nOf(o) && o.online && (o.partnerAt == null || o.k - o.partnerAt >= 2);
@@ -621,9 +633,9 @@
       const [o, th] = pick(opts);
       const lid = newId(), thLabel = L.themes.find(t => t.id === th).label;
       H.links[lid] = { id: lid, type: "duel", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
-      Object.assign(cur, { q: L.twin(pick(solvedIn(p, th))), kind: "duel", time: DTIME, stake: 2, link: lid, partner: o.name, thLabel });
+      Object.assign(cur, { q: L.twin(pick(solvedIn(p, th)), seenOf(p)), kind: "duel", time: DTIME, stake: 2, link: lid, partner: o.name, thLabel });
       o.partnerAt = o.k;
-      o.pending = { q: L.twin(pick(solvedIn(o, th))), kind: "duel", time: DTIME, stake: 2, link: lid, partner: p.name, thLabel, extra: true };
+      o.pending = { q: L.twin(pick(solvedIn(o, th)), seenOf(o)), kind: "duel", time: DTIME, stake: 2, link: lid, partner: p.name, thLabel, extra: true };
       feed(`Castagne : ${p.name} défie ${o.name} (${thLabel}).`, "duel");
       toast(o.pid, `${p.name} te défie en castagne ! Elle arrive à ta prochaine question.`);
       return true;
@@ -635,9 +647,9 @@
       if (!partners.length) return false;
       const o = pick(partners), lid = newId();
       H.links[lid] = { id: lid, type: "rescue", a: p.pid, b: o.pid, ra: null, rb: null, done: false };
-      Object.assign(cur, { q: L.twin(pick(mine)), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: o.name });
+      Object.assign(cur, { q: L.twin(pick(mine), seenOf(p)), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: o.name });
       o.partnerAt = o.k;
-      o.pending = { q: L.twin(pick(missedOf(o))), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: p.name, extra: true };
+      o.pending = { q: L.twin(pick(missedOf(o)), seenOf(o)), kind: "rescue", time: RTIME, stake: 2, link: lid, partner: p.name, extra: true };
       feed(`Sauvetage : ${p.name} et ${o.name} font équipe.`, "rescue");
       toast(o.pid, `Sauvetage avec ${p.name} ! Il arrive à ta prochaine question.`);
       return true;
@@ -645,7 +657,7 @@
     function makeFilon(p, cur) {
       const missed = missedOf(p);
       let q;
-      if (missed.length) q = L.twin(pick(missed));
+      if (missed.length) q = L.twin(pick(missed), seenOf(p));
       else { const used = new Set(p.deck); const pl = pool().filter(n => !used.has(n)); q = pl.length ? pick(pl) : cur.q; }
       const fid = newId();
       H.filons = H.filons || {};

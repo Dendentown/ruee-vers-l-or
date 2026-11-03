@@ -94,3 +94,99 @@ Q45 B (Nouvelle-Calédonie depuis 1940) : d) Jean-Marie Tjibaou et Jacques Lafle
 Q46 B (Nouvelle-Calédonie depuis 1940) : b) les « Événements »
 Q47 B (Nouvelle-Calédonie depuis 1940) : d) le « non » l'emporte
 Q48 B (Nouvelle-Calédonie depuis 1940) : b) le centre culturel Tjibaou
+Q1 C (Première Guerre mondiale) : d) un peu plus de quatre ans
+Q2 C (Première Guerre mondiale) : c) à Rethondes
+Q3 C (Première Guerre mondiale) : b) 1916
+Q4 C (Première Guerre mondiale) : a) les gaz de combat
+Q5 C (Première Guerre mondiale) : c) l'archiduc François-Ferdinand
+Q6 C (Première Guerre mondiale) : b) l'Empire ottoman
+Q7 C (Première Guerre mondiale) : b) les munitionnettes
+Q8 C (Première Guerre mondiale) : c) Lénine
+Q9 C (Démocraties et totalitarismes) : d) le culte de la personnalité
+Q10 C (Démocraties et totalitarismes) : c) le fascisme
+Q11 C (Démocraties et totalitarismes) : a) la collectivisation
+Q12 C (Démocraties et totalitarismes) : d) aux États-Unis
+Q13 C (Démocraties et totalitarismes) : d) une étoile jaune
+Q14 C (Démocraties et totalitarismes) : b) la propagande
+Q15 C (Démocraties et totalitarismes) : c) l'Autriche
+Q16 C (Démocraties et totalitarismes) : c) deux semaines
+Q17 C (Seconde Guerre mondiale et France occupée) : d) 1939
+Q18 C (Seconde Guerre mondiale et France occupée) : b) le D-Day
+Q19 C (Seconde Guerre mondiale et France occupée) : a) environ 6 millions
+Q20 C (Seconde Guerre mondiale et France occupée) : c) le 2 septembre 1945
+Q21 C (Seconde Guerre mondiale et France occupée) : b) la BBC
+Q22 C (Seconde Guerre mondiale et France occupée) : a) Lyon
+Q23 C (Seconde Guerre mondiale et France occupée) : c) Pierre Laval
+Q24 C (Seconde Guerre mondiale et France occupée) : d) ils rejoignent les maquis
+Q25 C (Le monde depuis 1945) : c) New York
+Q26 C (Le monde depuis 1945) : c) Berlin
+Q27 C (Le monde depuis 1945) : c) Kennedy et Khrouchtchev
+Q28 C (Le monde depuis 1945) : d) la non-violence
+Q29 C (Le monde depuis 1945) : b) 6
+Q30 C (Le monde depuis 1945) : a) Mikhaïl Gorbatchev
+Q31 C (Le monde depuis 1945) : a) Al-Qaïda
+Q32 C (Le monde depuis 1945) : a) les non-alignés
+Q33 C (La République en France depuis 1944) : c) le général de Gaulle
+Q34 C (La République en France depuis 1944) : b) 5 ans
+Q35 C (La République en France depuis 1944) : b) par référendum
+Q36 C (La République en France depuis 1944) : b) 14 ans
+Q37 C (La République en France depuis 1944) : d) Robert Badinter
+Q38 C (La République en France depuis 1944) : a) les accords de Grenelle
+Q39 C (La République en France depuis 1944) : b) l'instabilité des gouvernements
+Q40 C (La République en France depuis 1944) : c) Michel Debré
+Q41 C (Nouvelle-Calédonie depuis 1940) : b) le Japon
+Q42 C (Nouvelle-Calédonie depuis 1940) : d) la France libre
+Q43 C (Nouvelle-Calédonie depuis 1940) : a) le droit de vote
+Q44 C (Nouvelle-Calédonie depuis 1940) : b) l'indépendance kanak et socialiste
+Q45 C (Nouvelle-Calédonie depuis 1940) : c) Michel Rocard
+Q46 C (Nouvelle-Calédonie depuis 1940) : a) un transfert progressif de compétences
+Q47 C (Nouvelle-Calédonie depuis 1940) : c) 2018
+Q48 C (Nouvelle-Calédonie depuis 1940) : c) l'usine de Doniambo
+Q1 D (Première Guerre mondiale) : b) environ 10 millions
+Q2 D (Première Guerre mondiale) : d) l'Allemagne
+Q3 D (Première Guerre mondiale) : d) la bataille de la Marne
+Q4 D (Première Guerre mondiale) : c) le no man's land
+Q5 D (Première Guerre mondiale) : d) Allemagne, Autriche-Hongrie, Italie
+Q6 D (Première Guerre mondiale) : c) par des massacres et des déportations
+Q7 D (Première Guerre mondiale) : b) la censure
+Q8 D (Première Guerre mondiale) : d) le traité de Brest-Litovsk
+Q9 D (Démocraties et totalitarismes) : a) le Führer
+Q10 D (Démocraties et totalitarismes) : b) après la marche sur Rome
+Q11 D (Démocraties et totalitarismes) : a) l'Holodomor
+Q12 D (Démocraties et totalitarismes) : c) Léon Blum
+Q13 D (Démocraties et totalitarismes) : a) 1938
+Q14 D (Démocraties et totalitarismes) : a) la Gestapo
+Q15 D (Démocraties et totalitarismes) : c) Daladier et Chamberlain
+Q16 D (Démocraties et totalitarismes) : c) l'incendie du Reichstag
+Q17 D (Seconde Guerre mondiale et France occupée) : b) la guerre éclair
+Q18 D (Seconde Guerre mondiale et France occupée) : d) en Provence
+Q19 D (Seconde Guerre mondiale et France occupée) : c) un camp conçu pour tuer
+Q20 D (Seconde Guerre mondiale et France occupée) : b) environ 60 millions
+Q21 D (Seconde Guerre mondiale et France occupée) : c) à Vichy
+Q22 D (Seconde Guerre mondiale et France occupée) : a) les maquisards
+Q23 D (Seconde Guerre mondiale et France occupée) : d) l'entrevue de Montoire
+Q24 D (Seconde Guerre mondiale et France occupée) : a) Oradour-sur-Glane
+Q25 D (Le monde depuis 1945) : d) les États-Unis et l'URSS
+Q26 D (Le monde depuis 1945) : b) le blocus de Berlin
+Q27 D (Le monde depuis 1945) : b) le pacte de Varsovie
+Q28 D (Le monde depuis 1945) : c) les accords d'Évian
+Q29 D (Le monde depuis 1945) : d) 27
+Q30 D (Le monde depuis 1945) : b) l'espace Schengen
+Q31 D (Le monde depuis 1945) : c) l'Afghanistan
+Q32 D (Le monde depuis 1945) : a) la guerre d'Indochine
+Q33 D (La République en France depuis 1944) : c) Ambroise Croizat
+Q34 D (La République en France depuis 1944) : b) 1969
+Q35 D (La République en France depuis 1944) : a) ouvrir un compte sans leur mari
+Q36 D (La République en France depuis 1944) : a) Jacques Chirac
+Q37 D (La République en France depuis 1944) : c) Valéry Giscard d'Estaing
+Q38 D (La République en France depuis 1944) : c) le premier choc pétrolier
+Q39 D (La République en France depuis 1944) : b) René Coty
+Q40 D (La République en France depuis 1944) : b) le 25 août 1944
+Q41 D (Nouvelle-Calédonie depuis 1940) : b) Henri Sautot
+Q42 D (Nouvelle-Calédonie depuis 1940) : b) en Afrique
+Q43 D (Nouvelle-Calédonie depuis 1940) : c) du travail forcé
+Q44 D (Nouvelle-Calédonie depuis 1940) : a) Jean-Marie Tjibaou
+Q45 D (Nouvelle-Calédonie depuis 1940) : a) une prise d'otages
+Q46 D (Nouvelle-Calédonie depuis 1940) : a) 3
+Q47 D (Nouvelle-Calédonie depuis 1940) : b) l'accession à la pleine souveraineté
+Q48 D (Nouvelle-Calédonie depuis 1940) : a) Renzo Piano

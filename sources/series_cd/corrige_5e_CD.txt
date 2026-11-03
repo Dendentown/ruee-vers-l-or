@@ -1,0 +1,500 @@
+Q501 (Géométrie) : b) 65°
+Q502 (Géométrie) : a) 50°
+Q503 (Géométrie) : c) 120°
+Q504 (Géométrie) : d) D
+Q505 (Géométrie) : d) P
+Q506 (Géométrie) : d) 105°
+Q507 (Géométrie) : a) 18 cm
+Q508 (Géométrie) : a) 52°
+Q509 (Géométrie) : b) 15 cm²
+Q510 (Géométrie) : b) 21 cm²
+Q511 (Nombres relatifs) : c) −4
+Q512 (Nombres relatifs) : d) −0,5
+Q513 (Nombres relatifs) : c) (−1 ; −3)
+Q514 (Nombres relatifs) : d) H
+Q515 (Nombres relatifs) : c) 3 °C
+Q516 (Nombres relatifs) : a) −5 °C
+Q517 (Nombres relatifs) : c) −5
+Q518 (Nombres relatifs) : a) −5
+Q519 (Nombres relatifs) : a) −4
+Q520 (Nombres relatifs) : b) 5
+Q521 (Fractions) : c) $\dfrac{4}{10}$
+Q522 (Fractions) : a) $\dfrac{3}{4}$
+Q523 (Fractions) : b) $\dfrac{3}{5}$ = $\dfrac{6}{10}$
+Q524 (Fractions) : b) $\dfrac{1}{2}$
+Q525 (Fractions) : c) $\dfrac{7}{4}$
+Q526 (Fractions) : c) $\dfrac{8}{11}$
+Q527 (Fractions) : d) $\dfrac{8}{10}$
+Q528 (Fractions) : d) 21
+Q529 (Fractions) : c) $\dfrac{2}{3}$  >  $\dfrac{7}{12}$
+Q530 (Fractions) : b) $\dfrac{5}{8}$
+Q531 (Proportionnalité / statistiques) : a) 600 g
+Q532 (Proportionnalité / statistiques) : c) 75 g
+Q533 (Proportionnalité / statistiques) : d) Le tableau 1 seulement
+Q534 (Proportionnalité / statistiques) : b) 5
+Q535 (Proportionnalité / statistiques) : b) 560 F
+Q536 (Proportionnalité / statistiques) : a) 300 F
+Q537 (Proportionnalité / statistiques) : c) 8
+Q538 (Proportionnalité / statistiques) : a) 26
+Q539 (Proportionnalité / statistiques) : a) Juin
+Q540 (Proportionnalité / statistiques) : b) 27
+Q541 (Probabilités) : d) $\dfrac{2}{12}$
+Q542 (Probabilités) : d) $\dfrac{1}{6}$
+Q543 (Probabilités) : b) $\dfrac{4}{6}$
+Q544 (Probabilités) : c) Rouge
+Q545 (Probabilités) : d) impossible
+Q546 (Probabilités) : d) certain
+Q547 (Probabilités) : d) $\dfrac{1}{2}$
+Q548 (Probabilités) : b) D
+Q549 (Probabilités) : a) $\dfrac{2}{10}$
+Q550 (Probabilités) : c) $\dfrac{13}{20}$
+Q551 (Géométrie) : d) 80°
+Q552 (Géométrie) : a) 90°
+Q553 (Géométrie) : b) 95°
+Q554 (Géométrie) : a) 85°
+Q555 (Géométrie) : c) 85°
+Q556 (Géométrie) : c) 70°
+Q557 (Géométrie) : a) 80°
+Q558 (Géométrie) : d) 70°
+Q559 (Géométrie) : a) 25°
+Q560 (Géométrie) : c) 50°
+Q561 (Géométrie) : d) 60°
+Q562 (Géométrie) : d) 40°
+Q563 (Géométrie) : d) 20°
+Q564 (Géométrie) : c) 25°
+Q565 (Géométrie) : a) 75°
+Q566 (Géométrie) : c) 30°
+Q567 (Géométrie) : a) C
+Q568 (Géométrie) : c) C
+Q569 (Géométrie) : b) B
+Q570 (Géométrie) : d) E
+Q571 (Géométrie) : a) E
+Q572 (Géométrie) : b) 135°
+Q573 (Géométrie) : b) 40°
+Q574 (Géométrie) : d) 140°
+Q575 (Géométrie) : a) 135°
+Q576 (Géométrie) : c) 85°
+Q577 (Géométrie) : d) 22 cm²
+Q578 (Géométrie) : b) 24 cm²
+Q579 (Géométrie) : b) 14 cm²
+Q580 (Géométrie) : b) 24 cm²
+Q581 (Géométrie) : d) 14 cm²
+Q582 (Géométrie) : b) 54 m²
+Q583 (Géométrie) : b) 45 cm²
+Q584 (Géométrie) : c) 54 cm²
+Q585 (Géométrie) : c) 65°
+Q586 (Géométrie) : d) 45°
+Q587 (Géométrie) : c) 35°
+Q588 (Géométrie) : d) Oui
+Q589 (Géométrie) : b) Non
+Q590 (Géométrie) : a) Oui
+Q591 (Nombres relatifs) : d) −2
+Q592 (Nombres relatifs) : d) −0,5
+Q593 (Nombres relatifs) : a) −1,75
+Q594 (Nombres relatifs) : a) −4
+Q595 (Nombres relatifs) : d) 2,5
+Q596 (Nombres relatifs) : d) (2 ; 3)
+Q597 (Nombres relatifs) : a) H
+Q598 (Nombres relatifs) : a) (1 ; −4)
+Q599 (Nombres relatifs) : d) G
+Q600 (Nombres relatifs) : c) (5 ; 3)
+Q601 (Nombres relatifs) : a) −15
+Q602 (Nombres relatifs) : c) −14
+Q603 (Nombres relatifs) : a) −2
+Q604 (Nombres relatifs) : a) 2
+Q605 (Nombres relatifs) : a) −13
+Q606 (Nombres relatifs) : b) 1
+Q607 (Nombres relatifs) : a) −13
+Q608 (Nombres relatifs) : b) −11
+Q609 (Nombres relatifs) : a) 0
+Q610 (Nombres relatifs) : b) −6
+Q611 (Nombres relatifs) : a) 2
+Q612 (Nombres relatifs) : a) −2,5
+Q613 (Nombres relatifs) : d) 7
+Q614 (Nombres relatifs) : c) 3
+Q615 (Nombres relatifs) : b) 1
+Q616 (Nombres relatifs) : c) −9
+Q617 (Nombres relatifs) : c) 3 °C
+Q618 (Nombres relatifs) : c) 2 °C
+Q619 (Nombres relatifs) : c) 7 °C
+Q620 (Nombres relatifs) : c) 3 °C
+Q621 (Nombres relatifs) : c) 1 °C
+Q622 (Nombres relatifs) : a) −9 m
+Q623 (Nombres relatifs) : b) −13 m
+Q624 (Nombres relatifs) : b) −7 m
+Q625 (Nombres relatifs) : a) 2
+Q626 (Nombres relatifs) : a) −3
+Q627 (Nombres relatifs) : c) 3
+Q628 (Nombres relatifs) : b) −5
+Q629 (Nombres relatifs) : d) −2
+Q630 (Nombres relatifs) : c) 8
+Q631 (Fractions) : b) $\dfrac{2}{7}$
+Q632 (Fractions) : b) $\dfrac{3}{8}$
+Q633 (Fractions) : c) $\dfrac{4}{10}$
+Q634 (Fractions) : a) $\dfrac{8}{12}$
+Q635 (Fractions) : d) $\dfrac{5}{12}$
+Q636 (Fractions) : a) $\dfrac{4}{15}$
+Q637 (Fractions) : a) $\dfrac{9}{16}$
+Q638 (Fractions) : b) $\dfrac{5}{4}$
+Q639 (Fractions) : a) $\dfrac{8}{5}$
+Q640 (Fractions) : d) $\dfrac{11}{4}$
+Q641 (Fractions) : a) $\dfrac{6}{15}$
+Q642 (Fractions) : d) $\dfrac{8}{14}$
+Q643 (Fractions) : d) $\dfrac{12}{40}$
+Q644 (Fractions) : b) $\dfrac{15}{24}$
+Q645 (Fractions) : c) $\dfrac{6}{8}$
+Q646 (Fractions) : d) $\dfrac{5}{13}$
+Q647 (Fractions) : c) $\dfrac{7}{10}$
+Q648 (Fractions) : c) $\dfrac{4}{9}$
+Q649 (Fractions) : c) $\dfrac{4}{9}$
+Q650 (Fractions) : c) $\dfrac{1}{2}$
+Q651 (Fractions) : d) $\dfrac{7}{8}$
+Q652 (Fractions) : a) $\dfrac{1}{3}$  <  $\dfrac{5}{6}$
+Q653 (Fractions) : c) $\dfrac{3}{4}$  >  $\dfrac{5}{8}$
+Q654 (Fractions) : c) $\dfrac{2}{5}$  <  $\dfrac{7}{10}$
+Q655 (Fractions) : b) $\dfrac{2}{3}$
+Q656 (Fractions) : d) $\dfrac{2}{5}$
+Q657 (Fractions) : d) 20
+Q658 (Fractions) : d) 18
+Q659 (Fractions) : b) 12
+Q660 (Fractions) : c) 18
+Q661 (Fractions) : d) 15
+Q662 (Fractions) : a) 7
+Q663 (Fractions) : a) $\dfrac{7}{8}$
+Q664 (Fractions) : a) $\dfrac{2}{6}$
+Q665 (Fractions) : d) $\dfrac{3}{10}$
+Q666 (Fractions) : b) $\dfrac{9}{12}$
+Q667 (Fractions) : c) 10 min
+Q668 (Fractions) : c) 24 min
+Q669 (Fractions) : c) $\dfrac{3}{4}$
+Q670 (Fractions) : d) $\dfrac{4}{7}$
+Q671 (Proportionnalité / statistiques) : d) 8
+Q672 (Proportionnalité / statistiques) : d) 24
+Q673 (Proportionnalité / statistiques) : d) 30
+Q674 (Proportionnalité / statistiques) : b) 21
+Q675 (Proportionnalité / statistiques) : c) 18
+Q676 (Proportionnalité / statistiques) : c) 3,5
+Q677 (Proportionnalité / statistiques) : d) 8
+Q678 (Proportionnalité / statistiques) : c) 9
+Q679 (Proportionnalité / statistiques) : b) 4
+Q680 (Proportionnalité / statistiques) : d) Le tableau 1 seulement
+Q681 (Proportionnalité / statistiques) : a) Le tableau 2 seulement
+Q682 (Proportionnalité / statistiques) : d) Le tableau 1 seulement
+Q683 (Proportionnalité / statistiques) : a) 40
+Q684 (Proportionnalité / statistiques) : a) 23
+Q685 (Proportionnalité / statistiques) : c) 31
+Q686 (Proportionnalité / statistiques) : d) 70
+Q687 (Proportionnalité / statistiques) : d) 12
+Q688 (Proportionnalité / statistiques) : c) 12
+Q689 (Proportionnalité / statistiques) : c) 9
+Q690 (Proportionnalité / statistiques) : a) $\dfrac{4}{20}$
+Q691 (Proportionnalité / statistiques) : b) $\dfrac{6}{20}$
+Q692 (Proportionnalité / statistiques) : c) $\dfrac{7}{20}$
+Q693 (Proportionnalité / statistiques) : b) 200
+Q694 (Proportionnalité / statistiques) : c) 750
+Q695 (Proportionnalité / statistiques) : b) 9
+Q696 (Proportionnalité / statistiques) : b) 450 F
+Q697 (Proportionnalité / statistiques) : c) 1500 F
+Q698 (Proportionnalité / statistiques) : c) 3000 F
+Q699 (Proportionnalité / statistiques) : b) 700 F
+Q700 (Proportionnalité / statistiques) : b) 900 F
+Q701 (Proportionnalité / statistiques) : d) 4500 F
+Q702 (Proportionnalité / statistiques) : a) 4
+Q703 (Proportionnalité / statistiques) : d) 19
+Q704 (Proportionnalité / statistiques) : a) 7
+Q705 (Proportionnalité / statistiques) : c) Banane
+Q706 (Proportionnalité / statistiques) : b) 6
+Q707 (Proportionnalité / statistiques) : b) 21 km
+Q708 (Proportionnalité / statistiques) : c) 15 km
+Q709 (Proportionnalité / statistiques) : c) 12
+Q710 (Proportionnalité / statistiques) : d) 13
+Q711 (Probabilités) : b) $\dfrac{3}{8}$
+Q712 (Probabilités) : a) $\dfrac{5}{11}$
+Q713 (Probabilités) : d) $\dfrac{3}{7}$
+Q714 (Probabilités) : a) $\dfrac{5}{15}$
+Q715 (Probabilités) : d) $\dfrac{5}{12}$
+Q716 (Probabilités) : b) $\dfrac{4}{7}$
+Q717 (Probabilités) : a) $\dfrac{4}{12}$
+Q718 (Probabilités) : a) $\dfrac{3}{6}$
+Q719 (Probabilités) : d) $\dfrac{4}{6}$
+Q720 (Probabilités) : b) $\dfrac{3}{6}$
+Q721 (Probabilités) : d) $\dfrac{1}{6}$
+Q722 (Probabilités) : a) $\dfrac{3}{6}$
+Q723 (Probabilités) : c) $\dfrac{1}{6}$
+Q724 (Probabilités) : a) $\dfrac{2}{6}$
+Q725 (Probabilités) : a) impossible
+Q726 (Probabilités) : a) une chance sur deux
+Q727 (Probabilités) : b) peu probable
+Q728 (Probabilités) : b) certain
+Q729 (Probabilités) : b) Jaune
+Q730 (Probabilités) : a) $\dfrac{1}{8}$
+Q731 (Probabilités) : c) Bleu
+Q732 (Probabilités) : a) $\dfrac{4}{8}$
+Q733 (Probabilités) : b) $\dfrac{3}{10}$
+Q734 (Probabilités) : d) $\dfrac{3}{12}$
+Q735 (Probabilités) : a) $\dfrac{4}{8}$
+Q736 (Probabilités) : b) $\dfrac{4}{9}$
+Q737 (Probabilités) : c) B
+Q738 (Probabilités) : b) C
+Q739 (Probabilités) : c) $\dfrac{3}{40}$
+Q740 (Probabilités) : d) $\dfrac{4}{120}$
+Q741 (Probabilités) : c) $\dfrac{2}{5}$
+Q742 (Probabilités) : a) $\dfrac{1}{8}$
+Q743 (Probabilités) : d) $\dfrac{2}{13}$
+Q744 (Probabilités) : d) $\dfrac{12}{60}$
+Q745 (Probabilités) : b) $\dfrac{12}{52}$
+Q746 (Probabilités) : b) 4
+Q747 (Probabilités) : a) $\dfrac{12}{26}$
+Q748 (Probabilités) : b) $\dfrac{15}{24}$
+Q749 (Probabilités) : b) $\dfrac{3}{8}$
+Q750 (Probabilités) : a) $\dfrac{2}{8}$
+Q751 (Géométrie) : d) 85°
+Q752 (Géométrie) : d) 40°
+Q753 (Géométrie) : d) 50°
+Q754 (Géométrie) : c) E
+Q755 (Géométrie) : a) R
+Q756 (Géométrie) : d) 125°
+Q757 (Géométrie) : a) 22 cm
+Q758 (Géométrie) : a) 48°
+Q759 (Géométrie) : c) 21 cm²
+Q760 (Géométrie) : a) 20 cm²
+Q761 (Nombres relatifs) : c) −1
+Q762 (Nombres relatifs) : d) 2,5
+Q763 (Nombres relatifs) : c) (−4 ; 2)
+Q764 (Nombres relatifs) : a) F
+Q765 (Nombres relatifs) : c) −3 °C
+Q766 (Nombres relatifs) : b) −8 °C
+Q767 (Nombres relatifs) : a) −6
+Q768 (Nombres relatifs) : c) −3
+Q769 (Nombres relatifs) : c) −6,5
+Q770 (Nombres relatifs) : c) 4
+Q771 (Fractions) : c) $\dfrac{5}{12}$
+Q772 (Fractions) : b) $\dfrac{3}{5}$
+Q773 (Fractions) : d) $\dfrac{1}{4}$ = $\dfrac{2}{8}$
+Q774 (Fractions) : c) $\dfrac{1}{4}$
+Q775 (Fractions) : a) $\dfrac{8}{5}$
+Q776 (Fractions) : a) $\dfrac{6}{7}$
+Q777 (Fractions) : d) $\dfrac{8}{18}$
+Q778 (Fractions) : c) 18
+Q779 (Fractions) : c) $\dfrac{3}{5}$  <  $\dfrac{7}{10}$
+Q780 (Fractions) : d) $\dfrac{5}{8}$
+Q781 (Proportionnalité / statistiques) : d) 540 g
+Q782 (Proportionnalité / statistiques) : d) 70 g
+Q783 (Proportionnalité / statistiques) : a) Le tableau 2 seulement
+Q784 (Proportionnalité / statistiques) : d) 7
+Q785 (Proportionnalité / statistiques) : a) 1 600 F
+Q786 (Proportionnalité / statistiques) : b) 300 F
+Q787 (Proportionnalité / statistiques) : a) 4
+Q788 (Proportionnalité / statistiques) : b) 27
+Q789 (Proportionnalité / statistiques) : d) Avril
+Q790 (Proportionnalité / statistiques) : b) 29
+Q791 (Probabilités) : c) $\dfrac{3}{10}$
+Q792 (Probabilités) : a) $\dfrac{1}{6}$
+Q793 (Probabilités) : b) $\dfrac{2}{6}$
+Q794 (Probabilités) : b) Vert
+Q795 (Probabilités) : d) impossible
+Q796 (Probabilités) : d) certain
+Q797 (Probabilités) : c) 1
+Q798 (Probabilités) : b) B
+Q799 (Probabilités) : a) $\dfrac{5}{10}$
+Q800 (Probabilités) : c) $\dfrac{3}{4}$
+Q801 (Géométrie) : c) 85°
+Q802 (Géométrie) : c) 75°
+Q803 (Géométrie) : c) 75°
+Q804 (Géométrie) : a) 90°
+Q805 (Géométrie) : d) 95°
+Q806 (Géométrie) : d) 85°
+Q807 (Géométrie) : a) 80°
+Q808 (Géométrie) : c) 150°
+Q809 (Géométrie) : c) 55°
+Q810 (Géométrie) : d) 30°
+Q811 (Géométrie) : d) 15°
+Q812 (Géométrie) : b) 136°
+Q813 (Géométrie) : a) 32°
+Q814 (Géométrie) : b) 48°
+Q815 (Géométrie) : a) 42°
+Q816 (Géométrie) : a) 52°
+Q817 (Géométrie) : b) B
+Q818 (Géométrie) : c) B
+Q819 (Géométrie) : d) D
+Q820 (Géométrie) : a) C
+Q821 (Géométrie) : d) B
+Q822 (Géométrie) : a) 112°
+Q823 (Géométrie) : b) 68°
+Q824 (Géométrie) : b) 112°
+Q825 (Géométrie) : a) 112°
+Q826 (Géométrie) : c) 68°
+Q827 (Géométrie) : a) 20 cm²
+Q828 (Géométrie) : a) 19,5 cm²
+Q829 (Géométrie) : d) 7,5 cm²
+Q830 (Géométrie) : d) 20 cm²
+Q831 (Géométrie) : c) 21 cm²
+Q832 (Géométrie) : d) 20 m²
+Q833 (Géométrie) : b) 55 cm²
+Q834 (Géométrie) : b) 77 cm²
+Q835 (Géométrie) : b) 30°
+Q836 (Géométrie) : b) 62°
+Q837 (Géométrie) : d) 30°
+Q838 (Géométrie) : b) Oui
+Q839 (Géométrie) : c) Non
+Q840 (Géométrie) : d) Oui
+Q841 (Nombres relatifs) : a) −5
+Q842 (Nombres relatifs) : d) −2
+Q843 (Nombres relatifs) : a) −0,25
+Q844 (Nombres relatifs) : d) −3
+Q845 (Nombres relatifs) : c) −1
+Q846 (Nombres relatifs) : d) (2 ; −5)
+Q847 (Nombres relatifs) : c) F
+Q848 (Nombres relatifs) : d) (4 ; −1)
+Q849 (Nombres relatifs) : a) H
+Q850 (Nombres relatifs) : a) (−1 ; 4)
+Q851 (Nombres relatifs) : d) −27
+Q852 (Nombres relatifs) : a) 2
+Q853 (Nombres relatifs) : b) 2
+Q854 (Nombres relatifs) : a) −12
+Q855 (Nombres relatifs) : c) −13
+Q856 (Nombres relatifs) : b) 3
+Q857 (Nombres relatifs) : c) −3
+Q858 (Nombres relatifs) : a) 8
+Q859 (Nombres relatifs) : b) 0
+Q860 (Nombres relatifs) : b) −3,8
+Q861 (Nombres relatifs) : d) 1,5
+Q862 (Nombres relatifs) : b) −6
+Q863 (Nombres relatifs) : d) 6
+Q864 (Nombres relatifs) : c) 3
+Q865 (Nombres relatifs) : b) 11
+Q866 (Nombres relatifs) : d) −8
+Q867 (Nombres relatifs) : a) 8 °C
+Q868 (Nombres relatifs) : a) 1 °C
+Q869 (Nombres relatifs) : c) 0 °C
+Q870 (Nombres relatifs) : b) −3 °C
+Q871 (Nombres relatifs) : c) 7 °C
+Q872 (Nombres relatifs) : c) −8 m
+Q873 (Nombres relatifs) : d) −14 m
+Q874 (Nombres relatifs) : a) −7 m
+Q875 (Nombres relatifs) : c) 5
+Q876 (Nombres relatifs) : d) −3
+Q877 (Nombres relatifs) : a) 1
+Q878 (Nombres relatifs) : a) −7
+Q879 (Nombres relatifs) : b) 3
+Q880 (Nombres relatifs) : c) −5
+Q881 (Fractions) : b) $\dfrac{3}{5}$
+Q882 (Fractions) : c) $\dfrac{2}{9}$
+Q883 (Fractions) : c) $\dfrac{6}{10}$
+Q884 (Fractions) : b) $\dfrac{2}{6}$
+Q885 (Fractions) : a) $\dfrac{5}{6}$
+Q886 (Fractions) : b) $\dfrac{7}{18}$
+Q887 (Fractions) : d) $\dfrac{5}{12}$
+Q888 (Fractions) : b) $\dfrac{2}{3}$
+Q889 (Fractions) : c) $\dfrac{7}{6}$
+Q890 (Fractions) : d) $\dfrac{13}{5}$
+Q891 (Fractions) : a) $\dfrac{15}{20}$
+Q892 (Fractions) : a) $\dfrac{6}{27}$
+Q893 (Fractions) : a) $\dfrac{12}{14}$
+Q894 (Fractions) : b) $\dfrac{20}{12}$
+Q895 (Fractions) : d) $\dfrac{9}{12}$
+Q896 (Fractions) : c) $\dfrac{7}{11}$
+Q897 (Fractions) : c) $\dfrac{11}{17}$
+Q898 (Fractions) : c) $\dfrac{3}{7}$
+Q899 (Fractions) : c) $\dfrac{3}{8}$
+Q900 (Fractions) : b) $\dfrac{7}{9}$
+Q901 (Fractions) : d) $\dfrac{7}{10}$
+Q902 (Fractions) : d) $\dfrac{1}{4}$  <  $\dfrac{3}{8}$
+Q903 (Fractions) : c) $\dfrac{5}{6}$  >  $\dfrac{2}{3}$
+Q904 (Fractions) : d) $\dfrac{3}{5}$  >  $\dfrac{4}{10}$
+Q905 (Fractions) : b) $\dfrac{3}{4}$
+Q906 (Fractions) : a) $\dfrac{2}{9}$
+Q907 (Fractions) : c) 27
+Q908 (Fractions) : c) 15
+Q909 (Fractions) : b) 15
+Q910 (Fractions) : c) 10
+Q911 (Fractions) : a) 12
+Q912 (Fractions) : c) 8
+Q913 (Fractions) : d) $\dfrac{1}{8}$
+Q914 (Fractions) : b) $\dfrac{1}{6}$
+Q915 (Fractions) : b) $\dfrac{8}{10}$
+Q916 (Fractions) : c) $\dfrac{3}{12}$
+Q917 (Fractions) : b) 50 min
+Q918 (Fractions) : d) 36 min
+Q919 (Fractions) : a) $\dfrac{4}{5}$
+Q920 (Fractions) : c) $\dfrac{5}{9}$
+Q921 (Proportionnalité / statistiques) : d) 30
+Q922 (Proportionnalité / statistiques) : c) 48
+Q923 (Proportionnalité / statistiques) : b) 12
+Q924 (Proportionnalité / statistiques) : d) 25
+Q925 (Proportionnalité / statistiques) : a) 20
+Q926 (Proportionnalité / statistiques) : a) 2
+Q927 (Proportionnalité / statistiques) : d) 11
+Q928 (Proportionnalité / statistiques) : b) 4,5
+Q929 (Proportionnalité / statistiques) : c) 12
+Q930 (Proportionnalité / statistiques) : a) Le tableau 1 seulement
+Q931 (Proportionnalité / statistiques) : a) Le tableau 2 seulement
+Q932 (Proportionnalité / statistiques) : c) Le tableau 1 seulement
+Q933 (Proportionnalité / statistiques) : c) 10
+Q934 (Proportionnalité / statistiques) : a) 68
+Q935 (Proportionnalité / statistiques) : d) 24
+Q936 (Proportionnalité / statistiques) : a) 90
+Q937 (Proportionnalité / statistiques) : c) 12
+Q938 (Proportionnalité / statistiques) : a) 10
+Q939 (Proportionnalité / statistiques) : a) 11
+Q940 (Proportionnalité / statistiques) : a) $\dfrac{5}{20}$
+Q941 (Proportionnalité / statistiques) : a) $\dfrac{7}{20}$
+Q942 (Proportionnalité / statistiques) : c) $\dfrac{13}{20}$
+Q943 (Proportionnalité / statistiques) : b) 160
+Q944 (Proportionnalité / statistiques) : d) 600
+Q945 (Proportionnalité / statistiques) : a) 9
+Q946 (Proportionnalité / statistiques) : d) 600 F
+Q947 (Proportionnalité / statistiques) : c) 500 F
+Q948 (Proportionnalité / statistiques) : d) 2200 F
+Q949 (Proportionnalité / statistiques) : d) 450 F
+Q950 (Proportionnalité / statistiques) : a) 1800 F
+Q951 (Proportionnalité / statistiques) : c) 2100 F
+Q952 (Proportionnalité / statistiques) : d) 9
+Q953 (Proportionnalité / statistiques) : c) 19
+Q954 (Proportionnalité / statistiques) : b) 7
+Q955 (Proportionnalité / statistiques) : a) Banane
+Q956 (Proportionnalité / statistiques) : b) 5
+Q957 (Proportionnalité / statistiques) : b) 17,5 km
+Q958 (Proportionnalité / statistiques) : d) 21 km
+Q959 (Proportionnalité / statistiques) : b) 13
+Q960 (Proportionnalité / statistiques) : b) 11
+Q961 (Probabilités) : a) $\dfrac{1}{7}$
+Q962 (Probabilités) : a) $\dfrac{1}{9}$
+Q963 (Probabilités) : a) $\dfrac{3}{8}$
+Q964 (Probabilités) : d) $\dfrac{4}{12}$
+Q965 (Probabilités) : d) $\dfrac{3}{6}$
+Q966 (Probabilités) : a) $\dfrac{5}{14}$
+Q967 (Probabilités) : b) $\dfrac{5}{13}$
+Q968 (Probabilités) : d) $\dfrac{5}{6}$
+Q969 (Probabilités) : a) $\dfrac{3}{6}$
+Q970 (Probabilités) : c) $\dfrac{1}{6}$
+Q971 (Probabilités) : d) $\dfrac{3}{6}$
+Q972 (Probabilités) : a) $\dfrac{2}{6}$
+Q973 (Probabilités) : c) $\dfrac{5}{6}$
+Q974 (Probabilités) : c) $\dfrac{4}{6}$
+Q975 (Probabilités) : b) impossible
+Q976 (Probabilités) : c) une chance sur deux
+Q977 (Probabilités) : d) peu probable
+Q978 (Probabilités) : c) certain
+Q979 (Probabilités) : a) Jaune
+Q980 (Probabilités) : c) $\dfrac{4}{8}$
+Q981 (Probabilités) : d) Bleu
+Q982 (Probabilités) : a) $\dfrac{1}{8}$
+Q983 (Probabilités) : a) $\dfrac{2}{11}$
+Q984 (Probabilités) : d) $\dfrac{4}{12}$
+Q985 (Probabilités) : c) $\dfrac{3}{10}$
+Q986 (Probabilités) : d) $\dfrac{5}{9}$
+Q987 (Probabilités) : b) D
+Q988 (Probabilités) : c) C
+Q989 (Probabilités) : c) $\dfrac{2}{75}$
+Q990 (Probabilités) : b) $\dfrac{7}{90}$
+Q991 (Probabilités) : c) $\dfrac{3}{10}$
+Q992 (Probabilités) : a) $\dfrac{4}{9}$
+Q993 (Probabilités) : d) $\dfrac{1}{9}$
+Q994 (Probabilités) : b) $\dfrac{13}{60}$
+Q995 (Probabilités) : c) $\dfrac{11}{50}$
+Q996 (Probabilités) : a) 5
+Q997 (Probabilités) : b) $\dfrac{16}{26}$
+Q998 (Probabilités) : d) $\dfrac{9}{22}$
+Q999 (Probabilités) : d) $\dfrac{4}{8}$
+Q1000 (Probabilités) : d) $\dfrac{2}{8}$

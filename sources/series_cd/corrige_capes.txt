@@ -1,0 +1,400 @@
+Q1 (Analyse) : d) $e^{2}$
+Q2 (Analyse) : a) $e^{3}$
+Q3 (Analyse) : b) $2$
+Q4 (Analyse) : d) $-1$
+Q5 (Analyse) : b) $\dfrac{e^{2}+1}{4}$
+Q6 (Analyse) : a) $\dfrac{2e^{3}+1}{9}$
+Q7 (Analyse) : c) $\dfrac{3}{2}$
+Q8 (Analyse) : c) $\dfrac{5}{3}$
+Q9 (Analyse) : d) $1$
+Q10 (Analyse) : c) $\dfrac{3}{4}$
+Q11 (Analyse) : a) $\dfrac{3}{2}$
+Q12 (Analyse) : b) $\dfrac{5}{4}$
+Q13 (Analyse) : c) $-2$
+Q14 (Analyse) : a) $-\dfrac{9}{2}$
+Q15 (Analyse) : b) $6$
+Q16 (Analyse) : c) $6$
+Q17 (Analyse) : a) $2$
+Q18 (Analyse) : c) $3$
+Q19 (Analyse) : b) $3e^{-2}$
+Q20 (Analyse) : c) $5e^{-1}$
+Q21 (Algèbre et arithmétique) : b) $18$
+Q22 (Algèbre et arithmétique) : c) $21$
+Q23 (Algèbre et arithmétique) : d) $2$
+Q24 (Algèbre et arithmétique) : b) $1$
+Q25 (Algèbre et arithmétique) : d) $24$
+Q26 (Algèbre et arithmétique) : d) $30$
+Q27 (Algèbre et arithmétique) : b) $9$
+Q28 (Algèbre et arithmétique) : a) $7$
+Q29 (Algèbre et arithmétique) : d) $-1$
+Q30 (Algèbre et arithmétique) : b) $20$
+Q31 (Algèbre et arithmétique) : b) $12$
+Q32 (Algèbre et arithmétique) : a) $24$
+Q33 (Algèbre et arithmétique) : b) $7$
+Q34 (Algèbre et arithmétique) : d) $15$
+Q35 (Algèbre et arithmétique) : a) $60$
+Q36 (Algèbre et arithmétique) : d) $80$
+Q37 (Algèbre et arithmétique) : a) $385$
+Q38 (Algèbre et arithmétique) : d) $2870$
+Q39 (Algèbre et arithmétique) : c) $7X-6$
+Q40 (Algèbre et arithmétique) : d) $15X-14$
+Q41 (Algèbre linéaire) : b) $11$
+Q42 (Algèbre linéaire) : a) $1$
+Q43 (Algèbre linéaire) : c) $25$
+Q44 (Algèbre linéaire) : b) $-1$
+Q45 (Algèbre linéaire) : d) $29$
+Q46 (Algèbre linéaire) : b) $3$
+Q47 (Algèbre linéaire) : a) $2$
+Q48 (Algèbre linéaire) : b) $1$
+Q49 (Algèbre linéaire) : b) $2\text{ et }4$
+Q50 (Algèbre linéaire) : d) $3\text{ et }7$
+Q51 (Algèbre linéaire) : b) $2$
+Q52 (Algèbre linéaire) : d) $3$
+Q53 (Algèbre linéaire) : c) $\begin{pmatrix}2&-1\\-3&2\end{pmatrix}$
+Q54 (Algèbre linéaire) : b) $\begin{pmatrix}2&-3\\-3&5\end{pmatrix}$
+Q55 (Algèbre linéaire) : a) $30$
+Q56 (Algèbre linéaire) : b) $14$
+Q57 (Algèbre linéaire) : c) $6$
+Q58 (Algèbre linéaire) : c) $10$
+Q59 (Algèbre linéaire) : c) $-\dfrac{5}{2}$
+Q60 (Algèbre linéaire) : c) $2$
+Q61 (Probabilités et statistiques) : b) $\dfrac{15}{64}$
+Q62 (Probabilités et statistiques) : c) $\dfrac{7}{32}$
+Q63 (Probabilités et statistiques) : b) $\dfrac{15}{4}$
+Q64 (Probabilités et statistiques) : d) $\dfrac{36}{5}$
+Q65 (Probabilités et statistiques) : d) $6$
+Q66 (Probabilités et statistiques) : c) $\dfrac{7}{2}$
+Q67 (Probabilités et statistiques) : c) $2e^{-2}$
+Q68 (Probabilités et statistiques) : b) $3e^{-3}$
+Q69 (Probabilités et statistiques) : c) $e^{-6}$
+Q70 (Probabilités et statistiques) : a) $e^{-2}$
+Q71 (Probabilités et statistiques) : a) $\dfrac{1}{12}$
+Q72 (Probabilités et statistiques) : b) $\dfrac{16}{65}$
+Q73 (Probabilités et statistiques) : c) $3$
+Q74 (Probabilités et statistiques) : d) $3$
+Q75 (Probabilités et statistiques) : d) $225$
+Q76 (Probabilités et statistiques) : a) $64$
+Q77 (Probabilités et statistiques) : c) $60$
+Q78 (Probabilités et statistiques) : b) $180$
+Q79 (Probabilités et statistiques) : c) $\dfrac{4}{25}$
+Q80 (Probabilités et statistiques) : b) $\dfrac{1}{4}$
+Q81 (Géométrie et complexes) : d) $125$
+Q82 (Géométrie et complexes) : b) $169$
+Q83 (Géométrie et complexes) : c) $-\dfrac{2\pi}{3}$
+Q84 (Géométrie et complexes) : b) $-\dfrac{\pi}{3}$
+Q85 (Géométrie et complexes) : d) $1$
+Q86 (Géométrie et complexes) : a) $-1$
+Q87 (Géométrie et complexes) : c) $\dfrac{2}{3}$
+Q88 (Géométrie et complexes) : d) $\dfrac{7}{3}$
+Q89 (Géométrie et complexes) : c) $1$
+Q90 (Géométrie et complexes) : d) $\dfrac{3}{5}$
+Q91 (Géométrie et complexes) : d) $(6,-3,1)$
+Q92 (Géométrie et complexes) : b) $(-1,1,2)$
+Q93 (Géométrie et complexes) : a) $\dfrac{11}{2}$
+Q94 (Géométrie et complexes) : a) $\dfrac{19}{2}$
+Q95 (Géométrie et complexes) : c) $2\text{ et }\dfrac{\pi}{2}$
+Q96 (Géométrie et complexes) : a) $\sqrt2\text{ et }\dfrac{\pi}{4}$
+Q97 (Géométrie et complexes) : c) la rotation de centre $O$ et d'angle $\dfrac{\pi}{3}$
+Q98 (Géométrie et complexes) : b) la rotation de centre $O$ et d'angle $\dfrac{\pi}{2}$
+Q99 (Géométrie et complexes) : c) $3$
+Q100 (Géométrie et complexes) : d) $3$
+Q1 B (Analyse) : a) $e^{-1}$
+Q2 B (Analyse) : b) $e^{5}$
+Q3 B (Analyse) : c) $3$
+Q4 B (Analyse) : d) $-2$
+Q5 B (Analyse) : c) $\dfrac{3e^{4}+1}{16}$
+Q6 B (Analyse) : a) $\dfrac{4e^{5}+1}{25}$
+Q7 B (Analyse) : d) $4$
+Q8 B (Analyse) : d) $\dfrac{4}{3}$
+Q9 B (Analyse) : c) $\dfrac{11}{18}$
+Q10 B (Analyse) : a) $\dfrac{25}{48}$
+Q11 B (Analyse) : a) $\dfrac{2}{7}$
+Q12 B (Analyse) : a) $\dfrac{6}{5}$
+Q13 B (Analyse) : c) $-\dfrac{25}{2}$
+Q14 B (Analyse) : d) $-8$
+Q15 B (Analyse) : a) $3$
+Q16 B (Analyse) : d) $8$
+Q17 B (Analyse) : d) $5$
+Q18 B (Analyse) : a) $4$
+Q19 B (Analyse) : c) $2e^{-3}$
+Q20 B (Analyse) : d) $4e$
+Q21 B (Algèbre et arithmétique) : b) $23$
+Q22 B (Algèbre et arithmétique) : a) $84$
+Q23 B (Algèbre et arithmétique) : b) $5$
+Q24 B (Algèbre et arithmétique) : b) $7$
+Q25 B (Algèbre et arithmétique) : a) $24$
+Q26 B (Algèbre et arithmétique) : b) $16$
+Q27 B (Algèbre et arithmétique) : b) $9$
+Q28 B (Algèbre et arithmétique) : c) $6$
+Q29 B (Algèbre et arithmétique) : d) $11$
+Q30 B (Algèbre et arithmétique) : d) $30$
+Q31 B (Algèbre et arithmétique) : b) $40$
+Q32 B (Algèbre et arithmétique) : c) $24$
+Q33 B (Algèbre et arithmétique) : c) $4$
+Q34 B (Algèbre et arithmétique) : a) $5$
+Q35 B (Algèbre et arithmétique) : c) $84$
+Q36 B (Algèbre et arithmétique) : a) $448$
+Q37 B (Algèbre et arithmétique) : a) $650$
+Q38 B (Algèbre et arithmétique) : b) $1240$
+Q39 B (Algèbre et arithmétique) : b) $31X-30$
+Q40 B (Algèbre et arithmétique) : a) $63X-62$
+Q41 B (Algèbre linéaire) : d) $-14$
+Q42 B (Algèbre linéaire) : a) $-15$
+Q43 B (Algèbre linéaire) : c) $13$
+Q44 B (Algèbre linéaire) : b) $7$
+Q45 B (Algèbre linéaire) : a) $13$
+Q46 B (Algèbre linéaire) : c) $13$
+Q47 B (Algèbre linéaire) : a) $2$
+Q48 B (Algèbre linéaire) : c) $3$
+Q49 B (Algèbre linéaire) : a) $-1\text{ et }5$
+Q50 B (Algèbre linéaire) : a) $3\text{ et }5$
+Q51 B (Algèbre linéaire) : c) $2$
+Q52 B (Algèbre linéaire) : d) $1$
+Q53 B (Algèbre linéaire) : b) $\begin{pmatrix}2&1\\5&3\end{pmatrix}$
+Q54 B (Algèbre linéaire) : b) $\begin{pmatrix}1&-3\\-1&4\end{pmatrix}$
+Q55 B (Algèbre linéaire) : a) $20$
+Q56 B (Algèbre linéaire) : c) $-12$
+Q57 B (Algèbre linéaire) : c) $15$
+Q58 B (Algèbre linéaire) : c) $21$
+Q59 B (Algèbre linéaire) : b) $-\dfrac{1}{5}$
+Q60 B (Algèbre linéaire) : b) $-2$
+Q61 B (Probabilités et statistiques) : a) $\dfrac{5}{16}$
+Q62 B (Probabilités et statistiques) : b) $\dfrac{105}{512}$
+Q63 B (Probabilités et statistiques) : a) $\dfrac{8}{3}$
+Q64 B (Probabilités et statistiques) : b) $8$
+Q65 B (Probabilités et statistiques) : c) $4$
+Q66 B (Probabilités et statistiques) : a) $\dfrac{10}{3}$
+Q67 B (Probabilités et statistiques) : a) $5e^{-5}$
+Q68 B (Probabilités et statistiques) : d) $4e^{-4}$
+Q69 B (Probabilités et statistiques) : b) $e^{-6}$
+Q70 B (Probabilités et statistiques) : a) $e^{-2}$
+Q71 B (Probabilités et statistiques) : a) $\dfrac{9}{47}$
+Q72 B (Probabilités et statistiques) : d) $\dfrac{1}{4}$
+Q73 B (Probabilités et statistiques) : b) $3$
+Q74 B (Probabilités et statistiques) : d) $3$
+Q75 B (Probabilités et statistiques) : d) $144$
+Q76 B (Probabilités et statistiques) : a) $36$
+Q77 B (Probabilités et statistiques) : d) $180$
+Q78 B (Probabilités et statistiques) : b) $6720$
+Q79 B (Probabilités et statistiques) : d) $\dfrac{1}{8}$
+Q80 B (Probabilités et statistiques) : c) $\dfrac{3}{16}$
+Q81 B (Géométrie et complexes) : b) $8$
+Q82 B (Géométrie et complexes) : a) $100$
+Q83 B (Géométrie et complexes) : a) $\dfrac{\pi}{3}$
+Q84 B (Géométrie et complexes) : b) $\dfrac{2\pi}{3}$
+Q85 B (Géométrie et complexes) : a) $1$
+Q86 B (Géométrie et complexes) : a) $-1$
+Q87 B (Géométrie et complexes) : c) $\dfrac{2}{3}$
+Q88 B (Géométrie et complexes) : a) $\dfrac{4}{7}$
+Q89 B (Géométrie et complexes) : c) $\dfrac{16}{13}$
+Q90 B (Géométrie et complexes) : b) $\dfrac{3}{2}$
+Q91 B (Géométrie et complexes) : b) $(-1,5,3)$
+Q92 B (Géométrie et complexes) : b) $(-2,1,-2)$
+Q93 B (Géométrie et complexes) : d) $7$
+Q94 B (Géométrie et complexes) : d) $9$
+Q95 B (Géométrie et complexes) : c) $3\text{ et }\pi$
+Q96 B (Géométrie et complexes) : d) $2\text{ et }-\dfrac{\pi}{3}$
+Q97 B (Géométrie et complexes) : b) la rotation de centre $O$ et d'angle $\dfrac{2\pi}{3}$
+Q98 B (Géométrie et complexes) : d) la rotation de centre $O$ et d'angle $\dfrac{2\pi}{5}$
+Q99 B (Géométrie et complexes) : d) $2$
+Q100 B (Géométrie et complexes) : b) $3$
+Q1 C (Analyse) : a) $e^{4}$
+Q2 C (Analyse) : b) $e^{-2}$
+Q3 C (Analyse) : d) $4$
+Q4 C (Analyse) : a) $-3$
+Q5 C (Analyse) : a) $\dfrac{5e^{6}+1}{36}$
+Q6 C (Analyse) : c) $\dfrac{6e^{7}+1}{49}$
+Q7 C (Analyse) : c) $2$
+Q8 C (Analyse) : c) $3$
+Q9 C (Analyse) : b) $\dfrac{137}{300}$
+Q10 C (Analyse) : d) $\dfrac{49}{120}$
+Q11 C (Analyse) : d) $\dfrac{4}{3}$
+Q12 C (Analyse) : a) $\dfrac{7}{2}$
+Q13 C (Analyse) : c) $-18$
+Q14 C (Analyse) : b) $-\dfrac{49}{2}$
+Q15 C (Analyse) : b) $5$
+Q16 C (Analyse) : c) $8$
+Q17 C (Analyse) : b) $6$
+Q18 C (Analyse) : c) $7$
+Q19 C (Analyse) : d) $4e^{-3}$
+Q20 C (Analyse) : d) $3e^{2}$
+Q21 C (Algèbre et arithmétique) : d) $21$
+Q22 C (Algèbre et arithmétique) : d) $184$
+Q23 C (Algèbre et arithmétique) : d) $4$
+Q24 C (Algèbre et arithmétique) : b) $1$
+Q25 C (Algèbre et arithmétique) : a) $24$
+Q26 C (Algèbre et arithmétique) : b) $32$
+Q27 C (Algèbre et arithmétique) : c) $9$
+Q28 C (Algèbre et arithmétique) : c) $3$
+Q29 C (Algèbre et arithmétique) : c) $10$
+Q30 C (Algèbre et arithmétique) : b) $6$
+Q31 C (Algèbre et arithmétique) : d) $16$
+Q32 C (Algèbre et arithmétique) : a) $24$
+Q33 C (Algèbre et arithmétique) : d) $4$
+Q34 C (Algèbre et arithmétique) : a) $14$
+Q35 C (Algèbre et arithmétique) : d) $24$
+Q36 C (Algèbre et arithmétique) : d) $160$
+Q37 C (Algèbre et arithmétique) : a) $204$
+Q38 C (Algèbre et arithmétique) : b) $5525$
+Q39 C (Algèbre et arithmétique) : d) $127X-126$
+Q40 C (Algèbre et arithmétique) : d) $255X-254$
+Q41 C (Algèbre linéaire) : d) $14$
+Q42 C (Algèbre linéaire) : b) $15$
+Q43 C (Algèbre linéaire) : b) $13$
+Q44 C (Algèbre linéaire) : b) $-7$
+Q45 C (Algèbre linéaire) : b) $11$
+Q46 C (Algèbre linéaire) : b) $21$
+Q47 C (Algèbre linéaire) : c) $1$
+Q48 C (Algèbre linéaire) : a) $2$
+Q49 C (Algèbre linéaire) : c) $2\text{ et }6$
+Q50 C (Algèbre linéaire) : d) $5\text{ et }7$
+Q51 C (Algèbre linéaire) : c) $2$
+Q52 C (Algèbre linéaire) : a) $1$
+Q53 C (Algèbre linéaire) : a) $\begin{pmatrix}3&-2\\-4&3\end{pmatrix}$
+Q54 C (Algèbre linéaire) : d) $\begin{pmatrix}2&-3\\-1&2\end{pmatrix}$
+Q55 C (Algèbre linéaire) : b) $20$
+Q56 C (Algèbre linéaire) : d) $18$
+Q57 C (Algèbre linéaire) : a) $3$
+Q58 C (Algèbre linéaire) : b) $28$
+Q59 C (Algèbre linéaire) : c) $-\dfrac{5}{2}$
+Q60 C (Algèbre linéaire) : b) $-1$
+Q61 C (Probabilités et statistiques) : a) $\dfrac{21}{128}$
+Q62 C (Probabilités et statistiques) : d) $\dfrac{21}{128}$
+Q63 C (Probabilités et statistiques) : d) $\dfrac{15}{2}$
+Q64 C (Probabilités et statistiques) : c) $4$
+Q65 C (Probabilités et statistiques) : a) $5$
+Q66 C (Probabilités et statistiques) : b) $3$
+Q67 C (Probabilités et statistiques) : a) $6e^{-6}$
+Q68 C (Probabilités et statistiques) : c) $7e^{-7}$
+Q69 C (Probabilités et statistiques) : d) $e^{-8}$
+Q70 C (Probabilités et statistiques) : b) $e^{-2}$
+Q71 C (Probabilités et statistiques) : d) $\dfrac{3}{11}$
+Q72 C (Probabilités et statistiques) : c) $\dfrac{2}{3}$
+Q73 C (Probabilités et statistiques) : d) $12$
+Q74 C (Probabilités et statistiques) : d) $3$
+Q75 C (Probabilités et statistiques) : c) $64$
+Q76 C (Probabilités et statistiques) : b) $100$
+Q77 C (Probabilités et statistiques) : c) $10080$
+Q78 C (Probabilités et statistiques) : d) $360$
+Q79 C (Probabilités et statistiques) : b) $\dfrac{3}{4}$
+Q80 C (Probabilités et statistiques) : b) $\dfrac{3}{8}$
+Q81 C (Géométrie et complexes) : b) $289$
+Q82 C (Géométrie et complexes) : c) $25$
+Q83 C (Géométrie et complexes) : a) $\dfrac{2\pi}{3}$
+Q84 C (Géométrie et complexes) : b) $-\dfrac{2\pi}{3}$
+Q85 C (Géométrie et complexes) : c) $1$
+Q86 C (Géométrie et complexes) : c) $-1$
+Q87 C (Géométrie et complexes) : d) $\dfrac{4}{3}$
+Q88 C (Géométrie et complexes) : c) $\dfrac{7}{9}$
+Q89 C (Géométrie et complexes) : d) $\dfrac{7}{5}$
+Q90 C (Géométrie et complexes) : c) $\dfrac{1}{13}$
+Q91 C (Géométrie et complexes) : a) $(-2,4,1)$
+Q92 C (Géométrie et complexes) : b) $(4,-2,6)$
+Q93 C (Géométrie et complexes) : b) $15$
+Q94 C (Géométrie et complexes) : a) $\dfrac{21}{2}$
+Q95 C (Géométrie et complexes) : d) $3\text{ et }\dfrac{\pi}{2}$
+Q96 C (Géométrie et complexes) : a) $2\text{ et }\dfrac{\pi}{3}$
+Q97 C (Géométrie et complexes) : d) la rotation de centre $O$ et d'angle $\dfrac{\pi}{4}$
+Q98 C (Géométrie et complexes) : c) la rotation de centre $O$ et d'angle $\dfrac{\pi}{6}$
+Q99 C (Géométrie et complexes) : d) $4$
+Q100 C (Géométrie et complexes) : d) $5$
+Q1 D (Analyse) : d) $e^{-3}$
+Q2 D (Analyse) : a) $e^{6}$
+Q3 D (Analyse) : d) $5$
+Q4 D (Analyse) : a) $2$
+Q5 D (Analyse) : a) $\dfrac{7e^{8}+1}{64}$
+Q6 D (Analyse) : b) $\dfrac{8e^{9}+1}{81}$
+Q7 D (Analyse) : c) $\dfrac{5}{4}$
+Q8 D (Analyse) : b) $\dfrac{5}{2}$
+Q9 D (Analyse) : b) $\dfrac{363}{980}$
+Q10 D (Analyse) : a) $\dfrac{761}{2240}$
+Q11 D (Analyse) : b) $\dfrac{3}{5}$
+Q12 D (Analyse) : d) $\dfrac{5}{6}$
+Q13 D (Analyse) : c) $-32$
+Q14 D (Analyse) : b) $-50$
+Q15 D (Analyse) : d) $5$
+Q16 D (Analyse) : b) $6$
+Q17 D (Analyse) : b) $3$
+Q18 D (Analyse) : b) $8$
+Q19 D (Analyse) : b) $5e^{-4}$
+Q20 D (Analyse) : c) $2e^{-5}$
+Q21 D (Algèbre et arithmétique) : a) $306$
+Q22 D (Algèbre et arithmétique) : d) $143$
+Q23 D (Algèbre et arithmétique) : d) $12$
+Q24 D (Algèbre et arithmétique) : a) $1$
+Q25 D (Algèbre et arithmétique) : c) $36$
+Q26 D (Algèbre et arithmétique) : c) $18$
+Q27 D (Algèbre et arithmétique) : b) $8$
+Q28 D (Algèbre et arithmétique) : b) $1$
+Q29 D (Algèbre et arithmétique) : c) $13$
+Q30 D (Algèbre et arithmétique) : b) $45$
+Q31 D (Algèbre et arithmétique) : a) $24$
+Q32 D (Algèbre et arithmétique) : c) $20$
+Q33 D (Algèbre et arithmétique) : a) $11$
+Q34 D (Algèbre et arithmétique) : a) $8$
+Q35 D (Algèbre et arithmétique) : b) $144$
+Q36 D (Algèbre et arithmétique) : c) $280$
+Q37 D (Algèbre et arithmétique) : b) $9455$
+Q38 D (Algèbre et arithmétique) : c) $285$
+Q39 D (Algèbre et arithmétique) : a) $511X-510$
+Q40 D (Algèbre et arithmétique) : c) $1023X-1022$
+Q41 D (Algèbre linéaire) : b) $-11$
+Q42 D (Algèbre linéaire) : d) $-1$
+Q43 D (Algèbre linéaire) : b) $4$
+Q44 D (Algèbre linéaire) : d) $25$
+Q45 D (Algèbre linéaire) : a) $-15$
+Q46 D (Algèbre linéaire) : b) $38$
+Q47 D (Algèbre linéaire) : a) $3$
+Q48 D (Algèbre linéaire) : d) $2$
+Q49 D (Algèbre linéaire) : a) $1\text{ et }5$
+Q50 D (Algèbre linéaire) : b) $2\text{ et }8$
+Q51 D (Algèbre linéaire) : d) $3$
+Q52 D (Algèbre linéaire) : c) $2$
+Q53 D (Algèbre linéaire) : a) $\begin{pmatrix}1&-2\\-2&5\end{pmatrix}$
+Q54 D (Algèbre linéaire) : d) $\begin{pmatrix}1&-3\\-2&7\end{pmatrix}$
+Q55 D (Algèbre linéaire) : c) $-12$
+Q56 D (Algèbre linéaire) : d) $30$
+Q57 D (Algèbre linéaire) : b) $36$
+Q58 D (Algèbre linéaire) : c) $55$
+Q59 D (Algèbre linéaire) : a) $-5$
+Q60 D (Algèbre linéaire) : d) $2$
+Q61 D (Probabilités et statistiques) : a) $\dfrac{15}{64}$
+Q62 D (Probabilités et statistiques) : d) $\dfrac{7}{32}$
+Q63 D (Probabilités et statistiques) : a) $4$
+Q64 D (Probabilités et statistiques) : b) $\dfrac{40}{3}$
+Q65 D (Probabilités et statistiques) : c) $\dfrac{5}{2}$
+Q66 D (Probabilités et statistiques) : d) $8$
+Q67 D (Probabilités et statistiques) : d) $8e^{-8}$
+Q68 D (Probabilités et statistiques) : a) $10e^{-10}$
+Q69 D (Probabilités et statistiques) : b) $e^{-5}$
+Q70 D (Probabilités et statistiques) : c) $e^{-2}$
+Q71 D (Probabilités et statistiques) : c) $\dfrac{1}{3}$
+Q72 D (Probabilités et statistiques) : b) $\dfrac{16}{55}$
+Q73 D (Probabilités et statistiques) : b) $\dfrac{3}{4}$
+Q74 D (Probabilités et statistiques) : b) $\dfrac{25}{3}$
+Q75 D (Probabilités et statistiques) : b) $81$
+Q76 D (Probabilités et statistiques) : b) $100$
+Q77 D (Probabilités et statistiques) : a) $2520$
+Q78 D (Probabilités et statistiques) : a) $2520$
+Q79 D (Probabilités et statistiques) : b) $\dfrac{5}{9}$
+Q80 D (Probabilités et statistiques) : c) $\dfrac{16}{25}$
+Q81 D (Géométrie et complexes) : a) $5\sqrt{5}$
+Q82 D (Géométrie et complexes) : b) $625$
+Q83 D (Géométrie et complexes) : b) $-\dfrac{\pi}{3}$
+Q84 D (Géométrie et complexes) : c) $\dfrac{\pi}{3}$
+Q85 D (Géométrie et complexes) : b) $1$
+Q86 D (Géométrie et complexes) : b) $-1$
+Q87 D (Géométrie et complexes) : a) $\dfrac{\sqrt{3}}{3}$
+Q88 D (Géométrie et complexes) : c) $\dfrac{2}{3}$
+Q89 D (Géométrie et complexes) : c) $\dfrac{7\sqrt{5}}{5}$
+Q90 D (Géométrie et complexes) : d) $\dfrac{3}{2}$
+Q91 D (Géométrie et complexes) : c) $(1,-3,5)$
+Q92 D (Géométrie et complexes) : c) $(-4,8,-4)$
+Q93 D (Géométrie et complexes) : a) $\dfrac{17}{2}$
+Q94 D (Géométrie et complexes) : a) $10$
+Q95 D (Géométrie et complexes) : d) $2\text{ et }-\dfrac{\pi}{2}$
+Q96 D (Géométrie et complexes) : b) $2\text{ et }\dfrac{\pi}{6}$
+Q97 D (Géométrie et complexes) : b) la rotation de centre $O$ et d'angle $\dfrac{4\pi}{5}$
+Q98 D (Géométrie et complexes) : d) la rotation de centre $O$ et d'angle $\dfrac{3\pi}{4}$
+Q99 D (Géométrie et complexes) : b) $6$
+Q100 D (Géométrie et complexes) : c) $3$
