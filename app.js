@@ -13,7 +13,7 @@
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const PCOL = ["#ff5a5a", "#4da3ff", "#4fd27b", "#c084ff", "#ff9f43", "#3fe0d6", "#ff7ad9", "#c9e265", "#ffd166", "#8fa8ff", "#f78c6b", "#7ee8c7"];
   const PREFIX = "ruee-or-dvm-";
-  const QTIME = 40, ETIME = 30, DTIME = 20, RTIME = 40, FTIME = 50;
+  const QTIME = 40, ETIME = 30, DTIME = 10, RTIME = 40, FTIME = 50;
   const F_CHOOSE = 15000, F_LOAD = 20000; // filon: time to sign up, then the longest wait for everybody's question to load
   const KIND = { normal: "", filon: "Filon", raid: "Chapardage", duel: "Castagne", rescue: "Sauvetage" };
   const params = new URLSearchParams(location.search);
@@ -667,8 +667,8 @@
       let done = false;
       if (n > 1 && k >= 2) {
         const u = Math.random(), pr = f / 5;
-        // same rates as the board game: chapardage 1/5, castagne 1/4, sauvetage 1/3
-        const want = u < pr ? "raid" : u < pr + 1 / 4 ? "duel" : u < pr + 1 / 4 + 1 / 3 ? "rescue" : null;
+        // same rates as the board game: chapardage 1/5, castagne 1/3, sauvetage 1/3
+        const want = u < pr ? "raid" : u < pr + 1 / 3 ? "duel" : u < pr + 2 / 3 ? "rescue" : null;
         // the drawn event first; if it cannot happen (no leader, no partner yet…), one of the others
         const tryEv = ev => {
           if (ev === "raid") {
@@ -1412,7 +1412,7 @@
       const ov = document.createElement("div"); ov.className = "overlay";
       const t = q.kind === "filon" ? ["filon", "Tu as trouvé un filon !", `Tu as <strong>${q.time} secondes</strong>. Si tu réussis, tu gagnes <strong>4 pépites</strong>. Les autres chercheurs peuvent tenter la même question : ceux qui trouvent gagnent <strong>1 pépite</strong>, mais seulement si <strong>tu trouves aussi</strong> !`]
         : q.kind === "raid" ? ["", "Chapardage !", `Réponds juste en ${q.time} secondes et tu prends jusqu'à <strong>3 pépites</strong> à <strong>${esc(q.victim || "")}</strong>, le plus riche. Mais attention, <strong>le shérif veille</strong> : si tu te trompes, tu lui paies 1 pépite d'amende !`]
-        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> sur une question que tu as déjà réussie, avec d'autres valeurs. Les réponses apparaissent au signal « Dégaine ! ». Juste et l'autre faux : 2 pépites. Les deux justes : 1 pépite chacun.`]
+        : q.kind === "duel" ? ["", "Castagne !", `Tu affrontes <strong>${esc(q.partner || "")}</strong> sur une question que tu as déjà réussie, avec d'autres valeurs. Tu as ${q.time} secondes : ${q.time - 4} secondes pour lire, puis les réponses apparaissent pendant « 3, 2, 1, Dégaine ! ». Juste et l'autre faux : 2 pépites. Les deux justes : 1 pépite chacun.`]
         : ["", "Sauvetage !", `Tu fais équipe avec <strong>${esc(q.partner || "")}</strong>. Chacun refait une question ratée, avec d'autres valeurs. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. <strong>Vous avez le droit de vous entraider !</strong>`];
       const col = q.kind === "duel" ? "#ff8a3d" : q.kind === "rescue" ? "var(--ok)" : q.kind === "raid" ? "var(--bad)" : "";
       ov.innerHTML = `<div class="box"><div class="title ${t[0]}" ${col ? `style="color:${col}"` : ""}>${t[1]}</div><p>${t[2]}</p><button class="primary" id="ready">C'est parti !</button></div>`;

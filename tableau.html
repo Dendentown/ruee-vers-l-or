@@ -516,24 +516,17 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         if (cand.length) S.raids.push(cand[Math.floor(Math.random() * cand.length)]);
       }
     }
-    // one castagne slot in each block of 4 questions (never in the first 3, players need solved questions)
-    S.duels = [];
-    if (S.nTeams > 1) {
-      for (let b = 0; b < S.deck.length; b += 4) {
-        const cand = [];
-        for (let i = Math.max(b, 3); i <= Math.min(b + 3, S.deck.length - 1); i++)
-          if (!S.challenges.includes(i) && !S.raids.includes(i)) cand.push(i);
-        if (cand.length) S.duels.push(cand[Math.floor(Math.random() * cand.length)]);
-      }
-    }
-    // one sauvetage slot in each block of 3 questions, on a question with no other event
-    S.rescues = [];
+    // one castagne slot and one sauvetage slot in each block of 3 questions (never in the first 3,
+    // players need solved or missed questions); they choose in a random order, so both are as frequent
+    S.duels = []; S.rescues = [];
     if (S.nTeams > 1) {
       for (let b = 0; b < S.deck.length; b += 3) {
         const cand = [];
         for (let i = Math.max(b, 3); i <= Math.min(b + 2, S.deck.length - 1); i++)
-          if (!S.challenges.includes(i) && !S.raids.includes(i) && !S.duels.includes(i)) cand.push(i);
-        if (cand.length) S.rescues.push(cand[Math.floor(Math.random() * cand.length)]);
+          if (!S.challenges.includes(i) && !S.raids.includes(i)) cand.push(i);
+        shuffle(cand);
+        const order = Math.random() < 0.5 ? [S.duels, S.rescues] : [S.rescues, S.duels];
+        order.forEach((list, j) => { if (cand[j] !== undefined) list.push(cand[j]); });
       }
     }
     S.duel = null;
@@ -754,7 +747,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
     }, 100);
   }
   // normal questions: 30 s, then the answer counts as wrong
-  const QTIME = 40, ETIME = 30, DTIME = 20, RTIME = 40, FTIME = 50; // normal questions / chapardage / castagne
+  const QTIME = 40, ETIME = 30, DTIME = 10, RTIME = 40, FTIME = 50; // normal questions / chapardage / castagne
   function startCountdown(D, onEnd, quiet) {
     stopTimer();
     const end = performance.now() + D * 1000;
@@ -958,7 +951,7 @@ label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; fon
         <p style="font-size:17px;color:var(--muted)">Chacun a ${RTIME} secondes. Deux bonnes réponses : 2 pépites chacun. Une seule : 1 pépite chacun. Aucune : pas de pépite.</p>
         <button class="primary" id="ready">Commencer le sauvetage</button></div>` : `<div class="box"><div class="title" style="color:#ff8a3d">Castagne !</div>
         <p><strong>${esc(S.teams[d.me].name)}</strong> affronte <strong>${esc(S.teams[d.opp].name)}</strong>. Chacun reçoit une question de ${esc(themeLabel(d.th).toLowerCase())} qu'il a déjà réussie, mais avec d'autres valeurs.</p>
-        <p style="font-size:17px;color:var(--muted)">Chacun a ${DTIME} secondes, mais les boutons de réponse n'apparaissent qu'à la fin, pendant « 3, 2, 1, Dégaine ! » : prépare ta réponse ! Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
+        <p style="font-size:17px;color:var(--muted)">Chacun a ${DTIME} secondes : ${DTIME - 4} secondes pour lire, puis les boutons de réponse apparaissent pendant « 3, 2, 1, Dégaine ! » : prépare ta réponse ! Les deux justes : 1 pépite chacun. Un seul juste : il gagne les 2 pépites. Les deux faux : personne ne gagne.</p>
         <button class="primary" id="ready">Commencer le duel</button></div>`;
       document.body.appendChild(ov);
       document.getElementById("ready").onclick = () => { ov.remove(); whenShown(startDraw); };
